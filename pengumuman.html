@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pengumuman - Wireframe</title>
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --surface: #ffffff;
+      --ink: #151515;
+      --muted: #666666;
+      --line: #202020;
+      --line-soft: #c4c4c4;
+      --hover: #ececec;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--ink); }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1140px, 94vw); margin: 0 auto; }
+
+    .top-header { border-bottom: 2px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 1200; }
+    .top-header .container { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; padding: 14px 0; }
+    .logo-box { width: 86px; height: 86px; border: 2px solid var(--line); display: grid; place-items: center; background: #fff; padding: 6px; }
+    .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%); }
+    .brand h1 { margin: 0; font-size: clamp(1.3rem, 2.7vw, 1.9rem); text-transform: uppercase; letter-spacing: 0.35px; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+    .nav-wrap { background: var(--surface); border-bottom: 2px solid var(--line); position: sticky; top: var(--header-h, 118px); z-index: 1150; }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+    nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
+    nav a { display: inline-block; padding: 8px 10px; border: 1px solid transparent; font-size: 0.94rem; }
+    nav a:hover, nav a:focus-visible, nav a.active { border-color: var(--line-soft); background: var(--hover); outline: none; }
+
+    .right-tools { display: flex; align-items: center; gap: 8px; }
+    .search { display: flex; border: 1px solid var(--line); background: #fff; }
+    .search input { border: 0; outline: none; padding: 8px 10px; width: clamp(130px, 17vw, 180px); font-size: 0.9rem; background: transparent; }
+    .search button, .btn-login, .btn, .btn-primary { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 8px 12px; font-size: 0.9rem; cursor: pointer; }
+    .search button:hover, .btn-login:hover, .btn:hover, .btn-primary:hover { background: var(--hover); }
+    .btn-primary { background: #121212; color: #fff; border-color: #121212; }
+    .btn-primary:hover { background: #2c2c2c; }
+
+    .hero {
+      min-height: 245px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px 16px;
+      border-bottom: 2px solid var(--line);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("IMG_1970.JPG");
+      background-size: cover;
+      background-position: center;
+      filter: grayscale(100%);
+      z-index: -2;
+    }
+    .hero h2 { margin: 0; color: #fff; font-size: clamp(1.9rem, 4.5vw, 3.1rem); text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.45); }
+    .hero p { margin: 9px 0 0; color: #ececec; font-size: 0.95rem; }
+
+    .breadcrumb-wrap { border-bottom: 1px solid var(--line-soft); background: #fafafa; }
+    .breadcrumb { margin: 0; padding: 11px 0; list-style: none; display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.88rem; color: #545454; }
+    .breadcrumb li + li::before { content: "/"; margin-right: 10px; color: #8a8a8a; }
+
+    .content { padding: 20px 0 34px; }
+    .content-grid { display: grid; grid-template-columns: 250px 1fr; gap: 16px; align-items: start; }
+    .category-panel { border: 1px solid var(--line-soft); background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); padding: 14px; }
+    .category-panel h3 { margin: 0 0 10px; font-size: 1.45rem; }
+    .category-list { display: grid; gap: 8px; }
+    .category-btn {
+      border: 1px solid #d0d0d0;
+      background: #f3f3f3;
+      color: #363636;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .category-btn:hover { border-color: #b6b6b6; background: #e8e8e8; }
+    .category-btn.active { background: #2d62d9; color: #fff; border-color: #2d62d9; font-weight: 600; }
+    .announce-main { min-width: 0; }
+    .filter-card { border: 2px solid var(--line); background: #fff; padding: 14px; margin-bottom: 14px; }
+    .filter-grid { display: grid; grid-template-columns: 2fr 1fr auto auto; gap: 8px; align-items: end; }
+    .field { display: grid; gap: 5px; }
+    .field label { font-size: 0.84rem; color: #4f4f4f; }
+    .field input, .field select { border: 1px solid var(--line-soft); background: #fff; padding: 8px 10px; font-size: 0.9rem; }
+    .meta-line { margin: 0 0 12px; font-size: 0.84rem; color: #636363; }
+
+    .announce-list { display: grid; gap: 14px; }
+    .announce-card {
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 220px;
+      overflow: hidden;
+    }
+    .thumb {
+      border-right: 1px solid var(--line-soft);
+      background: repeating-linear-gradient(135deg,#f8f8f8,#f8f8f8 12px,#efefef 12px,#efefef 24px);
+      display: grid;
+      place-items: center;
+      color: #666;
+      font-size: 0.92rem;
+      padding: 12px;
+      text-align: center;
+    }
+    .body { padding: 14px 15px; display: grid; align-content: start; gap: 8px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 0.84rem; color: #555; }
+    .badge { border: 1px solid #bdbdbd; border-radius: 999px; padding: 2px 8px; background: #f4f4f4; }
+    .title { margin: 0; font-size: clamp(1.05rem, 2.1vw, 1.55rem); text-transform: uppercase; line-height: 1.25; }
+    .desc { margin: 0; color: #4b4b4b; font-size: 0.92rem; line-height: 1.48; }
+    .bottom-row { margin-top: 4px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .lampiran { margin: 0; font-size: 0.84rem; color: #575757; }
+    .empty-state {
+      border: 1px dashed #acacac;
+      background: #fafafa;
+      color: #666;
+      font-size: 0.93rem;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .footer { border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%); margin-top: 10px; color: #2e2e2e; }
+    .footer-main { padding: 20px 0 14px; }
+    .footer-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
+    .footer-col { border: 1px solid #bdbdbd; background: #fff; padding: 13px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .footer-logo { width: 50px; height: 50px; object-fit: contain; filter: grayscale(100%); border: 1px solid #222; padding: 4px; background: #fff; }
+    .footer-title { margin: 0; font-size: 0.98rem; }
+    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
+    .contact-list, .social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 0.9rem; }
+    .contact-list strong { display: inline-block; min-width: 70px; }
+    .social-item { display: flex; gap: 9px; align-items: center; }
+    .social-dot { width: 25px; height: 25px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; border: 1px solid #222; background: #f4f4f4; }
+    .footer-bottom { border-top: 1px solid #bebebe; padding: 10px 0 14px; text-align: center; font-size: 0.84rem; color: #5c5c5c; }
+
+    @media (max-width: 980px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .filter-grid { grid-template-columns: 1fr 1fr; }
+      .announce-card { grid-template-columns: 1fr; }
+      .thumb { min-height: 170px; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .top-header .container { grid-template-columns: 1fr; text-align: center; }
+      .logo-box { margin: 0 auto; }
+      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
+      .search { flex: 1 1 230px; }
+      .search input { width: 100%; }
+      .filter-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header" id="topHeader">
+    <div class="container">
+      <div class="logo-box">
+        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
+      </div>
+      <div class="brand">
+        <h1>Crew Multimedia Baciro</h1>
+        <p>Wireframe Low-Fidelity - Halaman Pengumuman</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <div class="container nav-row">
+      <nav aria-label="Navigasi utama">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profil.html">Profil</a></li>
+          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a class="active" href="pengumuman.html">Pengumuman</a></li>
+          <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <form class="search" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+          <button type="submit">Search</button>
+        </form>
+        <a class="btn-login" href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Header pengumuman">
+    <div>
+      <h2>Pengumuman & Informasi</h2>
+      <p>Update terbaru dan informasi penting dari Crembo Media</p>
+    </div>
+  </section>
+
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <ol class="breadcrumb" aria-label="Breadcrumb">
+        <li><a href="home.html">Beranda</a></li>
+        <li aria-current="page">Pengumuman</li>
+      </ol>
+    </div>
+  </div>
+
+  <main class="container content">
+    <div class="content-grid">
+      <aside class="category-panel" aria-label="Kategori pengumuman">
+        <h3>Kategori</h3>
+        <div id="categoryList" class="category-list"></div>
+      </aside>
+
+      <section class="announce-main" aria-label="Daftar pengumuman">
+        <section class="filter-card" aria-label="Filter pengumuman">
+          <div class="filter-grid">
+            <div class="field">
+              <label for="q">Cari Pengumuman</label>
+              <input id="q" type="search" placeholder="Cari berdasarkan judul, isi, atau kategori...">
+            </div>
+            <div class="field">
+              <label for="sort">Urutkan</label>
+              <select id="sort">
+                <option value="newest">Terbaru Lebih Dulu</option>
+                <option value="oldest">Terlama Lebih Dulu</option>
+                <option value="title">Judul A-Z</option>
+              </select>
+            </div>
+            <button id="applyFilterBtn" class="btn-primary" type="button">Cari</button>
+            <button id="resetFilterBtn" class="btn" type="button">Reset</button>
+          </div>
+        </section>
+
+        <p id="metaLine" class="meta-line">Menampilkan 0 pengumuman</p>
+        <section id="announceList" class="announce-list" aria-label="Daftar pengumuman"></section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <section class="footer-col" aria-label="Identitas Crembo">
+          <div class="footer-brand">
+            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+            <div>
+              <h4 class="footer-title">Crew Multimedia Baciro</h4>
+              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+            </div>
+          </div>
+          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
+        </section>
+        <section class="footer-col" aria-label="Kontak">
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="contact-list">
+            <li><strong>Email</strong> : crembomedia@example.com</li>
+            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-label="Media sosial">
+          <h4 class="footer-title">Media Sosial</h4>
+          <ul class="social-list">
+            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
+    </div>
+  </footer>
+
+  <script>
+    const topHeader = document.getElementById("topHeader");
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const qInput = document.getElementById("q");
+    const sortSelect = document.getElementById("sort");
+    const applyFilterBtn = document.getElementById("applyFilterBtn");
+    const resetFilterBtn = document.getElementById("resetFilterBtn");
+    const categoryList = document.getElementById("categoryList");
+    const announceList = document.getElementById("announceList");
+    const metaLine = document.getElementById("metaLine");
+
+    const ANNOUNCEMENT_STORAGE_KEY = "crembo-announcements";
+    const ANNOUNCEMENT_CATEGORY_STORAGE_KEY = "crembo-announcement-categories";
+
+    const DEFAULT_ANNOUNCEMENTS = [
+      {
+        id: "berita-1",
+        title: "Mahasiswa Informatika UAJY Unjuk Kreativitas Melalui Pameran Hasil Karya UAS",
+        slug: "mahasiswa-informatika-uajy-unjuk-kreativitas",
+        categories: ["Umum", "Prestasi"],
+        author: "Super Admin",
+        status: "published",
+        date: "2026-02-25",
+        thumbnailName: "karya-uas.jpg",
+        thumbnailDataUrl: "",
+        summary: "Program Studi Informatika UAJY menggelar pameran hasil karya mahasiswa semester satu.",
+        content: "Program Studi Informatika UAJY menggelar pameran hasil karya mahasiswa semester satu.",
+        attachments: [
+          { id: "att-1", name: "siaran-pers.pdf", type: "application/pdf", dataUrl: "" }
+        ]
+      }
+    ];
+
+    const categoryFromQuery = new URLSearchParams(window.location.search).get("kategori");
+    let activeCategory = categoryFromQuery ? normalizeCategoryName(categoryFromQuery) : "Semua Berita";
+
+    function safeJsonParse(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function normalizeCategoryName(value) {
+      return String(value || "Umum").trim() || "Umum";
+    }
+
+    function slugify(text) {
+      return String(text || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+
+    function normalizeAttachment(att) {
+      if (typeof att === "string") {
+        return { id: "att-" + slugify(att), name: att, type: "", dataUrl: "" };
+      }
+      return {
+        id: String(att && att.id ? att.id : "att-" + Date.now()),
+        name: String(att && att.name ? att.name : "lampiran"),
+        type: String(att && att.type ? att.type : ""),
+        dataUrl: String(att && att.dataUrl ? att.dataUrl : "")
+      };
+    }
+
+    function normalizeAnnouncement(item, index) {
+      const categories = Array.isArray(item && item.categories)
+        ? item.categories.map(normalizeCategoryName)
+        : [normalizeCategoryName(item && item.category)];
+
+      const statusRaw = String(item && item.status ? item.status : "published").toLowerCase();
+      const status = statusRaw === "draft" ? "draft" : "published";
+
+      const content = String(item && (item.content || (Array.isArray(item.body) ? item.body.join("\n\n") : ""))
+        ? (item.content || (Array.isArray(item.body) ? item.body.join("\n\n") : ""))
+        : (item && item.summary ? item.summary : ""));
+
+      return {
+        id: String(item && item.id ? item.id : "pengumuman-" + (index + 1)),
+        title: String(item && item.title ? item.title : "Judul Pengumuman"),
+        slug: String(item && item.slug ? item.slug : slugify(item && item.title ? item.title : "pengumuman")),
+        categories: categories,
+        category: categories[0],
+        status: status,
+        date: String(item && item.date ? item.date : "2026-01-01"),
+        author: String(item && item.author ? item.author : "Admin"),
+        thumbnailName: String(item && item.thumbnailName ? item.thumbnailName : ""),
+        thumbnailDataUrl: String(item && item.thumbnailDataUrl ? item.thumbnailDataUrl : ""),
+        summary: String(item && item.summary ? item.summary : content.slice(0, 180)),
+        content: content,
+        attachments: Array.isArray(item && item.attachments) ? item.attachments.map(normalizeAttachment) : []
+      };
+    }
+
+    function ensureSeedAnnouncements() {
+      const raw = localStorage.getItem(ANNOUNCEMENT_STORAGE_KEY);
+      const parsed = raw ? safeJsonParse(raw) : null;
+      if (!Array.isArray(parsed) || !parsed.length) {
+        localStorage.setItem(ANNOUNCEMENT_STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
+      }
+    }
+
+    function readAnnouncements() {
+      const raw = localStorage.getItem(ANNOUNCEMENT_STORAGE_KEY);
+      const parsed = raw ? safeJsonParse(raw) : null;
+      const normalized = Array.isArray(parsed) ? parsed.map(normalizeAnnouncement) : DEFAULT_ANNOUNCEMENTS.map(normalizeAnnouncement);
+      return normalized.filter(function (item) { return item.status === "published"; });
+    }
+
+    function readAdminCategories(announcements) {
+      const raw = localStorage.getItem(ANNOUNCEMENT_CATEGORY_STORAGE_KEY);
+      const parsed = raw ? safeJsonParse(raw) : null;
+
+      const categorySet = new Set();
+      announcements.forEach(function (item) {
+        item.categories.forEach(function (cat) { categorySet.add(normalizeCategoryName(cat)); });
+      });
+
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        parsed.forEach(function (item) {
+          if (typeof item === "string") {
+            categorySet.add(normalizeCategoryName(item));
+            return;
+          }
+          if (item && (item.name || item.label)) {
+            categorySet.add(normalizeCategoryName(item.name || item.label));
+          }
+        });
+      }
+
+      return ["Semua Berita"].concat(Array.from(categorySet));
+    }
+
+    function formatDate(dateValue) {
+      const parsed = new Date(dateValue + "T00:00:00");
+      if (Number.isNaN(parsed.getTime())) {
+        return dateValue;
+      }
+      return parsed.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+    }
+
+    function sortAnnouncements(items) {
+      const currentSort = sortSelect.value;
+      const sorted = items.slice();
+      if (currentSort === "oldest") {
+        sorted.sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+        return sorted;
+      }
+      if (currentSort === "title") {
+        sorted.sort(function (a, b) { return a.title.localeCompare(b.title, "id"); });
+        return sorted;
+      }
+      sorted.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+      return sorted;
+    }
+
+    function filterAnnouncements(allItems) {
+      const keyword = qInput.value.trim().toLowerCase();
+      const filtered = allItems.filter(function (item) {
+        const passCategory = activeCategory === "Semua Berita" || item.categories.includes(activeCategory);
+        const passKeyword = !keyword || [item.title, item.summary, item.author].concat(item.categories).join(" ").toLowerCase().includes(keyword);
+        return passCategory && passKeyword;
+      });
+      return sortAnnouncements(filtered);
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function renderCategories(categories, announcements) {
+      const counts = {};
+      announcements.forEach(function (item) {
+        item.categories.forEach(function (cat) {
+          counts[cat] = (counts[cat] || 0) + 1;
+        });
+      });
+
+      categoryList.innerHTML = categories.map(function (category) {
+        const countLabel = category === "Semua Berita" ? announcements.length : (counts[category] || 0);
+        const isActive = category === activeCategory ? " active" : "";
+        return '<button type="button" class="category-btn' + isActive + '" data-category="' + category.replace(/"/g, "&quot;") + '">' + category + ' (' + countLabel + ')</button>';
+      }).join("");
+    }
+
+    function renderAnnouncementList(items) {
+      if (items.length === 0) {
+        announceList.innerHTML = '<div class="empty-state">Tidak ada pengumuman pada kategori atau kata kunci ini.</div>';
+        metaLine.textContent = "Menampilkan 0 pengumuman";
+        return;
+      }
+
+      announceList.innerHTML = items.map(function (item, index) {
+        const buttonClass = index === 0 ? "btn-primary" : "btn";
+        const attachmentCount = item.attachments.length;
+        const thumb = item.thumbnailDataUrl
+          ? '<img src="' + item.thumbnailDataUrl + '" alt="Thumbnail pengumuman" style="width:100%;height:100%;object-fit:cover;">'
+          : ('<div>Thumbnail Pengumuman' + (item.thumbnailName ? '<br><small>' + escapeHtml(item.thumbnailName) + '</small>' : '') + '</div>');
+        return '<article class="announce-card">'
+          + '<div class="thumb">' + thumb + '</div>'
+          + '<div class="body">'
+          + '<div class="meta-row"><span class="badge">' + escapeHtml(item.categories[0] || "Umum") + '</span><span>' + escapeHtml(formatDate(item.date)) + '</span></div>'
+          + '<h3 class="title">' + escapeHtml(item.title) + '</h3>'
+          + '<p class="desc">' + escapeHtml(item.summary || "-") + '</p>'
+          + '<div class="bottom-row">'
+          + '<p class="lampiran">' + attachmentCount + ' file lampiran</p>'
+          + '<a class="' + buttonClass + '" href="pengumuman-detail.html?id=' + encodeURIComponent(item.id) + '">Baca Selengkapnya</a>'
+          + '</div></div></article>';
+      }).join("");
+
+      metaLine.textContent = "Menampilkan " + items.length + " pengumuman";
+    }
+
+    function renderAnnouncementPage() {
+      const announcements = readAnnouncements();
+      const categories = readAdminCategories(announcements);
+      if (!categories.includes(activeCategory)) {
+        activeCategory = "Semua Berita";
+      }
+
+      renderCategories(categories, announcements);
+      renderAnnouncementList(filterAnnouncements(announcements));
+    }
+
+    function syncStickyOffset() {
+      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
+      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
+    }
+
+    ensureSeedAnnouncements();
+    syncStickyOffset();
+    window.addEventListener("resize", syncStickyOffset);
+
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const keyword = searchInput.value.trim();
+      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
+    });
+
+    categoryList.addEventListener("click", function (event) {
+      const button = event.target.closest(".category-btn");
+      if (!button) {
+        return;
+      }
+      activeCategory = button.getAttribute("data-category") || "Semua Berita";
+      renderAnnouncementPage();
+    });
+
+    applyFilterBtn.addEventListener("click", renderAnnouncementPage);
+    qInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        renderAnnouncementPage();
+      }
+    });
+    sortSelect.addEventListener("change", renderAnnouncementPage);
+
+    resetFilterBtn.addEventListener("click", function () {
+      qInput.value = "";
+      sortSelect.value = "newest";
+      activeCategory = "Semua Berita";
+      renderAnnouncementPage();
+    });
+
+    renderAnnouncementPage();
+
+    (function () {
+      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+      const DEFAULT_PROFILE_MENU = [
+        { id: "sejarah", label: "Sejarah" },
+        { id: "tentang-crembo", label: "Tentang Crembo" },
+        { id: "struktur", label: "Struktur" },
+        { id: "visi-misi", label: "Visi & Misi" }
+      ];
+
+      function readProfileMenuItems() {
+        try {
+          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+          if (!raw) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          return parsed.map(function (item) {
+            if (typeof item === "string") {
+              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+            }
+            return {
+              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
+              label: item && item.label ? String(item.label) : "Profil"
+            };
+          });
+        } catch (err) {
+          return DEFAULT_PROFILE_MENU;
+        }
+      }
+
+      function enhanceProfileHoverMenu() {
+        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
+        if (!navList) {
+          return;
+        }
+
+        const profileAnchor = navList.querySelector('a[href="profil.html"]');
+        if (!profileAnchor) {
+          return;
+        }
+
+        const profileItem = profileAnchor.closest("li");
+        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
+          return;
+        }
+
+        const menuItems = readProfileMenuItems();
+
+        profileItem.style.position = "relative";
+        profileItem.classList.add("nav-dropdown-enhanced");
+
+        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+          profileAnchor.setAttribute("data-profile-menu-label", "true");
+          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
+        }
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "profile-hover-menu";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = "calc(100% + 4px)";
+        dropdown.style.left = "0";
+        dropdown.style.minWidth = "210px";
+        dropdown.style.border = "1px solid #bdbdbd";
+        dropdown.style.background = "#fff";
+        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
+        dropdown.style.padding = "6px";
+        dropdown.style.display = "none";
+        dropdown.style.zIndex = "1300";
+
+        dropdown.innerHTML = menuItems.map(function (item) {
+          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
+        }).join("");
+
+        dropdown.addEventListener("mouseover", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "#b9b9b9";
+            link.style.background = "#ececec";
+          }
+        });
+
+        dropdown.addEventListener("mouseout", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "transparent";
+            link.style.background = "transparent";
+          }
+        });
+
+        profileItem.appendChild(dropdown);
+
+        function showMenu() {
+          dropdown.style.display = "block";
+        }
+
+        function hideMenu() {
+          dropdown.style.display = "none";
+        }
+
+        profileItem.addEventListener("mouseenter", showMenu);
+        profileItem.addEventListener("mouseleave", hideMenu);
+        profileItem.addEventListener("focusin", showMenu);
+        profileItem.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (!profileItem.contains(document.activeElement)) {
+              hideMenu();
+            }
+          }, 0);
+        });
+      }
+
+      enhanceProfileHoverMenu();
+    })();
+  </script>
+</body>
+</html>

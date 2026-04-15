@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verifikasi OTP - Crembo Media</title>
+  <style>
+    :root {
+      --brand: #1f1f1f;
+      --ink: #111111;
+      --line: #b8b8b8;
+      --muted: #666666;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      background: #0b0b0b;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .video-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(108%);
+    }
+
+    .video-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .top {
+      border-bottom: 2px solid #1f1f1f;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .container {
+      width: min(1120px, 94vw);
+      margin: 0 auto;
+    }
+
+    .top-row {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border: 1px solid #bdbdbd;
+      border-radius: 999px;
+      background: #fff;
+      padding: 4px;
+      filter: grayscale(100%);
+    }
+
+    .brand strong { font-size: 0.95rem; }
+
+    .back {
+      border: 1px solid #b8b8b8;
+      background: #fff;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+    }
+
+    .back:hover { background: #efefef; }
+
+    .main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 30px 0;
+    }
+
+    .stack {
+      width: min(560px, 93vw);
+      display: grid;
+      gap: 12px;
+    }
+
+    .identity {
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(24, 24, 24, 0.62);
+      border-radius: 14px;
+      color: #fff;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .identity img {
+      width: 66px;
+      height: 66px;
+      object-fit: contain;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: #fff;
+      padding: 5px;
+      filter: grayscale(100%);
+    }
+
+    .identity h2 { margin: 8px 0 4px; }
+
+    .card {
+      border: 2px solid #1f1f1f;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .card-head {
+      background: #1f1f1f;
+      color: #fff;
+      text-align: center;
+      padding: 14px 14px 10px;
+    }
+
+    .card-head h3 { margin: 0; font-size: 1.6rem; }
+
+    .card-head p {
+      margin: 4px 0 0;
+      font-size: 0.86rem;
+      color: #d4d4d4;
+    }
+
+    .body { padding: 14px; }
+
+    .ok {
+      border: 1px solid #9bc4a0;
+      background: #ebf7ed;
+      color: #24522d;
+      font-size: 0.84rem;
+      padding: 9px 10px;
+      margin-bottom: 9px;
+    }
+
+    .info {
+      border: 1px solid #b8b8b8;
+      background: #f4f4f4;
+      color: #3c3c3c;
+      font-size: 0.84rem;
+      padding: 9px 10px;
+      margin-bottom: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 0.86rem;
+      color: #353535;
+      font-weight: 600;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid #b8b8b8;
+      background: #fff;
+      padding: 10px 11px;
+      font-size: 1.1rem;
+      letter-spacing: 0.28em;
+      text-align: center;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #707070;
+      box-shadow: 0 0 0 3px rgba(20,20,20,0.14);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 0 0 10px;
+      text-align: center;
+    }
+
+    .btn {
+      width: 100%;
+      border: 1px solid #1f1f1f;
+      background: #1f1f1f;
+      color: #fff;
+      padding: 10px;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: #0f0f0f; }
+
+    .link-row {
+      margin-top: 10px;
+      display: grid;
+      gap: 6px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #4f4f4f;
+    }
+
+    .link-row a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="video-bg" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="bg_video_login.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <header class="top">
+    <div class="container top-row">
+      <div class="brand">
+        <img src="logo crembo hitam.png" alt="Logo Crembo">
+        <strong>Crew Multimedia Baciro</strong>
+      </div>
+      <a class="back" href="login.html">&larr; Kembali ke Login</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="stack">
+      <section class="identity">
+        <img src="logo crembo hitam.png" alt="Logo sistem">
+        <h2>CREMBO</h2>
+        <p>Sistem Informasi Crew Multimedia Baciro</p>
+      </section>
+
+      <section class="card" aria-label="Verifikasi kode OTP">
+        <div class="card-head">
+          <h3>Verifikasi Kode</h3>
+          <p>Masukkan OTP 4 digit yang dikirim</p>
+        </div>
+        <div class="body">
+          <div class="ok">Kode verifikasi telah dikirim ke kontak terdaftar.</div>
+          <div id="targetInfo" class="info">Kode telah dikirim ke: -</div>
+          <form id="otpForm">
+            <div class="field">
+              <label for="otpCode">Kode Verifikasi (4 Digit)</label>
+              <input id="otpCode" type="text" maxlength="4" inputmode="numeric" placeholder="0000" required>
+            </div>
+            <p class="hint">Kode berlaku 15 menit (prototipe OTP valid: 1234).</p>
+            <button class="btn" type="submit">Verifikasi Kode</button>
+          </form>
+          <div class="link-row">
+            <a href="otp-verification.html?resend=1">Kirim Ulang Kode</a>
+            <a href="login.html">&larr; Kembali ke Login</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const targetInfo = document.getElementById("targetInfo");
+    const otpForm = document.getElementById("otpForm");
+    const otpCodeInput = document.getElementById("otpCode");
+
+    function maskTarget(value) {
+      if (!value) {
+        return "-";
+      }
+      if (value.includes("@")) {
+        const parts = value.split("@");
+        const name = parts[0];
+        if (name.length <= 2) {
+          return value;
+        }
+        return name.slice(0, 2) + "***@" + parts[1];
+      }
+      const digits = value.replace(/\D/g, "");
+      if (digits.length < 5) {
+        return value;
+      }
+      return digits.slice(0, 3) + "****" + digits.slice(-2);
+    }
+
+    const contextRaw = localStorage.getItem("crembo-reset-context");
+    let resetContext = null;
+    if (contextRaw) {
+      try {
+        resetContext = JSON.parse(contextRaw);
+      } catch (err) {
+        resetContext = null;
+      }
+    }
+
+    if (!resetContext) {
+      window.location.href = "forgot-password.html";
+    } else {
+      targetInfo.textContent = "Kode telah dikirim ke: " + maskTarget(resetContext.destinationTarget);
+    }
+
+    otpForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const otp = otpCodeInput.value.trim();
+      if (!resetContext) {
+        return;
+      }
+      if (otp.length !== 4) {
+        alert("Masukkan 4 digit OTP.");
+        return;
+      }
+      if (otp !== resetContext.otp) {
+        alert("Kode OTP tidak valid. Gunakan 1234 untuk prototipe.");
+        return;
+      }
+      window.location.href = "reset-password.html";
+    });
+  </script>
+</body>
+</html>

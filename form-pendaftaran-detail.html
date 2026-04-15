@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detail Form Pendaftaran - Wireframe</title>
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --surface: #ffffff;
+      --ink: #141414;
+      --muted: #666666;
+      --line: #202020;
+      --line-soft: #c4c4c4;
+      --hover: #ececec;
+      --header-h: 118px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.45; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1140px, 94vw); margin: 0 auto; }
+
+    .top-header {
+      border-bottom: 2px solid var(--line);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+    }
+    .top-header .container { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; padding: 14px 0; }
+    .logo-box { width: 86px; height: 86px; border: 2px solid var(--line); display: grid; place-items: center; background: #fff; padding: 6px; }
+    .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%); }
+    .brand h1 { margin: 0; font-size: clamp(1.3rem, 2.7vw, 1.9rem); text-transform: uppercase; letter-spacing: 0.35px; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+    .nav-wrap {
+      background: var(--surface);
+      border-bottom: 2px solid var(--line);
+      position: sticky;
+      top: var(--header-h);
+      z-index: 1150;
+    }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+    nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
+    nav a { display: inline-block; padding: 8px 10px; border: 1px solid transparent; font-size: 0.94rem; }
+    nav a:hover, nav a:focus-visible, nav a.active { border-color: var(--line-soft); background: var(--hover); outline: none; }
+
+    .right-tools { display: flex; align-items: center; gap: 8px; }
+    .search { display: flex; border: 1px solid var(--line); background: #fff; }
+    .search input { border: 0; outline: none; padding: 8px 10px; width: clamp(130px, 17vw, 180px); font-size: 0.9rem; background: transparent; }
+    .search button, .btn-login, .btn, .btn-primary { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 8px 12px; font-size: 0.9rem; cursor: pointer; }
+    .search button:hover, .btn-login:hover, .btn:hover, .btn-primary:hover { background: var(--hover); }
+    .btn-primary { background: #121212; color: #fff; border-color: #121212; }
+    .btn-primary:hover { background: #2c2c2c; }
+
+    .hero { min-height: 250px; position: relative; display: grid; place-items: center; text-align: center; padding: 20px 16px; border-bottom: 2px solid var(--line); overflow: hidden; isolation: isolate; }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; filter: grayscale(100%); z-index: -2; }
+    .hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.52); z-index: -1; }
+    .badge { display: inline-block; border: 1px solid #d7d7d7; background: rgba(255,255,255,0.18); color: #fff; border-radius: 999px; padding: 4px 12px; font-size: 0.84rem; }
+    .hero h2 { margin: 10px 0 0; color: #fff; font-size: clamp(1.8rem, 4.2vw, 3rem); text-shadow: 0 2px 6px rgba(0,0,0,.45); }
+    .hero-meta { margin-top: 8px; color: #e8e8e8; font-size: .9rem; }
+
+    .breadcrumb-wrap { border-bottom: 1px solid var(--line-soft); background: #fafafa; }
+    .breadcrumb { margin: 0; padding: 11px 0; list-style: none; display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.88rem; color: #545454; }
+    .breadcrumb li + li::before { content: "/"; margin-right: 10px; color: #8a8a8a; }
+
+    .content { padding: 24px 0 34px; }
+    .form-card { border: 2px solid var(--line); background: #fff; padding: 16px; max-width: 980px; margin: 0 auto; }
+    .form-card h3 { margin: 0 0 8px; font-size: clamp(1.3rem, 2.3vw, 1.8rem); }
+    .form-desc { margin: 0 0 14px; font-size: 0.92rem; color: #4a4a4a; }
+
+    .input-grid { display: grid; gap: 12px; }
+    .field { display: grid; gap: 6px; }
+    .field label { font-size: 0.9rem; color: #2f2f2f; }
+    .required::after { content: " *"; color: #a60000; }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      padding: 10px;
+      font-size: 0.92rem;
+      font-family: inherit;
+    }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .radio-group,
+    .check-group {
+      display: grid;
+      gap: 8px;
+      border: 1px solid var(--line-soft);
+      padding: 10px;
+      background: #fafafa;
+      font-size: 0.9rem;
+    }
+
+    .actions { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .footer { border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%); margin-top: 10px; color: #2e2e2e; }
+    .footer-main { padding: 20px 0 14px; }
+    .footer-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
+    .footer-col { border: 1px solid #bdbdbd; background: #fff; padding: 13px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .footer-logo { width: 50px; height: 50px; object-fit: contain; filter: grayscale(100%); border: 1px solid #222; padding: 4px; background: #fff; }
+    .footer-title { margin: 0; font-size: 0.98rem; }
+    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
+    .contact-list, .social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 0.9rem; }
+    .contact-list strong { display: inline-block; min-width: 70px; }
+    .social-item { display: flex; gap: 9px; align-items: center; }
+    .social-dot { width: 25px; height: 25px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; border: 1px solid #222; background: #f4f4f4; }
+    .footer-bottom { border-top: 1px solid #bebebe; padding: 10px 0 14px; text-align: center; font-size: 0.84rem; color: #5c5c5c; }
+
+    @media (max-width: 980px) { .footer-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) {
+      .top-header .container { grid-template-columns: 1fr; text-align: center; }
+      .logo-box { margin: 0 auto; }
+      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
+      .search { flex: 1 1 230px; }
+      .search input { width: 100%; }
+      .row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header" id="topHeader">
+    <div class="container">
+      <div class="logo-box"><img src="logo crembo hitam.png" alt="Logo Crembo Media"></div>
+      <div class="brand">
+        <h1>Crew Multimedia Baciro</h1>
+        <p>Wireframe Low-Fidelity - Detail Form Pendaftaran</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <div class="container nav-row">
+      <nav aria-label="Navigasi utama">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profil.html">Profil</a></li>
+          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+          <li><a class="active" href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <form class="search" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+          <button type="submit">Search</button>
+        </form>
+        <a class="btn-login" href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Header detail form pendaftaran">
+    <div>
+      <span class="badge">Form Pendaftaran</span>
+      <h2 id="heroTitle">Detail Form Pendaftaran</h2>
+      <div id="heroMeta" class="hero-meta">Memuat data form...</div>
+    </div>
+  </section>
+
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <ol class="breadcrumb" aria-label="Breadcrumb">
+        <li><a href="home.html">Beranda</a></li>
+        <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        <li id="breadcrumbCurrent" aria-current="page">Detail Form</li>
+      </ol>
+    </div>
+  </div>
+
+  <main class="container content">
+    <section class="form-card" aria-label="Detail form pendaftaran">
+      <h3 id="formTitle">Form Pendaftaran</h3>
+      <p id="formDesc" class="form-desc">Isi data berikut seperti pengisian Google Form. Kolom bertanda bintang wajib diisi.</p>
+
+      <div id="accessInfo" class="form-desc" style="margin-top:-4px;"></div>
+
+      <form id="dynamicForm" class="input-grid"></form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <section class="footer-col" aria-label="Identitas Crembo">
+          <div class="footer-brand">
+            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+            <div>
+              <h4 class="footer-title">Crew Multimedia Baciro</h4>
+              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+            </div>
+          </div>
+          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, pengumuman, dan form pendaftaran komunitas.</p>
+        </section>
+        <section class="footer-col" aria-label="Kontak">
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="contact-list">
+            <li><strong>Email</strong> : crembomedia@example.com</li>
+            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-label="Media sosial">
+          <h4 class="footer-title">Media Sosial</h4>
+          <ul class="social-list">
+            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
+    </div>
+  </footer>
+
+  <script>
+    const FORM_STORAGE_KEY = "crembo-registration-forms";
+    const SUBMISSION_STORAGE_KEY = "crembo-registration-submissions";
+    const MEMBER_STORAGE_KEY = "crembo-members";
+    const SESSION_STORAGE_KEY = "crembo-login-session";
+
+    const params = new URLSearchParams(window.location.search);
+    const formId = params.get("id") || "";
+
+    const topHeader = document.getElementById("topHeader");
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+
+    const heroTitle = document.getElementById("heroTitle");
+    const heroMeta = document.getElementById("heroMeta");
+    const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+    const formTitle = document.getElementById("formTitle");
+    const formDesc = document.getElementById("formDesc");
+    const accessInfo = document.getElementById("accessInfo");
+    const dynamicForm = document.getElementById("dynamicForm");
+
+    let forms = [];
+    let submissions = [];
+    let members = [];
+    let session = null;
+    let currentForm = null;
+
+    function syncStickyOffset() {
+      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
+      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
+    }
+
+    function safeParse(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function normalizeMember(item, index) {
+      return {
+        id: String(item && item.id ? item.id : "m-" + index),
+        email: String(item && item.email ? item.email : "").toLowerCase(),
+        phone: String(item && item.phone ? item.phone : "").replace(/\s+/g, ""),
+        status: String(item && item.status ? item.status : "Aktif")
+      };
+    }
+
+    function makeId(prefix) {
+      return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    }
+
+    function normalizeField(item, index) {
+      return {
+        id: String(item && item.id ? item.id : makeId("field")),
+        label: String(item && item.label ? item.label : "Pertanyaan " + (index + 1)),
+        type: String(item && item.type ? item.type : "text"),
+        required: Boolean(item && item.required),
+        placeholder: String(item && item.placeholder ? item.placeholder : ""),
+        options: Array.isArray(item && item.options) ? item.options.map(String) : []
+      };
+    }
+
+    function normalizeForm(item, index) {
+      return {
+        id: String(item && item.id ? item.id : "form-" + (index + 1)),
+        title: String(item && item.title ? item.title : "Form Pendaftaran"),
+        description: String(item && item.description ? item.description : ""),
+        target: String(item && item.target ? item.target : "public") === "internal" ? "internal" : "public",
+        visibility: String(item && item.visibility ? item.visibility : "visible") === "draft" ? "draft" : "visible",
+        openDate: String(item && item.openDate ? item.openDate : ""),
+        closeDate: String(item && item.closeDate ? item.closeDate : ""),
+        quota: Number.isFinite(Number(item && item.quota)) ? Number(item.quota) : 0,
+        fields: Array.isArray(item && item.fields) ? item.fields.map(normalizeField) : [],
+        updatedAt: String(item && item.updatedAt ? item.updatedAt : new Date().toISOString())
+      };
+    }
+
+    function loadData() {
+      const rawForms = localStorage.getItem(FORM_STORAGE_KEY);
+      const parsedForms = rawForms ? safeParse(rawForms) : null;
+      forms = Array.isArray(parsedForms) ? parsedForms.map(normalizeForm) : [];
+
+      const rawSubmissions = localStorage.getItem(SUBMISSION_STORAGE_KEY);
+      const parsedSubmissions = rawSubmissions ? safeParse(rawSubmissions) : null;
+      submissions = Array.isArray(parsedSubmissions) ? parsedSubmissions : [];
+
+      const rawMembers = localStorage.getItem(MEMBER_STORAGE_KEY);
+      const parsedMembers = rawMembers ? safeParse(rawMembers) : null;
+      members = Array.isArray(parsedMembers) ? parsedMembers.map(normalizeMember) : [];
+
+      const rawSession = localStorage.getItem(SESSION_STORAGE_KEY);
+      const parsedSession = rawSession ? safeParse(rawSession) : null;
+      session = parsedSession && typeof parsedSession === "object" ? parsedSession : null;
+    }
+
+    function countSubmissions(id) {
+      return submissions.filter(function (item) {
+        return item && item.formId === id;
+      }).length;
+    }
+
+    function isRegisteredMember() {
+      if (!session || !session.identifier) {
+        return false;
+      }
+      if (session.role === "admin" || session.role === "super_admin") {
+        return true;
+      }
+
+      const identifier = String(session.identifier || "").toLowerCase();
+      const identifierType = String(session.identifierType || "");
+      return members.some(function (member) {
+        if (String(member.status || "").toLowerCase() !== "aktif") {
+          return false;
+        }
+        if (identifierType === "email") {
+          return member.email === identifier;
+        }
+        if (identifierType === "no_hp") {
+          return member.phone === identifier.replace(/\s+/g, "");
+        }
+        return false;
+      });
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "-";
+      }
+      const d = new Date(value + "T00:00:00");
+      if (Number.isNaN(d.getTime())) {
+        return value;
+      }
+      return String(d.getDate()).padStart(2, "0") + " " + ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"][d.getMonth()] + " " + d.getFullYear();
+    }
+
+    function getFormState(item) {
+      const now = new Date();
+      const openDate = item.openDate ? new Date(item.openDate + "T00:00:00") : null;
+      const closeDate = item.closeDate ? new Date(item.closeDate + "T23:59:59") : null;
+      const submissionCount = countSubmissions(item.id);
+
+      if (item.visibility === "draft") {
+        return { open: false, reason: "draft", text: "Form masih draft" };
+      }
+      if (openDate && now < openDate) {
+        return { open: false, reason: "not_open", text: "Form belum dibuka" };
+      }
+      if (closeDate && now > closeDate) {
+        return { open: false, reason: "closed", text: "Form sudah ditutup" };
+      }
+      if (item.quota > 0 && submissionCount >= item.quota) {
+        return { open: false, reason: "quota", text: "Kuota sudah terpenuhi" };
+      }
+      return { open: true, reason: "open", text: "Form aktif" };
+    }
+
+    function renderLocked(message) {
+      dynamicForm.innerHTML = '<div class="field"><p style="margin:0;color:#7f1d1d;font-weight:700;">' + message + '</p><div class="actions"><a class="btn" href="form-pendaftaran.html">Kembali ke daftar form</a></div></div>';
+    }
+
+    function inputHtml(field) {
+      const requiredAttr = field.required ? " required" : "";
+      const placeholder = field.placeholder ? ' placeholder="' + field.placeholder.replace(/\"/g, "&quot;") + '"' : "";
+
+      if (field.type === "textarea") {
+        return '<textarea id="field-' + field.id + '"' + placeholder + requiredAttr + '></textarea>';
+      }
+      if (field.type === "select") {
+        const options = ['<option value="">Pilih jawaban</option>'].concat(field.options.map(function (opt) {
+          return '<option value="' + opt.replace(/\"/g, "&quot;") + '">' + opt + '</option>';
+        })).join("");
+        return '<select id="field-' + field.id + '"' + requiredAttr + '>' + options + '</select>';
+      }
+      if (field.type === "radio") {
+        return '<div class="radio-group">' + field.options.map(function (opt, idx) {
+          return '<label><input type="radio" name="field-' + field.id + '" value="' + opt.replace(/\"/g, "&quot;") + '"' + (field.required && idx === 0 ? " required" : "") + '> ' + opt + '</label>';
+        }).join("") + '</div>';
+      }
+      if (field.type === "checkbox") {
+        return '<div class="check-group">' + field.options.map(function (opt) {
+          return '<label><input type="checkbox" name="field-' + field.id + '" value="' + opt.replace(/\"/g, "&quot;") + '"> ' + opt + '</label>';
+        }).join("") + '</div>';
+      }
+      return '<input id="field-' + field.id + '" type="' + field.type + '"' + placeholder + requiredAttr + '>';
+    }
+
+    function renderForm() {
+      loadData();
+      currentForm = forms.find(function (item) { return item.id === formId; }) || null;
+
+      if (!currentForm) {
+        heroTitle.textContent = "Form tidak ditemukan";
+        heroMeta.textContent = "Periksa kembali daftar form pendaftaran.";
+        breadcrumbCurrent.textContent = "Form Tidak Ditemukan";
+        formTitle.textContent = "Form tidak ditemukan";
+        formDesc.textContent = "Data form tidak tersedia.";
+        accessInfo.textContent = "";
+        renderLocked("Form yang kamu cari tidak ada atau sudah dihapus.");
+        return;
+      }
+
+      const state = getFormState(currentForm);
+      const submissionCount = countSubmissions(currentForm.id);
+
+      heroTitle.textContent = currentForm.title;
+      heroMeta.textContent = "Batas pengisian: " + formatDate(currentForm.closeDate);
+      breadcrumbCurrent.textContent = currentForm.title;
+
+      formTitle.textContent = currentForm.title;
+      formDesc.textContent = currentForm.description || "Isi data berikut sesuai field yang tersedia.";
+      accessInfo.textContent = "Target: " + (currentForm.target === "internal" ? "Internal" : "Umum") + " | Kuota: " + String(submissionCount) + "/" + (currentForm.quota > 0 ? String(currentForm.quota) : "Tak terbatas") + " | Periode: " + formatDate(currentForm.openDate) + " - " + formatDate(currentForm.closeDate);
+
+      if (!state.open) {
+        renderLocked(state.text + ".");
+        return;
+      }
+
+      if (currentForm.target === "internal" && !session) {
+        renderLocked("Form ini khusus internal. Silakan login terlebih dahulu.");
+        return;
+      }
+
+      if (currentForm.target === "internal" && !isRegisteredMember()) {
+        renderLocked("Form ini hanya untuk user internal yang terdaftar dan aktif.");
+        return;
+      }
+
+      const fieldsHtml = currentForm.fields.map(function (field) {
+        const labelClass = field.required ? "required" : "";
+        return '<div class="field">'
+          + '<label class="' + labelClass + '" for="field-' + field.id + '">' + field.label + '</label>'
+          + inputHtml(field)
+          + '</div>';
+      }).join("");
+
+      dynamicForm.innerHTML = fieldsHtml
+        + '<div class="actions">'
+        + '<button class="btn-primary" type="submit">Kirim Form</button>'
+        + '<button class="btn" type="reset">Reset Jawaban</button>'
+        + '<a class="btn" href="form-pendaftaran.html">Kembali ke Daftar Form</a>'
+        + '</div>';
+    }
+
+    function collectAnswer(field) {
+      if (field.type === "radio") {
+        const checked = dynamicForm.querySelector('input[name="field-' + field.id + '"]:checked');
+        return checked ? checked.value : "";
+      }
+      if (field.type === "checkbox") {
+        const checked = Array.from(dynamicForm.querySelectorAll('input[name="field-' + field.id + '"]:checked'));
+        return checked.map(function (item) { return item.value; });
+      }
+      const el = document.getElementById("field-" + field.id);
+      return el ? String(el.value || "").trim() : "";
+    }
+
+    function validateField(field, value) {
+      if (!field.required) {
+        return true;
+      }
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+      return String(value || "").trim().length > 0;
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
+      if (!currentForm) {
+        return;
+      }
+
+      const state = getFormState(currentForm);
+      if (!state.open) {
+        alert(state.text + ".");
+        return;
+      }
+
+      const answers = [];
+      for (const field of currentForm.fields) {
+        const value = collectAnswer(field);
+        if (!validateField(field, value)) {
+          alert('Field "' + field.label + '" wajib diisi.');
+          return;
+        }
+        answers.push({
+          fieldId: field.id,
+          label: field.label,
+          type: field.type,
+          value: value
+        });
+      }
+
+      const payload = {
+        id: makeId("submit"),
+        formId: currentForm.id,
+        submittedAt: new Date().toISOString(),
+        submitter: session ? {
+          identifier: session.identifier || "",
+          identifierType: session.identifierType || "",
+          role: session.role || ""
+        } : {
+          identifier: "public",
+          identifierType: "public",
+          role: "public"
+        },
+        answers: answers
+      };
+
+      submissions.push(payload);
+      localStorage.setItem(SUBMISSION_STORAGE_KEY, JSON.stringify(submissions));
+      alert("Pendaftaran berhasil dikirim.");
+      renderForm();
+    }
+
+    syncStickyOffset();
+    window.addEventListener("resize", syncStickyOffset);
+
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const keyword = searchInput.value.trim();
+      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
+    });
+
+    renderForm();
+
+    dynamicForm.addEventListener("submit", submitForm);
+
+    (function () {
+      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+      const DEFAULT_PROFILE_MENU = [
+        { id: "sejarah", label: "Sejarah" },
+        { id: "tentang-crembo", label: "Tentang Crembo" },
+        { id: "struktur", label: "Struktur" },
+        { id: "visi-misi", label: "Visi & Misi" }
+      ];
+
+      function readProfileMenuItems() {
+        try {
+          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+          if (!raw) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          return parsed.map(function (item) {
+            if (typeof item === "string") {
+              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+            }
+            return {
+              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
+              label: item && item.label ? String(item.label) : "Profil"
+            };
+          });
+        } catch (err) {
+          return DEFAULT_PROFILE_MENU;
+        }
+      }
+
+      function enhanceProfileHoverMenu() {
+        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
+        if (!navList) {
+          return;
+        }
+
+        const profileAnchor = navList.querySelector('a[href="profil.html"]');
+        if (!profileAnchor) {
+          return;
+        }
+
+        const profileItem = profileAnchor.closest("li");
+        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
+          return;
+        }
+
+        const menuItems = readProfileMenuItems();
+
+        profileItem.style.position = "relative";
+        profileItem.classList.add("nav-dropdown-enhanced");
+
+        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+          profileAnchor.setAttribute("data-profile-menu-label", "true");
+          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
+        }
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "profile-hover-menu";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = "calc(100% + 4px)";
+        dropdown.style.left = "0";
+        dropdown.style.minWidth = "210px";
+        dropdown.style.border = "1px solid #bdbdbd";
+        dropdown.style.background = "#fff";
+        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
+        dropdown.style.padding = "6px";
+        dropdown.style.display = "none";
+        dropdown.style.zIndex = "1300";
+
+        dropdown.innerHTML = menuItems.map(function (item) {
+          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
+        }).join("");
+
+        dropdown.addEventListener("mouseover", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "#b9b9b9";
+            link.style.background = "#ececec";
+          }
+        });
+
+        dropdown.addEventListener("mouseout", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "transparent";
+            link.style.background = "transparent";
+          }
+        });
+
+        profileItem.appendChild(dropdown);
+
+        function showMenu() {
+          dropdown.style.display = "block";
+        }
+
+        function hideMenu() {
+          dropdown.style.display = "none";
+        }
+
+        profileItem.addEventListener("mouseenter", showMenu);
+        profileItem.addEventListener("mouseleave", hideMenu);
+        profileItem.addEventListener("focusin", showMenu);
+        profileItem.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (!profileItem.contains(document.activeElement)) {
+              hideMenu();
+            }
+          }, 0);
+        });
+      }
+
+      enhanceProfileHoverMenu();
+    })();
+  </script>
+</body>
+</html>

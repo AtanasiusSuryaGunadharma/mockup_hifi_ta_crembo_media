@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log Aktivitas - Crembo Media</title>
+  <style>
+    :root {
+      --bg: #ececec;
+      --panel: #ffffff;
+      --panel-2: #f5f5f5;
+      --line: #1f1f1f;
+      --muted: #5b5b5b;
+      --text: #111111;
+      --side: #111111;
+      --side-text: #f4f4f4;
+      --radius: 14px;
+      --shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, #f8f8f8 0%, #ececec 38%, #e3e3e3 100%);
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 290px 1fr;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #1b1b1b 0%, #111111 100%);
+      color: var(--side-text);
+      border-right: 2px solid #2a2a2a;
+      padding: 14px 12px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      border: 1px solid #6c6c6c;
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      display: grid;
+      gap: 4px;
+    }
+
+    .brand strong { font-size: 0.95rem; }
+    .brand small { color: #d1d5db; font-size: 0.76rem; }
+
+    .menu-group {
+      border: 1px solid #595959;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .menu-title {
+      padding: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-bottom: 1px solid #595959;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .menu-link {
+      display: block;
+      text-decoration: none;
+      color: #f3f4f6;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      margin: 6px;
+      padding: 7px 9px;
+      font-size: 0.79rem;
+    }
+
+    .menu-link:hover { background: rgba(255, 255, 255, 0.08); border-color: #8b8b8b; }
+    .menu-link.active { background: #e5e7eb; color: #111827; border-color: #e5e7eb; font-weight: 700; }
+
+    .main { min-width: 0; padding: 0; }
+
+    .head {
+      height: 64px;
+      border-bottom: 1px solid #d2d2d2;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      gap: 8px;
+    }
+
+    .head h1 { margin: 0; font-size: 1.02rem; }
+
+    .head-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .chip {
+      border: 1px solid #a8a8a8;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #fff;
+      font-size: 0.74rem;
+      white-space: nowrap;
+    }
+
+    .back {
+      text-decoration: none;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 6px 10px;
+      color: #111827;
+      background: #fff;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .content {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .panel {
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid #cccccc;
+      background: var(--panel-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2 { margin: 0; font-size: 0.95rem; }
+
+    .scope-pill {
+      border-radius: 999px;
+      border: 1px solid #b8b8b8;
+      background: #fafafa;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .tools {
+      padding: 12px;
+      border-bottom: 1px solid #d9d9d9;
+      display: grid;
+      gap: 8px;
+    }
+
+    .tools-row {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tools input,
+    .tools select,
+    .tools button {
+      width: 100%;
+      border: 1px solid #b8b8b8;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .btn {
+      width: auto;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 11px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(180deg, #4b5563 0%, #1f2937 100%);
+    }
+
+    .btn.ghost {
+      border: 1px solid #aeb9c8;
+      background: #fff;
+      color: #1f2937;
+    }
+
+    .btn.green { background: #0f9f58; }
+    .btn.blue { background: #1d4ed8; }
+
+    .summary {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e2e2;
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: #5b5b5b;
+    }
+
+    .table-wrap { padding: 0 12px 10px; overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      min-width: 980px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 9px;
+      border-bottom: 1px solid #e3e3e3;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f4f4f4;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-size: 0.72rem;
+      color: #4b5563;
+    }
+
+    .status-pill {
+      display: inline-block;
+      border: 1px solid #b3b3b3;
+      border-radius: 999px;
+      background: #f7f7f7;
+      padding: 2px 8px;
+      font-size: 0.69rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pagination {
+      padding: 10px 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .page-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .page-btn {
+      border: 1px solid #aab0b9;
+      border-radius: 7px;
+      background: #fff;
+      color: #111827;
+      font-size: 0.74rem;
+      padding: 5px 8px;
+      cursor: pointer;
+      min-width: 32px;
+    }
+
+    .page-btn.active {
+      background: #1f2937;
+      color: #fff;
+      border-color: #1f2937;
+    }
+
+    .empty {
+      margin: 12px;
+      border: 1px dashed #b8b8b8;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.82rem;
+      color: #5b5b5b;
+      background: #fafafa;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      padding: 16px;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-card {
+      width: min(960px, 100%);
+      max-height: 92vh;
+      background: #fff;
+      border: 2px solid #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .modal-head,
+    .modal-actions {
+      padding: 10px 12px;
+      border-bottom: 1px solid #d5d5d5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-actions {
+      border-top: 1px solid #d5d5d5;
+      border-bottom: 0;
+    }
+
+    #pdfPreviewFrame {
+      width: 100%;
+      border: 0;
+      min-height: 58vh;
+      background: #fff;
+    }
+
+    .mobile-menu { display: none; }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        width: 290px;
+        height: calc(100vh - 64px);
+        z-index: 10;
+      }
+      .sidebar.show { display: grid; }
+      .mobile-menu {
+        display: inline-block;
+        border: 1px solid #b8b8b8;
+        border-radius: 8px;
+        background: #fff;
+        padding: 6px 10px;
+        font-size: 0.78rem;
+      }
+      .tools-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Sidebar log aktivitas">
+      <div class="brand">
+        <strong id="brandTitle">CREMBO - Panel Log</strong>
+        <small id="brandDesc">Tampilan log aktivitas (dummy data)</small>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-title">Navigasi</div>
+        <a id="dashboardLink" class="menu-link" href="dashboard.html">Dashboard</a>
+        <a class="menu-link active" href="log-aktivitas.html">Log Aktivitas</a>
+      </div>
+
+      <div id="memberMenu" class="menu-group" style="display:none;">
+        <div class="menu-title">Menu Anggota</div>
+        <a class="menu-link" href="profil-anggota.html">Profil Saya</a>
+        <a class="menu-link" href="riwayat-tugas-saya.html">Riwayat Tugas Saya</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="head">
+        <h1>Log Aktivitas Pengguna</h1>
+        <div class="head-right">
+          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+          <span id="roleChip" class="chip">Role: -</span>
+          <span id="userChip" class="chip">Pengguna: -</span>
+          <span id="liveDateTime" class="chip">-</span>
+          <a id="backLink" class="back" href="dashboard.html">Kembali</a>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="panel" aria-label="Filter dan tabel log aktivitas">
+          <header class="panel-head">
+            <h2>Filter Log</h2>
+            <span id="scopeInfo" class="scope-pill">Cakupan log: -</span>
+          </header>
+
+          <div class="tools">
+            <div class="tools-row">
+              <input id="searchInput" type="search" placeholder="Cari deskripsi, nama user, role, modul, route, IP...">
+              <select id="accountFilter" aria-label="Filter akun pengguna">
+                <option value="all">Semua Pengguna</option>
+              </select>
+              <select id="roleFilter" aria-label="Filter role">
+                <option value="all">Semua Role</option>
+              </select>
+              <select id="actionFilter" aria-label="Filter aksi">
+                <option value="all">Semua Aksi</option>
+              </select>
+            </div>
+
+            <div class="tools-row">
+              <select id="moduleFilter" aria-label="Filter modul">
+                <option value="all">Semua Modul</option>
+              </select>
+              <select id="sortFilter" aria-label="Urutan log">
+                <option value="newest">Terbaru</option>
+                <option value="oldest">Terlama</option>
+              </select>
+              <select id="limitFilter" aria-label="Jumlah baris per halaman">
+                <option value="10">10 / halaman</option>
+                <option value="20" selected>20 / halaman</option>
+                <option value="50">50 / halaman</option>
+              </select>
+              <div class="btn-row">
+                <button id="applyBtn" class="btn blue" type="button">Terapkan</button>
+                <button id="resetBtn" class="btn ghost" type="button">Reset</button>
+                <button id="exportCsvBtn" class="btn green" type="button">Export Excel</button>
+                <button id="previewPdfBtn" class="btn" type="button">Preview PDF</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <span id="summaryText">Menampilkan 0 log</span>
+            <span id="totalText">Total log terlihat: 0</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>Pengguna</th>
+                  <th>Role</th>
+                  <th>Aksi</th>
+                  <th>Modul</th>
+                  <th>Deskripsi</th>
+                  <th>Route</th>
+                  <th>IP</th>
+                </tr>
+              </thead>
+              <tbody id="logBody"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <span id="pageInfo">Halaman 1</span>
+            <div id="pageButtons" class="page-buttons"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="pdfModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Preview Laporan PDF Log Aktivitas</strong>
+        <button id="closeModalTop" class="btn ghost" type="button">Tutup</button>
+      </div>
+      <iframe id="pdfPreviewFrame" title="Preview PDF"></iframe>
+      <div class="modal-actions">
+        <span style="font-size:0.78rem;color:#4b5563;">Gunakan tombol cetak untuk simpan sebagai PDF.</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="printPdfBtn" class="btn blue" type="button">Cetak / Simpan PDF</button>
+          <button id="closeModalBottom" class="btn ghost" type="button">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const currentRole = String(params.get("role") || "admin").toLowerCase();
+    const currentUserId = String(params.get("user") || (currentRole === "super_admin" ? "super.admin" : (currentRole === "admin" ? "admin_andi" : "anggota_sinta"))).toLowerCase();
+
+    const LOG_DATA = [
+      { timestamp: "2026-04-10T08:15:33", actorId: "super.admin", actorName: "Super Admin", actorRole: "super_admin", action: "LOGIN", module: "Autentikasi", description: "Login ke sistem", route: "login.submit", ip: "10.10.10.2" },
+      { timestamp: "2026-04-10T08:08:11", actorId: "super.admin", actorName: "Super Admin", actorRole: "super_admin", action: "EXPORT", module: "Log Aktivitas", description: "Export laporan log bulanan", route: "log.export", ip: "10.10.10.2" },
+      { timestamp: "2026-04-10T07:52:03", actorId: "admin_andi", actorName: "Admin Andi", actorRole: "admin", action: "APPROVE", module: "Peminjaman", description: "Menyetujui pengajuan peminjaman tripod", route: "peminjaman.approve", ip: "10.10.30.2" },
+      { timestamp: "2026-04-10T07:45:22", actorId: "admin_maria", actorName: "Admin Maria", actorRole: "admin", action: "UPDATE", module: "Agenda", description: "Memperbarui agenda latihan mingguan", route: "agenda.update", ip: "10.10.30.3" },
+      { timestamp: "2026-04-10T07:32:18", actorId: "anggota_sinta", actorName: "Sinta", actorRole: "anggota", action: "REQUEST", module: "Tukar Jadwal", description: "Mengirim request tukar jadwal operator", route: "jadwal.tukar.store", ip: "10.10.40.11" },
+      { timestamp: "2026-04-10T07:21:44", actorId: "anggota_rafa", actorName: "Rafa", actorRole: "anggota", action: "CREATE", module: "Evaluasi Streaming", description: "Mengisi evaluasi streaming misa sore", route: "evaluasi.store", ip: "10.10.40.12" },
+      { timestamp: "2026-04-10T07:12:02", actorId: "anggota_sinta", actorName: "Sinta", actorRole: "anggota", action: "LOGIN", module: "Autentikasi", description: "Login ke sistem", route: "login.submit", ip: "10.10.40.11" },
+      { timestamp: "2026-04-10T06:58:50", actorId: "admin_andi", actorName: "Admin Andi", actorRole: "admin", action: "LOGIN", module: "Autentikasi", description: "Login ke sistem", route: "login.submit", ip: "10.10.30.2" }
+    ];
+
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const roleChip = document.getElementById("roleChip");
+    const userChip = document.getElementById("userChip");
+    const liveDateTime = document.getElementById("liveDateTime");
+    const scopeInfo = document.getElementById("scopeInfo");
+    const backLink = document.getElementById("backLink");
+    const brandTitle = document.getElementById("brandTitle");
+    const dashboardLink = document.getElementById("dashboardLink");
+    const memberMenu = document.getElementById("memberMenu");
+
+    const searchInput = document.getElementById("searchInput");
+    const accountFilter = document.getElementById("accountFilter");
+    const roleFilter = document.getElementById("roleFilter");
+    const actionFilter = document.getElementById("actionFilter");
+    const moduleFilter = document.getElementById("moduleFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const limitFilter = document.getElementById("limitFilter");
+
+    const applyBtn = document.getElementById("applyBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const exportCsvBtn = document.getElementById("exportCsvBtn");
+    const previewPdfBtn = document.getElementById("previewPdfBtn");
+
+    const logBody = document.getElementById("logBody");
+    const summaryText = document.getElementById("summaryText");
+    const totalText = document.getElementById("totalText");
+    const pageInfo = document.getElementById("pageInfo");
+    const pageButtons = document.getElementById("pageButtons");
+
+    const pdfModal = document.getElementById("pdfModal");
+    const pdfPreviewFrame = document.getElementById("pdfPreviewFrame");
+    const printPdfBtn = document.getElementById("printPdfBtn");
+    const closeModalTop = document.getElementById("closeModalTop");
+    const closeModalBottom = document.getElementById("closeModalBottom");
+
+    let currentPage = 1;
+
+    function formatRoleLabel(role) {
+      if (role === "super_admin") return "Super Admin";
+      if (role === "admin") return "Admin";
+      return "Anggota";
+    }
+
+    function normalizeText(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function escapeHtml(value) {
+      const text = String(value == null ? "" : value);
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function toDisplayDate(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "-";
+      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+      return dayNames[date.getDay()] + ", " + String(date.getDate()).padStart(2, "0") + " " + monthNames[date.getMonth()] + " " + date.getFullYear()
+        + " " + String(date.getHours()).padStart(2, "0") + ":" + String(date.getMinutes()).padStart(2, "0") + ":" + String(date.getSeconds()).padStart(2, "0");
+    }
+
+    function isVisibleByRole(row) {
+      const actorRole = normalizeText(row.actorRole);
+      const actorId = normalizeText(row.actorId);
+
+      if (currentRole === "super_admin") {
+        return true;
+      }
+
+      if (currentRole === "admin") {
+        if (actorRole === "anggota") return true;
+        if (actorRole === "admin" || actorRole === "super_admin") return actorId === currentUserId;
+        return false;
+      }
+
+      return actorRole === "anggota" && actorId === currentUserId;
+    }
+
+    function getVisibleLogs() {
+      return LOG_DATA.filter(isVisibleByRole);
+    }
+
+    function configureLayout() {
+      roleChip.textContent = "Role: " + formatRoleLabel(currentRole);
+      userChip.textContent = "Pengguna: " + currentUserId;
+
+      if (currentRole === "super_admin") {
+        brandTitle.textContent = "CREMBO - Super Admin";
+        scopeInfo.textContent = "Cakupan: diri sendiri + semua admin/super admin + semua anggota";
+        dashboardLink.href = "dashboard.html?role=super_admin";
+        backLink.href = "dashboard.html?role=super_admin";
+        backLink.textContent = "Kembali ke Dashboard Super Admin";
+      } else if (currentRole === "admin") {
+        brandTitle.textContent = "CREMBO - Admin";
+        scopeInfo.textContent = "Cakupan: diri sendiri + semua anggota";
+        dashboardLink.href = "dashboard.html?role=admin";
+        backLink.href = "dashboard.html?role=admin";
+        backLink.textContent = "Kembali ke Dashboard Admin";
+      } else {
+        brandTitle.textContent = "CREMBO - Anggota";
+        scopeInfo.textContent = "Cakupan: diri sendiri saja";
+        memberMenu.style.display = "block";
+        dashboardLink.href = "dashboard-anggota.html";
+        backLink.href = "dashboard-anggota.html";
+        backLink.textContent = "Kembali ke Dashboard Anggota";
+      }
+    }
+
+    function updateLiveClock() {
+      liveDateTime.textContent = toDisplayDate(new Date().toISOString());
+    }
+
+    function uniqueValues(rows, key) {
+      const seen = new Set();
+      const result = [];
+      rows.forEach(function (row) {
+        const value = String(row[key] || "").trim();
+        if (!value) return;
+        const low = value.toLowerCase();
+        if (seen.has(low)) return;
+        seen.add(low);
+        result.push(value);
+      });
+      return result.sort(function (a, b) { return a.localeCompare(b, "id"); });
+    }
+
+    function fillSelect(selectEl, values, placeholder) {
+      const current = selectEl.value || "all";
+      selectEl.innerHTML = '<option value="all">' + placeholder + '</option>';
+      values.forEach(function (value) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        selectEl.appendChild(option);
+      });
+      if (Array.from(selectEl.options).some(function (option) { return option.value === current; })) {
+        selectEl.value = current;
+      }
+    }
+
+    function fillFilterOptions() {
+      const rows = getVisibleLogs();
+      fillSelect(accountFilter, uniqueValues(rows, "actorName"), "Semua Pengguna");
+      fillSelect(roleFilter, uniqueValues(rows, "actorRole").map(formatRoleLabel), "Semua Role");
+      fillSelect(actionFilter, uniqueValues(rows, "action"), "Semua Aksi");
+      fillSelect(moduleFilter, uniqueValues(rows, "module"), "Semua Modul");
+    }
+
+    function getFilteredLogs() {
+      const rows = getVisibleLogs();
+      const keyword = normalizeText(searchInput.value);
+      const byAccount = accountFilter.value;
+      const byRole = roleFilter.value;
+      const byAction = actionFilter.value;
+      const byModule = moduleFilter.value;
+      const sortValue = sortFilter.value;
+
+      const filtered = rows.filter(function (row) {
+        const text = [
+          row.actorName,
+          row.actorId,
+          formatRoleLabel(row.actorRole),
+          row.action,
+          row.module,
+          row.description,
+          row.route,
+          row.ip,
+          toDisplayDate(row.timestamp)
+        ].join(" ").toLowerCase();
+
+        const matchesKeyword = !keyword || text.indexOf(keyword) !== -1;
+        const matchesAccount = byAccount === "all" || row.actorName === byAccount;
+        const matchesRole = byRole === "all" || formatRoleLabel(row.actorRole) === byRole;
+        const matchesAction = byAction === "all" || row.action === byAction;
+        const matchesModule = byModule === "all" || row.module === byModule;
+
+        return matchesKeyword && matchesAccount && matchesRole && matchesAction && matchesModule;
+      });
+
+      filtered.sort(function (a, b) {
+        const ta = new Date(a.timestamp).getTime();
+        const tb = new Date(b.timestamp).getTime();
+        return sortValue === "oldest" ? ta - tb : tb - ta;
+      });
+
+      return filtered;
+    }
+
+    function renderPagination(totalPages) {
+      pageButtons.innerHTML = "";
+
+      const prev = document.createElement("button");
+      prev.className = "page-btn";
+      prev.type = "button";
+      prev.textContent = "<";
+      prev.disabled = currentPage === 1;
+      prev.addEventListener("click", function () {
+        currentPage -= 1;
+        renderTable();
+      });
+      pageButtons.appendChild(prev);
+
+      const maxButtons = 7;
+      let startPage = Math.max(1, currentPage - 3);
+      let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+      startPage = Math.max(1, endPage - maxButtons + 1);
+
+      for (let page = startPage; page <= endPage; page += 1) {
+        const btn = document.createElement("button");
+        btn.className = "page-btn" + (page === currentPage ? " active" : "");
+        btn.type = "button";
+        btn.textContent = String(page);
+        btn.addEventListener("click", function () {
+          currentPage = page;
+          renderTable();
+        });
+        pageButtons.appendChild(btn);
+      }
+
+      const next = document.createElement("button");
+      next.className = "page-btn";
+      next.type = "button";
+      next.textContent = ">";
+      next.disabled = currentPage === totalPages;
+      next.addEventListener("click", function () {
+        currentPage += 1;
+        renderTable();
+      });
+      pageButtons.appendChild(next);
+    }
+
+    function renderTable() {
+      const filtered = getFilteredLogs();
+      const visibleTotal = getVisibleLogs().length;
+      const pageSize = Math.max(1, Number(limitFilter.value) || 20);
+      const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const start = (currentPage - 1) * pageSize;
+      const pageRows = filtered.slice(start, start + pageSize);
+
+      if (!pageRows.length) {
+        logBody.innerHTML = '<tr><td colspan="8"><div class="empty">Tidak ada data log sesuai filter.</div></td></tr>';
+      } else {
+        logBody.innerHTML = pageRows.map(function (row) {
+          return "<tr>"
+            + "<td>" + escapeHtml(toDisplayDate(row.timestamp)) + "</td>"
+            + "<td><strong>" + escapeHtml(row.actorName) + "</strong><br><small>" + escapeHtml(row.actorId) + "</small></td>"
+            + "<td><span class=\"status-pill\">" + escapeHtml(formatRoleLabel(row.actorRole)) + "</span></td>"
+            + "<td><span class=\"status-pill\">" + escapeHtml(row.action) + "</span></td>"
+            + "<td>" + escapeHtml(row.module) + "</td>"
+            + "<td>" + escapeHtml(row.description) + "</td>"
+            + "<td>" + escapeHtml(row.route) + "</td>"
+            + "<td>" + escapeHtml(row.ip) + "</td>"
+            + "</tr>";
+        }).join("");
+      }
+
+      summaryText.textContent = "Menampilkan " + filtered.length + " log (hasil filter)";
+      totalText.textContent = "Total log terlihat sesuai role: " + visibleTotal;
+      pageInfo.textContent = "Halaman " + currentPage + " dari " + totalPages;
+      renderPagination(totalPages);
+    }
+
+    function toCsvValue(value) {
+      const text = String(value == null ? "" : value);
+      return '"' + text.replace(/\"/g, '""') + '"';
+    }
+
+    function exportCsv() {
+      const rows = getFilteredLogs();
+      if (!rows.length) {
+        window.alert("Tidak ada data untuk diexport.");
+        return;
+      }
+
+      const header = ["Waktu", "Pengguna", "ID Pengguna", "Role", "Aksi", "Modul", "Deskripsi", "Route", "IP"];
+      const lines = [header.map(toCsvValue).join(",")];
+
+      rows.forEach(function (row) {
+        lines.push([
+          toDisplayDate(row.timestamp),
+          row.actorName,
+          row.actorId,
+          formatRoleLabel(row.actorRole),
+          row.action,
+          row.module,
+          row.description,
+          row.route,
+          row.ip
+        ].map(toCsvValue).join(","));
+      });
+
+      const blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = "laporan-log-aktivitas.csv";
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function buildPdfHtml() {
+      const rows = getFilteredLogs();
+
+      const bodyRows = rows.map(function (row) {
+        return "<tr>"
+          + "<td>" + escapeHtml(toDisplayDate(row.timestamp)) + "</td>"
+          + "<td>" + escapeHtml(row.actorName + " (" + row.actorId + ")") + "</td>"
+          + "<td>" + escapeHtml(formatRoleLabel(row.actorRole)) + "</td>"
+          + "<td>" + escapeHtml(row.action) + "</td>"
+          + "<td>" + escapeHtml(row.module) + "</td>"
+          + "<td>" + escapeHtml(row.description) + "</td>"
+          + "<td>" + escapeHtml(row.route) + "</td>"
+          + "<td>" + escapeHtml(row.ip) + "</td>"
+          + "</tr>";
+      }).join("");
+
+      return "<!doctype html><html><head><meta charset='utf-8'><title>Laporan Log Aktivitas</title>"
+        + "<style>body{font-family:Arial,sans-serif;padding:18px;color:#111}h1{margin:0 0 6px}p{margin:3px 0 10px;font-size:12px;color:#444}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:6px;vertical-align:top;text-align:left}th{background:#f1f1f1} .muted{font-size:11px;color:#666}</style>"
+        + "</head><body>"
+        + "<h1>Laporan Log Aktivitas</h1>"
+        + "<p>Role: " + escapeHtml(formatRoleLabel(currentRole)) + " | User: " + escapeHtml(currentUserId) + "</p>"
+        + "<p>Dicetak pada: " + escapeHtml(toDisplayDate(new Date().toISOString())) + "</p>"
+        + "<p class='muted'>Total data: " + rows.length + " log</p>"
+        + "<table><thead><tr><th>Waktu</th><th>Pengguna</th><th>Role</th><th>Aksi</th><th>Modul</th><th>Deskripsi</th><th>Route</th><th>IP</th></tr></thead><tbody>"
+        + (bodyRows || "<tr><td colspan='8'>Tidak ada data.</td></tr>")
+        + "</tbody></table>"
+        + "</body></html>";
+    }
+
+    function openPdfPreview() {
+      const rows = getFilteredLogs();
+      if (!rows.length) {
+        window.alert("Tidak ada data untuk dipreview.");
+        return;
+      }
+      pdfPreviewFrame.srcdoc = buildPdfHtml();
+      pdfModal.classList.add("show");
+      pdfModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePdfPreview() {
+      pdfModal.classList.remove("show");
+      pdfModal.setAttribute("aria-hidden", "true");
+    }
+
+    function resetFilters() {
+      searchInput.value = "";
+      accountFilter.value = "all";
+      roleFilter.value = "all";
+      actionFilter.value = "all";
+      moduleFilter.value = "all";
+      sortFilter.value = "newest";
+      limitFilter.value = "20";
+      currentPage = 1;
+      renderTable();
+    }
+
+    mobileMenuBtn.addEventListener("click", function () {
+      sidebar.classList.toggle("show");
+    });
+
+    applyBtn.addEventListener("click", function () {
+      currentPage = 1;
+      renderTable();
+    });
+
+    resetBtn.addEventListener("click", resetFilters);
+    exportCsvBtn.addEventListener("click", exportCsv);
+    previewPdfBtn.addEventListener("click", openPdfPreview);
+
+    [searchInput, accountFilter, roleFilter, actionFilter, moduleFilter, sortFilter, limitFilter].forEach(function (el) {
+      const evt = el === searchInput ? "input" : "change";
+      el.addEventListener(evt, function () {
+        currentPage = 1;
+        renderTable();
+      });
+    });
+
+    printPdfBtn.addEventListener("click", function () {
+      if (pdfPreviewFrame && pdfPreviewFrame.contentWindow) {
+        pdfPreviewFrame.contentWindow.focus();
+        pdfPreviewFrame.contentWindow.print();
+      }
+    });
+
+    closeModalTop.addEventListener("click", closePdfPreview);
+    closeModalBottom.addEventListener("click", closePdfPreview);
+    pdfModal.addEventListener("click", function (event) {
+      if (event.target === pdfModal) closePdfPreview();
+    });
+
+    configureLayout();
+    fillFilterOptions();
+    renderTable();
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+  </script>
+</body>
+</html>

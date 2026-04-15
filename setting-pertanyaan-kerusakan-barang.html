@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setting Form Kerusakan Barang - Crembo Media</title>
+  <style>
+    :root {
+      --bg: #ececec;
+      --panel: #ffffff;
+      --line: #1f1f1f;
+      --text: #111111;
+      --side-text: #f4f4f4;
+      --radius: 16px;
+      --shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, #f8f8f8 0%, #ececec 38%, #e3e3e3 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #181818 0%, #0f0f0f 100%);
+      color: var(--side-text);
+      border-right: 2px solid var(--line);
+      padding: 18px 14px;
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      border: 1px solid #838383;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand h1 { margin: 0; font-size: 1rem; text-transform: uppercase; }
+    .brand p { margin: 6px 0 0; color: #cdcdcd; font-size: 0.82rem; }
+
+    .menu-group {
+      border: 1px solid #656565;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .group-toggle {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      background: transparent;
+      color: var(--side-text);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 11px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .group-items {
+      display: block;
+      border-top: 1px solid #525252;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .menu-link {
+      display: block;
+      text-decoration: none;
+      color: #e5e5e5;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.83rem;
+      margin-bottom: 4px;
+    }
+
+    .menu-link.active {
+      border-color: #cfcfcf;
+      background: #e9e9e9;
+      color: #151515;
+      font-weight: 700;
+    }
+
+    .side-actions {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .side-actions a {
+      text-decoration: none;
+      border: 1px solid #8d8d8d;
+      color: #ebebeb;
+      text-align: center;
+      padding: 9px 10px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+    }
+
+    .main { padding: 16px; }
+
+    .dashboard-headline-bar {
+      border: 1px solid #cfcfcf;
+      background: #f3f3f3;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-headline-bar h1 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.2vw, 2.1rem);
+      font-weight: 700;
+      color: #1c1f27;
+      letter-spacing: 0.01em;
+    }
+
+    .head-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #374151;
+      font-size: clamp(0.85rem, 1.8vw, 1.02rem);
+      font-weight: 600;
+    }
+
+    .chip {
+      border: 1px solid #1f1f1f;
+      background: #fafafa;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid #c8c8c8;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .panel-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      color: #374151;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #bdbdbd;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .question-card {
+      border: 1px solid #cfcfcf;
+      border-radius: 12px;
+      background: #fcfcfc;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 8px;
+    }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: #374151;
+    }
+
+    .check input { width: auto; }
+
+    .btn-row,
+    .small-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn,
+    .btn-ghost,
+    .btn-danger {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn {
+      border: 1px solid #1f2937;
+      background: #111827;
+      color: #fff;
+    }
+
+    .btn-ghost {
+      border: 1px solid #9ca3af;
+      background: #fff;
+      color: #111827;
+    }
+
+    .btn-danger {
+      border: 1px solid #7f1d1d;
+      background: #b91c1c;
+      color: #fff;
+    }
+
+    .preview {
+      border: 1px dashed #b8b8b8;
+      border-radius: 12px;
+      padding: 10px;
+      background: #fafafa;
+      display: grid;
+      gap: 10px;
+    }
+
+    .preview h3,
+    .preview p {
+      margin: 0;
+    }
+
+    .preview-item {
+      border: 1px solid #dedede;
+      border-radius: 10px;
+      padding: 8px;
+      background: #fff;
+      font-size: 0.83rem;
+      color: #374151;
+    }
+
+    .status {
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      color: #1f2937;
+    }
+
+    @media (max-width: 1080px) {
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Sidebar admin">
+      <div class="brand">
+        <h1>Crembo Media Panel</h1>
+        <p>Setting form kerusakan barang anggota</p>
+      </div>
+
+      <div class="menu-group open">
+        <button class="group-toggle" type="button">Inventaris &amp; Peminjaman <span>-</span></button>
+        <div class="group-items">
+          <a class="menu-link" href="data-inventaris-barang.html">Data Inventaris Barang</a>
+          <a class="menu-link active" href="setting-pertanyaan-kerusakan-barang.html">Setting Form Kerusakan Barang</a>
+          <a class="menu-link" href="hasil-form-kerusakan-barang.html">Hasil Form Kerusakan Barang</a>
+          <a class="menu-link" href="persetujuan-peminjaman.html">Persetujuan Peminjaman</a>
+          <a class="menu-link" href="riwayat-peminjaman-pengembalian.html">Riwayat Peminjaman &amp; Pengembalian</a>
+        </div>
+      </div>
+
+      <div class="side-actions">
+        <a href="dashboard.html">Kembali ke Dashboard</a>
+        <a href="home.html">Kembali ke Beranda</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="dashboard-headline-bar">
+        <h1>Setting Pertanyaan Form Kerusakan Barang</h1>
+        <div class="head-meta">
+          <span id="liveDateTime">-</span>
+          <span id="saveChip" class="chip">Belum disimpan</span>
+        </div>
+      </header>
+
+      <section class="grid" aria-label="Setting dan preview form kerusakan barang">
+        <article class="panel">
+          <header class="panel-head">
+            <h2>Konfigurasi Form</h2>
+            <div class="btn-row">
+              <button id="addQuestionBtn" class="btn-ghost" type="button">Tambah Pertanyaan</button>
+              <button id="resetBtn" class="btn-danger" type="button">Reset Default</button>
+            </div>
+          </header>
+
+          <div class="panel-body">
+            <div class="field">
+              <label for="formTitleInput">Judul Form</label>
+              <input id="formTitleInput" type="text" placeholder="Contoh: Form Laporan Kerusakan Barang">
+            </div>
+
+            <div class="field">
+              <label for="formDescInput">Deskripsi Form</label>
+              <textarea id="formDescInput" placeholder="Petunjuk singkat untuk anggota."></textarea>
+            </div>
+
+            <div id="questionList" class="question-list"></div>
+
+            <div class="btn-row">
+              <button id="saveBtn" class="btn" type="button">Simpan Konfigurasi</button>
+              <button id="downloadTemplateBtn" class="btn-ghost" type="button">Download Form</button>
+              <a class="btn-ghost" href="hasil-form-kerusakan-barang.html">Buka Hasil Inputan</a>
+            </div>
+
+            <div id="statusBox" class="status">Silakan atur pertanyaan lalu simpan.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <header class="panel-head">
+            <h2>Preview Form Anggota</h2>
+          </header>
+          <div class="panel-body">
+            <div id="previewBox" class="preview"></div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const FORM_CONFIG_KEY = "crembo-kerusakan-form-config";
+    const SESSION_KEY = "crembo-login-session";
+
+    const DEFAULT_CONFIG = {
+      title: "Form Laporan Kerusakan Barang",
+      description: "Silakan isi laporan kerusakan barang dengan jelas agar admin bisa segera menindaklanjuti.",
+      questions: [
+        {
+          id: "kondisi-terakhir",
+          label: "Bagaimana kondisi terakhir barang saat ditemukan rusak?",
+          type: "long_text",
+          required: true,
+          options: []
+        },
+        {
+          id: "penyebab-kerusakan",
+          label: "Apa dugaan penyebab kerusakan?",
+          type: "single_choice",
+          required: true,
+          options: ["Pemakaian normal", "Terjatuh", "Kena air", "Kesalahan instalasi", "Lainnya"]
+        },
+        {
+          id: "tingkat-dampak",
+          label: "Seberapa besar dampak kerusakan ke pelayanan?",
+          type: "single_choice",
+          required: true,
+          options: ["Ringan", "Sedang", "Berat", "Sangat kritis"]
+        }
+      ]
+    };
+
+    const formTitleInput = document.getElementById("formTitleInput");
+    const formDescInput = document.getElementById("formDescInput");
+    const questionList = document.getElementById("questionList");
+    const addQuestionBtn = document.getElementById("addQuestionBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const downloadTemplateBtn = document.getElementById("downloadTemplateBtn");
+    const previewBox = document.getElementById("previewBox");
+    const statusBox = document.getElementById("statusBox");
+    const saveChip = document.getElementById("saveChip");
+    const liveDateTime = document.getElementById("liveDateTime");
+
+    let draftQuestions = [];
+
+    function safeParse(raw, fallback) {
+      try {
+        const parsed = JSON.parse(raw);
+        return parsed == null ? fallback : parsed;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function slugify(text) {
+      return String(text || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .slice(0, 40);
+    }
+
+    function normalizeType(value) {
+      const valid = ["short_text", "long_text", "single_choice", "multi_choice"];
+      return valid.indexOf(value) !== -1 ? value : "short_text";
+    }
+
+    function normalizeOptions(value) {
+      const list = Array.isArray(value)
+        ? value
+        : String(value || "").split("\n");
+      const unique = [];
+      list.forEach(function (item) {
+        const clean = String(item || "").trim();
+        if (!clean || unique.indexOf(clean) !== -1) {
+          return;
+        }
+        unique.push(clean);
+      });
+      return unique;
+    }
+
+    function normalizeQuestion(question, index) {
+      const label = String(question && question.label ? question.label : "").trim() || ("Pertanyaan " + (index + 1));
+      const type = normalizeType(question && question.type);
+      const options = (type === "single_choice" || type === "multi_choice")
+        ? normalizeOptions(question && question.options)
+        : [];
+      return {
+        id: slugify(question && question.id ? question.id : label) || ("q-" + (index + 1)),
+        label: label,
+        type: type,
+        required: !!(question && question.required),
+        options: options
+      };
+    }
+
+    function normalizeConfig(config) {
+      const source = config && typeof config === "object" ? config : DEFAULT_CONFIG;
+      const questions = Array.isArray(source.questions) && source.questions.length
+        ? source.questions
+        : DEFAULT_CONFIG.questions;
+      return {
+        title: String(source.title || DEFAULT_CONFIG.title).trim(),
+        description: String(source.description || DEFAULT_CONFIG.description).trim(),
+        questions: questions.map(normalizeQuestion)
+      };
+    }
+
+    function readConfig() {
+      const raw = localStorage.getItem(FORM_CONFIG_KEY);
+      return normalizeConfig(safeParse(raw, DEFAULT_CONFIG));
+    }
+
+    function saveConfig(config) {
+      localStorage.setItem(FORM_CONFIG_KEY, JSON.stringify(config));
+    }
+
+    function showStatus(message) {
+      statusBox.textContent = message;
+    }
+
+    function updateSaveChip() {
+      saveChip.textContent = "Diupdate: " + new Date().toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function renderQuestions() {
+      questionList.innerHTML = draftQuestions.map(function (question, index) {
+        const optionText = question.options.join("\n");
+        return '<article class="question-card" data-index="' + index + '">' +
+          '<div class="question-head">Pertanyaan #' + (index + 1) +
+          '<div class="small-actions">' +
+          '<button type="button" class="btn-ghost" data-move-up="' + index + '">Naik</button>' +
+          '<button type="button" class="btn-ghost" data-move-down="' + index + '">Turun</button>' +
+          '<button type="button" class="btn-danger" data-remove="' + index + '">Hapus</button>' +
+          '</div></div>' +
+          '<div class="field"><label>Label Pertanyaan</label><textarea data-field="label" data-index="' + index + '">' + escapeHtml(question.label) + '</textarea></div>' +
+          '<div class="row">' +
+          '<div class="field"><label>Tipe Jawaban</label><select data-field="type" data-index="' + index + '">' +
+          '<option value="short_text"' + (question.type === "short_text" ? " selected" : "") + '>Teks Singkat</option>' +
+          '<option value="long_text"' + (question.type === "long_text" ? " selected" : "") + '>Teks Panjang</option>' +
+          '<option value="single_choice"' + (question.type === "single_choice" ? " selected" : "") + '>Pilihan Tunggal</option>' +
+          '<option value="multi_choice"' + (question.type === "multi_choice" ? " selected" : "") + '>Pilihan Jamak</option>' +
+          '</select></div>' +
+          '<div class="field"><label class="check"><input type="checkbox" data-field="required" data-index="' + index + '"' + (question.required ? " checked" : "") + '>Wajib diisi</label></div>' +
+          '</div>' +
+          '<div class="field"><label>Opsi Pilihan (1 baris = 1 opsi)</label><textarea data-field="options" data-index="' + index + '" placeholder="Isi jika tipe pilihan.">' + escapeHtml(optionText) + '</textarea></div>' +
+          '</article>';
+      }).join("");
+    }
+
+    function renderPreview() {
+      const title = formTitleInput.value.trim() || DEFAULT_CONFIG.title;
+      const description = formDescInput.value.trim() || DEFAULT_CONFIG.description;
+      previewBox.innerHTML = '<h3>' + escapeHtml(title) + '</h3>' +
+        '<p>' + escapeHtml(description) + '</p>' +
+        draftQuestions.map(function (question, index) {
+          const typeMap = {
+            short_text: "Teks Singkat",
+            long_text: "Teks Panjang",
+            single_choice: "Pilihan Tunggal",
+            multi_choice: "Pilihan Jamak"
+          };
+          const options = question.options.length
+            ? '<div style="margin-top:4px;color:#6b7280;">Opsi: ' + escapeHtml(question.options.join(", ")) + '</div>'
+            : "";
+          return '<div class="preview-item"><strong>' + (index + 1) + '. ' + escapeHtml(question.label) + '</strong>' +
+            '<div>Tipe: ' + escapeHtml(typeMap[question.type] || "Teks") + ' | Wajib: ' + (question.required ? "Ya" : "Tidak") + '</div>' +
+            options +
+            '</div>';
+        }).join("");
+    }
+
+    function collectConfigFromUi() {
+      const questions = draftQuestions.map(normalizeQuestion).filter(function (question) {
+        return String(question.label || "").trim() !== "";
+      });
+
+      return normalizeConfig({
+        title: formTitleInput.value.trim(),
+        description: formDescInput.value.trim(),
+        questions: questions
+      });
+    }
+
+    function addQuestion() {
+      draftQuestions.push(normalizeQuestion({
+        label: "Pertanyaan baru",
+        type: "short_text",
+        required: false,
+        options: []
+      }, draftQuestions.length));
+      renderQuestions();
+      renderPreview();
+    }
+
+    function moveQuestion(index, direction) {
+      const next = index + direction;
+      if (next < 0 || next >= draftQuestions.length) {
+        return;
+      }
+      const temp = draftQuestions[index];
+      draftQuestions[index] = draftQuestions[next];
+      draftQuestions[next] = temp;
+      renderQuestions();
+      renderPreview();
+    }
+
+    function removeQuestion(index) {
+      if (draftQuestions.length <= 1) {
+        showStatus("Minimal harus ada 1 pertanyaan.");
+        return;
+      }
+      draftQuestions.splice(index, 1);
+      renderQuestions();
+      renderPreview();
+    }
+
+    function downloadTemplate(config) {
+      const popup = window.open("", "_blank", "width=900,height=760");
+      if (!popup) {
+        showStatus("Popup diblokir browser. Izinkan popup untuk download form.");
+        return;
+      }
+
+      const rows = config.questions.map(function (question, index) {
+        const options = question.options.length ? ("<div><em>Opsi:</em> " + escapeHtml(question.options.join(", ")) + "</div>") : "";
+        return '<div style="border:1px solid #d1d5db;border-radius:10px;padding:10px;margin-bottom:10px;">' +
+          '<strong>' + (index + 1) + '. ' + escapeHtml(question.label) + '</strong>' +
+          '<div>Tipe: ' + escapeHtml(question.type) + ' | Wajib: ' + (question.required ? "Ya" : "Tidak") + '</div>' +
+          options +
+          '<div style="margin-top:8px;border-top:1px dashed #9ca3af;padding-top:8px;min-height:42px;">Jawaban:</div>' +
+          '</div>';
+      }).join("");
+
+      popup.document.write(
+        "<!doctype html><html><head><meta charset='utf-8'><title>Template Form Kerusakan Barang</title>" +
+        "<style>body{font-family:Segoe UI,Tahoma,sans-serif;padding:20px;color:#111}h2{margin:0 0 8px}p{margin:0 0 14px;color:#374151}@media print{body{padding:0}}</style>" +
+        "</head><body>" +
+        "<h2>" + escapeHtml(config.title) + "</h2>" +
+        "<p>" + escapeHtml(config.description) + "</p>" +
+        rows +
+        "<script>window.onload=function(){window.print();};<\/script>" +
+        "</body></html>"
+      );
+      popup.document.close();
+    }
+
+    function updateLiveDateTime() {
+      const now = new Date();
+      liveDateTime.textContent = now.toLocaleString("id-ID", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      }) + " WIB";
+    }
+
+    function guardAdmin() {
+      const raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) {
+        window.location.href = "login.html";
+        return false;
+      }
+      const parsed = safeParse(raw, {});
+      const role = String(parsed.role || "").toLowerCase();
+      if (role !== "admin" && role !== "super_admin") {
+        window.alert("Halaman ini khusus admin/super admin.");
+        window.location.href = "dashboard.html";
+        return false;
+      }
+      return true;
+    }
+
+    function bootstrap() {
+      if (!guardAdmin()) {
+        return;
+      }
+
+      const config = readConfig();
+      formTitleInput.value = config.title;
+      formDescInput.value = config.description;
+      draftQuestions = config.questions.map(normalizeQuestion);
+      renderQuestions();
+      renderPreview();
+      showStatus("Konfigurasi berhasil dimuat.");
+      updateLiveDateTime();
+      setInterval(updateLiveDateTime, 1000);
+    }
+
+    addQuestionBtn.addEventListener("click", function () {
+      addQuestion();
+    });
+
+    questionList.addEventListener("click", function (event) {
+      const up = event.target.getAttribute("data-move-up");
+      if (up !== null) {
+        moveQuestion(Number(up), -1);
+        return;
+      }
+
+      const down = event.target.getAttribute("data-move-down");
+      if (down !== null) {
+        moveQuestion(Number(down), 1);
+        return;
+      }
+
+      const remove = event.target.getAttribute("data-remove");
+      if (remove !== null) {
+        removeQuestion(Number(remove));
+      }
+    });
+
+    questionList.addEventListener("input", function (event) {
+      const index = Number(event.target.getAttribute("data-index"));
+      const field = event.target.getAttribute("data-field");
+      if (Number.isNaN(index) || !field || !draftQuestions[index]) {
+        return;
+      }
+
+      if (field === "label") {
+        draftQuestions[index].label = event.target.value;
+      }
+      if (field === "type") {
+        draftQuestions[index].type = normalizeType(event.target.value);
+      }
+      if (field === "options") {
+        draftQuestions[index].options = normalizeOptions(event.target.value);
+      }
+      if (field === "required") {
+        draftQuestions[index].required = !!event.target.checked;
+      }
+
+      renderPreview();
+    });
+
+    questionList.addEventListener("change", function (event) {
+      if (event.target.getAttribute("data-field") === "required") {
+        const index = Number(event.target.getAttribute("data-index"));
+        if (!Number.isNaN(index) && draftQuestions[index]) {
+          draftQuestions[index].required = !!event.target.checked;
+          renderPreview();
+        }
+      }
+    });
+
+    formTitleInput.addEventListener("input", renderPreview);
+    formDescInput.addEventListener("input", renderPreview);
+
+    saveBtn.addEventListener("click", function () {
+      const config = collectConfigFromUi();
+      if (!config.questions.length) {
+        showStatus("Minimal harus ada 1 pertanyaan.");
+        return;
+      }
+      draftQuestions = config.questions.map(normalizeQuestion);
+      saveConfig(config);
+      renderQuestions();
+      renderPreview();
+      updateSaveChip();
+      showStatus("Konfigurasi form kerusakan barang berhasil disimpan.");
+    });
+
+    resetBtn.addEventListener("click", function () {
+      const ok = window.confirm("Reset pertanyaan ke default?");
+      if (!ok) {
+        return;
+      }
+      const config = normalizeConfig(DEFAULT_CONFIG);
+      formTitleInput.value = config.title;
+      formDescInput.value = config.description;
+      draftQuestions = config.questions.map(normalizeQuestion);
+      saveConfig(config);
+      renderQuestions();
+      renderPreview();
+      updateSaveChip();
+      showStatus("Konfigurasi dikembalikan ke default.");
+    });
+
+    downloadTemplateBtn.addEventListener("click", function () {
+      downloadTemplate(collectConfigFromUi());
+    });
+
+    bootstrap();
+  </script>
+</body>
+</html>

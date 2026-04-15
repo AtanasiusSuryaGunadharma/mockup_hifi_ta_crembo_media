@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Pendaftaran - Wireframe</title>
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --surface: #ffffff;
+      --ink: #151515;
+      --muted: #656565;
+      --line: #202020;
+      --line-soft: #c4c4c4;
+      --hover: #ececec;
+      --header-h: 118px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--ink); }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1140px, 94vw); margin: 0 auto; }
+
+    .top-header {
+      border-bottom: 2px solid var(--line);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+    }
+    .top-header .container { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; padding: 14px 0; }
+    .logo-box { width: 86px; height: 86px; border: 2px solid var(--line); display: grid; place-items: center; background: #fff; padding: 6px; }
+    .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%); }
+    .brand h1 { margin: 0; font-size: clamp(1.3rem, 2.7vw, 1.9rem); text-transform: uppercase; letter-spacing: 0.35px; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+    .nav-wrap {
+      background: var(--surface);
+      border-bottom: 2px solid var(--line);
+      position: sticky;
+      top: var(--header-h);
+      z-index: 1150;
+    }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+    nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
+    nav a { display: inline-block; padding: 8px 10px; border: 1px solid transparent; font-size: 0.94rem; }
+    nav a:hover, nav a:focus-visible, nav a.active { border-color: var(--line-soft); background: var(--hover); outline: none; }
+
+    .right-tools { display: flex; align-items: center; gap: 8px; }
+    .search { display: flex; border: 1px solid var(--line); background: #fff; }
+    .search input { border: 0; outline: none; padding: 8px 10px; width: clamp(130px, 17vw, 180px); font-size: 0.9rem; background: transparent; }
+    .search button, .btn-login, .btn, .btn-primary { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 8px 12px; font-size: 0.9rem; cursor: pointer; }
+    .search button:hover, .btn-login:hover, .btn:hover, .btn-primary:hover { background: var(--hover); }
+    .btn-primary { background: #121212; color: #fff; border-color: #121212; }
+    .btn-primary:hover { background: #2c2c2c; }
+
+    .hero { min-height: 235px; position: relative; display: grid; place-items: center; text-align: center; padding: 16px; border-bottom: 2px solid var(--line); overflow: hidden; isolation: isolate; }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; filter: grayscale(100%); z-index: -2; }
+    .hero::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.48); z-index: -1; }
+    .hero h2 { margin: 0; color: #fff; font-size: clamp(1.9rem, 4.4vw, 3.1rem); text-transform: uppercase; text-shadow: 0 2px 6px rgba(0,0,0,0.45); }
+    .hero p { margin: 8px 0 0; color: #ececec; font-size: 0.95rem; }
+
+    .breadcrumb-wrap { border-bottom: 1px solid var(--line-soft); background: #fafafa; }
+    .breadcrumb { margin: 0; padding: 11px 0; list-style: none; display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.88rem; color: #545454; }
+    .breadcrumb li + li::before { content: "/"; margin-right: 10px; color: #8a8a8a; }
+
+    .content { padding: 24px 0 34px; }
+    .filter-card { border: 2px solid var(--line); background: #fff; padding: 14px; margin-bottom: 18px; }
+    .filter-grid { display: grid; grid-template-columns: 2fr 1fr auto auto; gap: 8px; align-items: end; }
+    .field { display: grid; gap: 5px; }
+    .field label { font-size: 0.84rem; color: #4f4f4f; }
+    .field input, .field select { border: 1px solid var(--line-soft); background: #fff; padding: 8px 10px; font-size: 0.9rem; }
+    .meta-line { margin: 0 0 10px; font-size: 0.84rem; color: #636363; }
+
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .card { border: 1px solid var(--line-soft); background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.04); }
+    .thumb { min-height: 145px; border-bottom: 1px solid var(--line-soft); background: repeating-linear-gradient(135deg,#f8f8f8,#f8f8f8 12px,#efefef 12px,#efefef 24px); display: grid; place-items: center; color: #666; }
+    .body { padding: 11px; }
+    .title { margin: 0 0 8px; font-size: 1.03rem; }
+    .meta { margin: 0 0 8px; display: grid; gap: 4px; font-size: 0.85rem; color: #555; }
+    .desc { margin: 0; font-size: 0.9rem; color: #4d4d4d; min-height: 54px; }
+    .lampiran { margin: 10px 0 0; padding: 8px; border: 1px solid #d7d7d7; background: #f8f8f8; font-size: 0.82rem; color: #555; }
+    .actions { margin-top: 10px; }
+    .actions .btn,
+    .actions .btn-primary {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-disabled {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--line-soft);
+      background: #f1f1f1;
+      color: #6a6a6a;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      text-align: center;
+      cursor: not-allowed;
+      user-select: none;
+    }
+
+    .footer { border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%); margin-top: 10px; color: #2e2e2e; }
+    .footer-main { padding: 20px 0 14px; }
+    .footer-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
+    .footer-col { border: 1px solid #bdbdbd; background: #fff; padding: 13px; }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .footer-logo { width: 50px; height: 50px; object-fit: contain; filter: grayscale(100%); border: 1px solid #222; padding: 4px; background: #fff; }
+    .footer-title { margin: 0; font-size: 0.98rem; }
+    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
+    .contact-list, .social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 0.9rem; }
+    .contact-list strong { display: inline-block; min-width: 70px; }
+    .social-item { display: flex; gap: 9px; align-items: center; }
+    .social-dot { width: 25px; height: 25px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; border: 1px solid #222; background: #f4f4f4; }
+    .footer-bottom { border-top: 1px solid #bebebe; padding: 10px 0 14px; text-align: center; font-size: 0.84rem; color: #5c5c5c; }
+
+    @media (max-width: 980px) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .top-header .container { grid-template-columns: 1fr; text-align: center; }
+      .logo-box { margin: 0 auto; }
+      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
+      .search { flex: 1 1 230px; }
+      .search input { width: 100%; }
+      .filter-grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header" id="topHeader">
+    <div class="container">
+      <div class="logo-box">
+        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
+      </div>
+      <div class="brand">
+        <h1>Crew Multimedia Baciro</h1>
+        <p>Wireframe Low-Fidelity - Halaman Form Pendaftaran</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <div class="container nav-row">
+      <nav aria-label="Navigasi utama">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profil.html">Profil</a></li>
+          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+          <li><a class="active" href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <form class="search" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+          <button type="submit">Search</button>
+        </form>
+        <a class="btn-login" href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Header form pendaftaran">
+    <div>
+      <h2>Form Pendaftaran</h2>
+      <p>Pilih form yang tersedia dan isi data melalui halaman detail.</p>
+    </div>
+  </section>
+
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <ol class="breadcrumb" aria-label="Breadcrumb">
+        <li><a href="home.html">Beranda</a></li>
+        <li aria-current="page">Form Pendaftaran</li>
+      </ol>
+    </div>
+  </div>
+
+  <main class="container content">
+    <section class="filter-card" aria-label="Filter form pendaftaran">
+      <div class="filter-grid">
+        <div class="field">
+          <label for="q">Cari Form</label>
+          <input id="q" type="search" placeholder="Cari berdasarkan judul form atau kategori...">
+        </div>
+        <div class="field">
+          <label for="sort">Urutkan</label>
+          <select id="sort">
+            <option value="newest">Terbaru Lebih Dulu</option>
+            <option value="oldest">Terlama Lebih Dulu</option>
+            <option value="title">Judul A-Z</option>
+          </select>
+        </div>
+        <button id="findBtn" class="btn-primary" type="button">Cari</button>
+        <button id="resetBtn" class="btn" type="button">Reset</button>
+      </div>
+    </section>
+
+    <p id="metaLine" class="meta-line">Menampilkan 0 form pendaftaran</p>
+
+    <section id="formCards" class="cards" aria-label="Daftar form pendaftaran"></section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <section class="footer-col" aria-label="Identitas Crembo">
+          <div class="footer-brand">
+            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+            <div>
+              <h4 class="footer-title">Crew Multimedia Baciro</h4>
+              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+            </div>
+          </div>
+          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, pengumuman, dan form pendaftaran komunitas.</p>
+        </section>
+        <section class="footer-col" aria-label="Kontak">
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="contact-list">
+            <li><strong>Email</strong> : crembomedia@example.com</li>
+            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-label="Media sosial">
+          <h4 class="footer-title">Media Sosial</h4>
+          <ul class="social-list">
+            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
+    </div>
+  </footer>
+
+  <script>
+    const FORM_STORAGE_KEY = "crembo-registration-forms";
+    const SUBMISSION_STORAGE_KEY = "crembo-registration-submissions";
+    const MEMBER_STORAGE_KEY = "crembo-members";
+    const SESSION_STORAGE_KEY = "crembo-login-session";
+
+    const topHeader = document.getElementById("topHeader");
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+
+    const qInput = document.getElementById("q");
+    const sortInput = document.getElementById("sort");
+    const findBtn = document.getElementById("findBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const metaLine = document.getElementById("metaLine");
+    const formCards = document.getElementById("formCards");
+
+    let forms = [];
+    let submissions = [];
+    let memberDb = [];
+    let session = null;
+
+    function syncStickyOffset() {
+      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
+      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
+    }
+
+    function safeParse(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function makeId(prefix) {
+      return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+    }
+
+    function normalizeField(item, index) {
+      return {
+        id: String(item && item.id ? item.id : makeId("field")),
+        label: String(item && item.label ? item.label : "Pertanyaan " + (index + 1)),
+        type: String(item && item.type ? item.type : "text"),
+        required: Boolean(item && item.required),
+        placeholder: String(item && item.placeholder ? item.placeholder : ""),
+        options: Array.isArray(item && item.options) ? item.options.map(String) : []
+      };
+    }
+
+    function normalizeForm(item, index) {
+      return {
+        id: String(item && item.id ? item.id : "form-" + (index + 1)),
+        title: String(item && item.title ? item.title : "Form Pendaftaran"),
+        description: String(item && item.description ? item.description : ""),
+        target: String(item && item.target ? item.target : "public") === "internal" ? "internal" : "public",
+        visibility: String(item && item.visibility ? item.visibility : "visible") === "draft" ? "draft" : "visible",
+        openDate: String(item && item.openDate ? item.openDate : ""),
+        closeDate: String(item && item.closeDate ? item.closeDate : ""),
+        quota: Number.isFinite(Number(item && item.quota)) ? Number(item.quota) : 0,
+        fields: Array.isArray(item && item.fields) ? item.fields.map(normalizeField) : [],
+        updatedAt: String(item && item.updatedAt ? item.updatedAt : new Date().toISOString())
+      };
+    }
+
+    function normalizeMember(item, index) {
+      return {
+        id: String(item && item.id ? item.id : "m-" + index),
+        email: String(item && item.email ? item.email : "").toLowerCase(),
+        phone: String(item && item.phone ? item.phone : "").replace(/\s+/g, ""),
+        status: String(item && item.status ? item.status : "Aktif")
+      };
+    }
+
+    function defaultForms() {
+      return [
+        {
+          id: makeId("form"),
+          title: "Form Pendaftaran Open Recruitment",
+          description: "Digunakan untuk pendaftaran calon anggota baru tim multimedia.",
+          target: "public",
+          visibility: "visible",
+          openDate: "2026-03-20",
+          closeDate: "2026-04-10",
+          quota: 100,
+          fields: [
+            { id: makeId("field"), label: "Nama Lengkap", type: "text", required: true, placeholder: "", options: [] },
+            { id: makeId("field"), label: "Email", type: "email", required: true, placeholder: "", options: [] },
+            { id: makeId("field"), label: "Alasan Bergabung", type: "textarea", required: true, placeholder: "", options: [] }
+          ],
+          updatedAt: new Date().toISOString()
+        },
+        {
+          id: makeId("form"),
+          title: "Form Registrasi Pelatihan Operator",
+          description: "Pendaftaran peserta pelatihan teknis kamera, audio, dan live switch.",
+          target: "internal",
+          visibility: "visible",
+          openDate: "2026-03-28",
+          closeDate: "2026-04-05",
+          quota: 30,
+          fields: [
+            { id: makeId("field"), label: "Nama Lengkap", type: "text", required: true, placeholder: "", options: [] },
+            { id: makeId("field"), label: "Minat Divisi", type: "radio", required: true, placeholder: "", options: ["Operator", "Kameramen", "Editor"] }
+          ],
+          updatedAt: new Date().toISOString()
+        }
+      ];
+    }
+
+    function loadData() {
+      const rawForms = localStorage.getItem(FORM_STORAGE_KEY);
+      const parsedForms = rawForms ? safeParse(rawForms) : null;
+      forms = Array.isArray(parsedForms) && parsedForms.length ? parsedForms.map(normalizeForm) : defaultForms().map(normalizeForm);
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(forms));
+
+      const rawSubmissions = localStorage.getItem(SUBMISSION_STORAGE_KEY);
+      const parsedSubmissions = rawSubmissions ? safeParse(rawSubmissions) : null;
+      submissions = Array.isArray(parsedSubmissions) ? parsedSubmissions : [];
+
+      const rawMembers = localStorage.getItem(MEMBER_STORAGE_KEY);
+      const parsedMembers = rawMembers ? safeParse(rawMembers) : null;
+      memberDb = Array.isArray(parsedMembers) ? parsedMembers.map(normalizeMember) : [];
+
+      const rawSession = localStorage.getItem(SESSION_STORAGE_KEY);
+      const parsedSession = rawSession ? safeParse(rawSession) : null;
+      session = parsedSession && typeof parsedSession === "object" ? parsedSession : null;
+    }
+
+    function countSubmissions(formId) {
+      return submissions.filter(function (item) { return item && item.formId === formId; }).length;
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "-";
+      }
+      const d = new Date(value + "T00:00:00");
+      if (Number.isNaN(d.getTime())) {
+        return value;
+      }
+      return String(d.getDate()).padStart(2, "0") + " " + ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"][d.getMonth()] + " " + d.getFullYear();
+    }
+
+    function isRegisteredMember() {
+      if (!session || !session.identifier) {
+        return false;
+      }
+      if (session.role === "admin" || session.role === "super_admin") {
+        return true;
+      }
+
+      const identifier = String(session.identifier || "").toLowerCase();
+      const identifierType = String(session.identifierType || "");
+      return memberDb.some(function (member) {
+        if (String(member.status || "").toLowerCase() !== "aktif") {
+          return false;
+        }
+        if (identifierType === "email") {
+          return member.email === identifier;
+        }
+        if (identifierType === "no_hp") {
+          return member.phone === identifier.replace(/\s+/g, "");
+        }
+        return false;
+      });
+    }
+
+    function formState(item) {
+      const now = new Date();
+      const openDate = item.openDate ? new Date(item.openDate + "T00:00:00") : null;
+      const closeDate = item.closeDate ? new Date(item.closeDate + "T23:59:59") : null;
+      const submissionCount = countSubmissions(item.id);
+
+      if (item.visibility === "draft") {
+        return { available: false, reason: "draft", statusText: "Draft" };
+      }
+      if (openDate && now < openDate) {
+        return { available: false, reason: "not_open", statusText: "Belum dibuka" };
+      }
+      if (closeDate && now > closeDate) {
+        return { available: false, reason: "closed", statusText: "Ditutup" };
+      }
+      if (item.quota > 0 && submissionCount >= item.quota) {
+        return { available: false, reason: "quota", statusText: "Kuota penuh" };
+      }
+      return { available: true, reason: "open", statusText: "Aktif" };
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function filteredForms() {
+      const q = qInput.value.trim().toLowerCase();
+      const sort = sortInput.value;
+
+      const list = forms
+        .filter(function (item) {
+          return item.visibility !== "draft";
+        })
+        .filter(function (item) {
+          if (!q) {
+            return true;
+          }
+          return [item.title, item.description].join(" ").toLowerCase().indexOf(q) >= 0;
+        });
+
+      list.sort(function (a, b) {
+        if (sort === "title") {
+          return a.title.localeCompare(b.title);
+        }
+        if (sort === "oldest") {
+          return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+        }
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      });
+
+      return list;
+    }
+
+    function renderCards() {
+      const list = filteredForms();
+      metaLine.textContent = "Menampilkan " + String(list.length) + " form pendaftaran";
+
+      if (!list.length) {
+        formCards.innerHTML = '<article class="card"><div class="body"><h3 class="title">Belum ada form tersedia</h3><p class="desc">Silakan cek kembali nanti.</p></div></article>';
+        return;
+      }
+
+      const memberAllowed = isRegisteredMember();
+
+      formCards.innerHTML = list.map(function (item) {
+        const state = formState(item);
+        const targetText = item.target === "internal" ? "Khusus anggota" : "Untuk umum";
+        const quotaCount = countSubmissions(item.id);
+        const quotaText = item.quota > 0 ? String(quotaCount) + "/" + String(item.quota) : String(quotaCount) + "/Tak terbatas";
+
+        let actionHtml = '<span class="btn-disabled" aria-disabled="true">Tidak tersedia</span>';
+
+        if (state.available) {
+          if (item.target === "public") {
+            actionHtml = '<a class="btn-primary" href="form-pendaftaran-detail.html?id=' + encodeURIComponent(item.id) + '">Lihat Form</a>';
+          } else if (!session) {
+            actionHtml = '<a class="btn" href="login.html">Login untuk Akses</a>';
+          } else if (!memberAllowed) {
+            actionHtml = '<span class="btn-disabled" aria-disabled="true">Khusus anggota terdaftar</span>';
+          } else {
+            actionHtml = '<a class="btn-primary" href="form-pendaftaran-detail.html?id=' + encodeURIComponent(item.id) + '">Lihat Form</a>';
+          }
+        } else if (state.reason === "quota") {
+          actionHtml = '<span class="btn-disabled" aria-disabled="true">Kuota Penuh</span>';
+        } else if (state.reason === "closed") {
+          actionHtml = '<span class="btn-disabled" aria-disabled="true">Sudah Ditutup</span>';
+        } else if (state.reason === "not_open") {
+          actionHtml = '<span class="btn-disabled" aria-disabled="true">Belum Dibuka</span>';
+        }
+
+        return '<article class="card">'
+          + '<div class="thumb">Preview Form</div>'
+          + '<div class="body">'
+          + '<h3 class="title">' + escapeHtml(item.title) + '</h3>'
+          + '<p class="meta">' + escapeHtml(formatDate(item.closeDate)) + '<br>' + escapeHtml(state.statusText) + '<br>' + escapeHtml(targetText) + '</p>'
+          + '<p class="desc">' + escapeHtml(item.description || "-") + '</p>'
+          + '<div class="lampiran">Kuota: ' + escapeHtml(quotaText) + '</div>'
+          + '<div class="actions">' + actionHtml + '</div>'
+          + '</div>'
+          + '</article>';
+      }).join("");
+    }
+
+    syncStickyOffset();
+    window.addEventListener("resize", syncStickyOffset);
+
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const keyword = searchInput.value.trim();
+      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
+    });
+
+    findBtn.addEventListener("click", renderCards);
+    resetBtn.addEventListener("click", function () {
+      qInput.value = "";
+      sortInput.value = "newest";
+      renderCards();
+    });
+
+    qInput.addEventListener("input", renderCards);
+    sortInput.addEventListener("change", renderCards);
+
+    loadData();
+    renderCards();
+
+    (function () {
+      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+      const DEFAULT_PROFILE_MENU = [
+        { id: "sejarah", label: "Sejarah" },
+        { id: "tentang-crembo", label: "Tentang Crembo" },
+        { id: "struktur", label: "Struktur" },
+        { id: "visi-misi", label: "Visi & Misi" }
+      ];
+
+      function readProfileMenuItems() {
+        try {
+          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+          if (!raw) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          return parsed.map(function (item) {
+            if (typeof item === "string") {
+              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+            }
+            return {
+              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
+              label: item && item.label ? String(item.label) : "Profil"
+            };
+          });
+        } catch (err) {
+          return DEFAULT_PROFILE_MENU;
+        }
+      }
+
+      function enhanceProfileHoverMenu() {
+        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
+        if (!navList) {
+          return;
+        }
+
+        const profileAnchor = navList.querySelector('a[href="profil.html"]');
+        if (!profileAnchor) {
+          return;
+        }
+
+        const profileItem = profileAnchor.closest("li");
+        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
+          return;
+        }
+
+        const menuItems = readProfileMenuItems();
+
+        profileItem.style.position = "relative";
+        profileItem.classList.add("nav-dropdown-enhanced");
+
+        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+          profileAnchor.setAttribute("data-profile-menu-label", "true");
+          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
+        }
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "profile-hover-menu";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = "calc(100% + 4px)";
+        dropdown.style.left = "0";
+        dropdown.style.minWidth = "210px";
+        dropdown.style.border = "1px solid #bdbdbd";
+        dropdown.style.background = "#fff";
+        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
+        dropdown.style.padding = "6px";
+        dropdown.style.display = "none";
+        dropdown.style.zIndex = "1300";
+
+        dropdown.innerHTML = menuItems.map(function (item) {
+          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
+        }).join("");
+
+        dropdown.addEventListener("mouseover", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "#b9b9b9";
+            link.style.background = "#ececec";
+          }
+        });
+
+        dropdown.addEventListener("mouseout", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "transparent";
+            link.style.background = "transparent";
+          }
+        });
+
+        profileItem.appendChild(dropdown);
+
+        function showMenu() {
+          dropdown.style.display = "block";
+        }
+
+        function hideMenu() {
+          dropdown.style.display = "none";
+        }
+
+        profileItem.addEventListener("mouseenter", showMenu);
+        profileItem.addEventListener("mouseleave", hideMenu);
+        profileItem.addEventListener("focusin", showMenu);
+        profileItem.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (!profileItem.contains(document.activeElement)) {
+              hideMenu();
+            }
+          }, 0);
+        });
+      }
+
+      enhanceProfileHoverMenu();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hasil Pencarian - Wireframe</title>
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --surface: #ffffff;
+      --ink: #1b1f26;
+      --muted: #667085;
+      --line: #202020;
+      --line-soft: #d0d5dd;
+      --hover: #f1f4f9;
+      --accent: #2f6fed;
+      --header-h: 118px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { width: min(1140px, 94vw); margin: 0 auto; }
+
+    .top-header {
+      border-bottom: 2px solid var(--line);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+    }
+
+    .top-header .container {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+    }
+
+    .logo-box {
+      width: 86px;
+      height: 86px;
+      border: 2px solid var(--line);
+      display: grid;
+      place-items: center;
+      background: #fff;
+      padding: 6px;
+    }
+
+    .logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2.7vw, 1.9rem);
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .nav-wrap {
+      background: var(--surface);
+      border-bottom: 2px solid var(--line);
+      position: sticky;
+      top: var(--header-h);
+      z-index: 1150;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      display: inline-block;
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      font-size: 0.94rem;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      border-color: var(--line-soft);
+      background: var(--hover);
+      outline: none;
+    }
+
+    .right-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search {
+      display: flex;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .search input {
+      border: 0;
+      outline: none;
+      padding: 8px 10px;
+      width: clamp(130px, 17vw, 180px);
+      font-size: 0.9rem;
+      background: transparent;
+    }
+
+    .search button,
+    .btn-login,
+    .btn,
+    .btn-primary {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .search button:hover,
+    .btn-login:hover,
+    .btn:hover,
+    .btn-primary:hover {
+      background: var(--hover);
+    }
+
+    .btn-primary {
+      background: #121212;
+      color: #fff;
+      border-color: #121212;
+    }
+
+    .btn-primary:hover { background: #2c2c2c; }
+
+    .search-layout { padding: 28px 0 34px; }
+
+    .search-head h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.7vw, 2rem);
+    }
+
+    .search-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .query-bar {
+      margin-top: 14px;
+      border: 1px solid var(--line-soft);
+      background: var(--surface);
+      padding: 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .query-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .query-input {
+      width: 100%;
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      padding: 10px;
+      font-size: 0.92rem;
+      border-radius: 4px;
+    }
+
+    .tools-row {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .category-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .cat-btn {
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      color: #2f3847;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cat-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .sort-select {
+      border: 1px solid var(--line-soft);
+      background: #fff;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .result-list {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-card {
+      border: 1px solid #d8dee8;
+      background: #fff;
+      border-radius: 6px;
+      padding: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid #c7d7ff;
+      background: #eaf0ff;
+      color: #2f5bd3;
+      font-size: 0.75rem;
+      line-height: 1;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .result-desc {
+      margin: 0;
+      color: #4d5767;
+      font-size: 0.9rem;
+    }
+
+    .result-link {
+      color: #2358d6;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .empty {
+      border: 1px dashed #bfc9d8;
+      background: #f8fbff;
+      padding: 14px;
+      color: #586379;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .footer {
+      border-top: 2px solid var(--line);
+      border-bottom: 2px solid var(--line);
+      background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%);
+      margin-top: 10px;
+      color: #2e2e2e;
+    }
+
+    .footer-main { padding: 20px 0 14px; }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .footer-col {
+      border: 1px solid #bdbdbd;
+      background: #fff;
+      padding: 13px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .footer-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      border: 1px solid #222;
+      padding: 4px;
+      background: #fff;
+    }
+
+    .footer-title { margin: 0; font-size: 0.98rem; }
+    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
+
+    .contact-list,
+    .social-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      font-size: 0.9rem;
+    }
+
+    .contact-list strong { display: inline-block; min-width: 70px; }
+
+    .social-item {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .social-dot {
+      width: 25px;
+      height: 25px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid #222;
+      background: #f4f4f4;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #bebebe;
+      padding: 10px 0 14px;
+      text-align: center;
+      font-size: 0.84rem;
+      color: #5c5c5c;
+    }
+
+    @media (max-width: 980px) {
+      .tools-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .top-header .container { grid-template-columns: 1fr; text-align: center; }
+      .logo-box { margin: 0 auto; }
+      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
+      .search { flex: 1 1 230px; }
+      .search input { width: 100%; }
+      .query-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header" id="topHeader">
+    <div class="container">
+      <div class="logo-box">
+        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
+      </div>
+      <div class="brand">
+        <h1>Crew Multimedia Baciro</h1>
+        <p>Wireframe Low-Fidelity - Hasil Pencarian</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <div class="container nav-row">
+      <nav aria-label="Navigasi utama">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profil.html">Profil</a></li>
+          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+          <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <form class="search" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+          <button type="submit">Search</button>
+        </form>
+        <a class="btn-login" href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container search-layout">
+    <section class="search-head" aria-label="Hasil pencarian">
+      <h2>Hasil Pencarian</h2>
+      <p id="resultMeta">Menampilkan 0 hasil.</p>
+    </section>
+
+    <section class="query-bar" aria-label="Kontrol pencarian">
+      <div class="query-grid">
+        <input id="queryInput" class="query-input" type="search" placeholder="Ketik kata kunci pencarian...">
+        <button id="searchBtn" class="btn-primary" type="button">Cari</button>
+      </div>
+      <div class="tools-row">
+        <div id="categoryStrip" class="category-strip" role="tablist" aria-label="Filter kategori"></div>
+        <select id="sortSelect" class="sort-select" aria-label="Urutkan hasil">
+          <option value="newest">Terbaru Lebih Dulu</option>
+          <option value="oldest">Terlama Lebih Dulu</option>
+          <option value="az">Judul A-Z</option>
+          <option value="za">Judul Z-A</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="resultList" class="result-list" aria-label="Daftar hasil pencarian"></section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <section class="footer-col" aria-label="Identitas Crembo">
+          <div class="footer-brand">
+            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+            <div>
+              <h4 class="footer-title">Crew Multimedia Baciro</h4>
+              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+            </div>
+          </div>
+          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, pengumuman, dan form pendaftaran komunitas.</p>
+        </section>
+        <section class="footer-col" aria-label="Kontak">
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="contact-list">
+            <li><strong>Email</strong> : crembomedia@example.com</li>
+            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-label="Media sosial">
+          <h4 class="footer-title">Media Sosial</h4>
+          <ul class="social-list">
+            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
+    </div>
+  </footer>
+
+  <script>
+    const topHeader = document.getElementById("topHeader");
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const queryInput = document.getElementById("queryInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const sortSelect = document.getElementById("sortSelect");
+    const categoryStrip = document.getElementById("categoryStrip");
+    const resultMeta = document.getElementById("resultMeta");
+    const resultList = document.getElementById("resultList");
+
+    const ANNOUNCEMENT_STORAGE_KEY = "crembo-announcements";
+    const ANNOUNCEMENT_CATEGORY_STORAGE_KEY = "crembo-announcement-categories";
+
+    const DEFAULT_ANNOUNCEMENTS = [
+      {
+        id: "pengumuman-uajy-karya",
+        category: "Berita",
+        date: "2026-02-19",
+        title: "Mahasiswa Informatika UAJY Unjuk Kreativitas Melalui Pameran Hasil Karya UAS",
+        summary: "Program Studi Informatika Universitas Atma Jaya Yogyakarta menggelar pameran hasil karya mahasiswa semester 1."
+      },
+      {
+        id: "perubahan-gladi-bersih",
+        category: "Informasi",
+        date: "2026-02-15",
+        title: "Perubahan Jadwal Gladi Bersih Pekan Suci",
+        summary: "Penyesuaian jadwal gladi bersih petugas multimedia untuk persiapan pelayanan."
+      },
+      {
+        id: "workshop-konten-siaran",
+        category: "Pelatihan",
+        date: "2026-02-10",
+        title: "Workshop Singkat Manajemen Konten Siaran",
+        summary: "Sesi berbagi praktik terbaik pengelolaan konten siaran untuk media sosial dan live streaming."
+      },
+      {
+        id: "pembaruan-format-laporan",
+        category: "Pengumuman",
+        date: "2026-02-01",
+        title: "Pembaruan Format Laporan Pelayanan Bulanan",
+        summary: "Template laporan pelayanan diperbarui untuk memudahkan rekap operator, dokumentasi, dan evaluasi."
+      }
+    ];
+
+    const staticItems = [
+      { title: "Peraturan Kemahasiswaan", category: "Peraturan", date: "2026-02-26", desc: "Peraturan dan tata tertib kegiatan mahasiswa untuk panduan operasional.", link: "#" },
+      { title: "Instrumen Money - Mahasiswa", category: "Dokumen", date: "2026-02-26", desc: "Instrumen monitoring dan evaluasi untuk mahasiswa STP AMPTA.", link: "#" },
+      { title: "Peluncuran Program Pertukaran Pelajar", category: "Berita", date: "2026-02-25", desc: "Program pertukaran pelajar baru dengan universitas mitra internasional.", link: "#" },
+      { title: "Promo Pembuatan website", category: "Agenda", date: "2026-02-21", desc: "Kegiatan kuliah umum bertema riset pengguna dan implementasi solusi.", link: "agenda-detail.html" },
+      { title: "Pendaftaran Beasiswa Penuh 2026/2027", category: "Berita", date: "2026-02-20", desc: "Informasi pembukaan pendaftaran beasiswa penuh tahun akademik 2026/2027.", link: "#" },
+      { title: "Form Pendaftaran Open Recruitment", category: "Form", date: "2026-03-31", desc: "Form pendaftaran anggota baru tim multimedia.", link: "form-pendaftaran-detail.html" },
+      { title: "Template Laporan Pelayanan", category: "Dokumen", date: "2026-02-14", desc: "Template laporan pelayanan bulanan terbaru dalam format dokumen.", link: "#" },
+      { title: "Workshop Manajemen Konten Siaran", category: "Agenda", date: "2026-02-10", desc: "Agenda workshop internal pengelolaan konten siaran digital.", link: "agenda-detail.html" }
+    ];
+
+    let categories = ["Semua"];
+    let activeCategory = "Semua";
+    let items = [];
+
+    function syncStickyOffset() {
+      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
+      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
+    }
+
+    function safeJsonParse(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function normalizeCategory(value) {
+      return String(value || "Tanpa Kategori").trim() || "Tanpa Kategori";
+    }
+
+    function readAnnouncements() {
+      const raw = localStorage.getItem(ANNOUNCEMENT_STORAGE_KEY);
+      const parsed = raw ? safeJsonParse(raw) : null;
+      const source = Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ANNOUNCEMENTS;
+
+      return source.map(function (item, index) {
+        const id = String(item && item.id ? item.id : "pengumuman-" + (index + 1));
+        const category = normalizeCategory(item && item.category);
+        const date = String(item && item.date ? item.date : "2026-01-01");
+        const title = String(item && item.title ? item.title : "Judul pengumuman");
+        const desc = String(item && (item.summary || item.desc) ? (item.summary || item.desc) : "Ringkasan belum tersedia.");
+        return {
+          title: title,
+          category: category,
+          date: date,
+          desc: desc,
+          link: "pengumuman-detail.html?id=" + encodeURIComponent(id)
+        };
+      });
+    }
+
+    function readAnnouncementCategories(announcementItems) {
+      const raw = localStorage.getItem(ANNOUNCEMENT_CATEGORY_STORAGE_KEY);
+      const parsed = raw ? safeJsonParse(raw) : null;
+      const categorySet = new Set();
+
+      announcementItems.forEach(function (item) {
+        categorySet.add(normalizeCategory(item.category));
+      });
+
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        parsed.forEach(function (item) {
+          if (typeof item === "string") {
+            categorySet.add(normalizeCategory(item));
+            return;
+          }
+          if (item && item.label) {
+            categorySet.add(normalizeCategory(item.label));
+          }
+        });
+      }
+
+      return Array.from(categorySet);
+    }
+
+    function buildSearchDataset() {
+      const announcementItems = readAnnouncements();
+      items = staticItems.concat(announcementItems);
+
+      const allCategories = new Set(["Semua", "Agenda", "Dokumen", "Form", "Peraturan"]);
+      readAnnouncementCategories(announcementItems).forEach(function (category) {
+        allCategories.add(category);
+      });
+      staticItems.forEach(function (item) {
+        allCategories.add(normalizeCategory(item.category));
+      });
+
+      categories = Array.from(allCategories);
+      if (!categories.includes(activeCategory)) {
+        activeCategory = "Semua";
+      }
+    }
+
+    function getQueryParam() {
+      const params = new URLSearchParams(window.location.search);
+      return (params.get("q") || "").trim();
+    }
+
+    function setQueryParam(value) {
+      const params = new URLSearchParams(window.location.search);
+      if (value) {
+        params.set("q", value);
+      } else {
+        params.delete("q");
+      }
+      const queryString = params.toString();
+      const target = queryString ? "search.html?" + queryString : "search.html";
+      window.history.replaceState({}, "", target);
+    }
+
+    function formatDate(isoDate) {
+      const date = new Date(isoDate + "T00:00:00");
+      return date.toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function drawCategories() {
+      categoryStrip.innerHTML = "";
+      categories.forEach(function (cat) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cat-btn" + (cat === activeCategory ? " active" : "");
+        btn.textContent = cat;
+        btn.addEventListener("click", function () {
+          activeCategory = cat;
+          drawCategories();
+          renderResults();
+        });
+        categoryStrip.appendChild(btn);
+      });
+    }
+
+    function filterItems() {
+      const keyword = queryInput.value.trim().toLowerCase();
+      let result = items.filter(function (item) {
+        const matchKeyword = !keyword || item.title.toLowerCase().includes(keyword) || item.desc.toLowerCase().includes(keyword) || item.category.toLowerCase().includes(keyword);
+        const matchCategory = activeCategory === "Semua" || item.category === activeCategory;
+        return matchKeyword && matchCategory;
+      });
+
+      if (sortSelect.value === "newest") {
+        result.sort(function (a, b) { return b.date.localeCompare(a.date); });
+      } else if (sortSelect.value === "oldest") {
+        result.sort(function (a, b) { return a.date.localeCompare(b.date); });
+      } else if (sortSelect.value === "az") {
+        result.sort(function (a, b) { return a.title.localeCompare(b.title, "id"); });
+      } else if (sortSelect.value === "za") {
+        result.sort(function (a, b) { return b.title.localeCompare(a.title, "id"); });
+      }
+
+      return result;
+    }
+
+    function renderResults() {
+      const query = queryInput.value.trim();
+      setQueryParam(query);
+      searchInput.value = query;
+
+      const filtered = filterItems();
+      resultMeta.textContent = query
+        ? "Menampilkan " + filtered.length + " hasil untuk: \"" + query + "\""
+        : "Menampilkan " + filtered.length + " hasil.";
+
+      if (filtered.length === 0) {
+        resultList.innerHTML = '<div class="empty">Tidak ada hasil yang cocok. Coba kata kunci lain atau ubah kategori.</div>';
+        return;
+      }
+
+      resultList.innerHTML = filtered.map(function (item) {
+        return '<article class="result-card">'
+          + '<div class="result-top"><span class="badge">' + escapeHtml(item.category) + '</span><span>' + formatDate(item.date) + '</span></div>'
+          + '<h3 class="result-title">' + escapeHtml(item.title) + '</h3>'
+          + '<p class="result-desc">' + escapeHtml(item.desc) + '</p>'
+          + '<a class="result-link" href="' + item.link + '">Buka Detail</a>'
+          + '</article>';
+      }).join("");
+    }
+
+    function handleSearchSubmit(event) {
+      event.preventDefault();
+      queryInput.value = searchInput.value.trim();
+      renderResults();
+    }
+
+    syncStickyOffset();
+    window.addEventListener("resize", syncStickyOffset);
+
+    const initialQuery = getQueryParam();
+    searchInput.value = initialQuery;
+    queryInput.value = initialQuery;
+
+    buildSearchDataset();
+    drawCategories();
+    renderResults();
+
+    searchForm.addEventListener("submit", handleSearchSubmit);
+    searchBtn.addEventListener("click", renderResults);
+    queryInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        renderResults();
+      }
+    });
+    sortSelect.addEventListener("change", renderResults);
+  
+    (function () {
+      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+      const DEFAULT_PROFILE_MENU = [
+        { id: "sejarah", label: "Sejarah" },
+        { id: "tentang-crembo", label: "Tentang Crembo" },
+        { id: "struktur", label: "Struktur" },
+        { id: "visi-misi", label: "Visi & Misi" }
+      ];
+
+      function readProfileMenuItems() {
+        try {
+          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+          if (!raw) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          return parsed.map(function (item) {
+            if (typeof item === "string") {
+              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+            }
+            return {
+              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
+              label: item && item.label ? String(item.label) : "Profil"
+            };
+          });
+        } catch (err) {
+          return DEFAULT_PROFILE_MENU;
+        }
+      }
+
+      function enhanceProfileHoverMenu() {
+        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
+        if (!navList) {
+          return;
+        }
+
+        const profileAnchor = navList.querySelector('a[href="profil.html"]');
+        if (!profileAnchor) {
+          return;
+        }
+
+        const profileItem = profileAnchor.closest("li");
+        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
+          return;
+        }
+
+        const menuItems = readProfileMenuItems();
+
+        profileItem.style.position = "relative";
+        profileItem.classList.add("nav-dropdown-enhanced");
+
+        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+          profileAnchor.setAttribute("data-profile-menu-label", "true");
+          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
+        }
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "profile-hover-menu";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = "calc(100% + 4px)";
+        dropdown.style.left = "0";
+        dropdown.style.minWidth = "210px";
+        dropdown.style.border = "1px solid #bdbdbd";
+        dropdown.style.background = "#fff";
+        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
+        dropdown.style.padding = "6px";
+        dropdown.style.display = "none";
+        dropdown.style.zIndex = "1300";
+
+        dropdown.innerHTML = menuItems.map(function (item) {
+          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
+        }).join("");
+
+        dropdown.addEventListener("mouseover", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "#b9b9b9";
+            link.style.background = "#ececec";
+          }
+        });
+
+        dropdown.addEventListener("mouseout", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "transparent";
+            link.style.background = "transparent";
+          }
+        });
+
+        profileItem.appendChild(dropdown);
+
+        function showMenu() {
+          dropdown.style.display = "block";
+        }
+
+        function hideMenu() {
+          dropdown.style.display = "none";
+        }
+
+        profileItem.addEventListener("mouseenter", showMenu);
+        profileItem.addEventListener("mouseleave", hideMenu);
+        profileItem.addEventListener("focusin", showMenu);
+        profileItem.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (!profileItem.contains(document.activeElement)) {
+              hideMenu();
+            }
+          }, 0);
+        });
+      }
+
+      enhanceProfileHoverMenu();
+    })();
+  </script>
+</body>
+</html>

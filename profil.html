@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tentang Crembo - Wireframe</title>
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --surface: #ffffff;
+      --ink: #141414;
+      --muted: #626262;
+      --line: #202020;
+      --line-soft: #b9b9b9;
+      --hover: #ececec;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1140px, 94vw);
+      margin: 0 auto;
+    }
+
+    .top-header {
+      border-bottom: 2px solid var(--line);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+    }
+
+    .top-header .container {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+    }
+
+    .logo-box {
+      width: 86px;
+      height: 86px;
+      border: 2px solid var(--line);
+      display: grid;
+      place-items: center;
+      background: #fff;
+      padding: 6px;
+    }
+
+    .logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2.7vw, 1.9rem);
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .nav-wrap {
+      background: var(--surface);
+      border-bottom: 2px solid var(--line);
+      position: sticky;
+      top: var(--header-h, 118px);
+      z-index: 1150;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown > a::after {
+      content: " ▾";
+      font-size: 0.72rem;
+      color: #666;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 210px;
+      border: 1px solid #bdbdbd;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      padding: 6px;
+      display: none;
+      z-index: 1300;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      display: block;
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      border: 1px solid transparent;
+      padding: 7px 8px;
+      font-size: 0.87rem;
+      margin-bottom: 3px;
+    }
+
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a.active {
+      border-color: var(--line-soft);
+      background: var(--hover);
+    }
+
+    nav a {
+      display: inline-block;
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      font-size: 0.94rem;
+    }
+
+    nav a:hover,
+    nav a:focus-visible,
+    nav a.active {
+      border-color: var(--line-soft);
+      background: var(--hover);
+      outline: none;
+    }
+
+    .right-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search {
+      display: flex;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .search input {
+      border: 0;
+      outline: none;
+      padding: 8px 10px;
+      width: clamp(130px, 17vw, 180px);
+      font-size: 0.9rem;
+      background: transparent;
+    }
+
+    .search button,
+    .btn-login,
+    .btn-ghost {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .search button:hover,
+    .btn-login:hover,
+    .btn-ghost:hover {
+      background: var(--hover);
+    }
+
+    .hero {
+      margin-top: 0;
+      border-bottom: 2px solid var(--line);
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px 14px;
+      position: relative;
+      overflow: hidden;
+      background: #d8d8d8;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("IMG_1970.JPG");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      filter: grayscale(100%);
+      z-index: -2;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: -1;
+    }
+
+    .hero h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.45px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: #ececec;
+      font-size: 0.95rem;
+    }
+
+    .breadcrumb-wrap {
+      border-bottom: 1px solid var(--line-soft);
+      background: #fafafa;
+    }
+
+    .breadcrumb {
+      margin: 0;
+      padding: 11px 0;
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.88rem;
+      color: #545454;
+    }
+
+    .breadcrumb li + li::before {
+      content: "/";
+      margin-right: 10px;
+      color: #8a8a8a;
+    }
+
+    .content {
+      padding: 24px 0 34px;
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .profile-sidebar {
+      border: 1px solid var(--line-soft);
+      background: #f7f7f7;
+      padding: 14px;
+    }
+
+    .profile-sidebar h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .profile-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+    }
+
+    .profile-list a {
+      display: block;
+      border: 1px solid #c7c7c7;
+      background: #fff;
+      padding: 8px 10px;
+      font-size: 0.88rem;
+    }
+
+    .profile-list a:hover,
+    .profile-list a.active {
+      border-color: #2d2d2d;
+      background: #e9e9e9;
+      font-weight: 700;
+    }
+
+    .content-card {
+      border: 2px solid var(--line);
+      background: #fff;
+      padding: 22px;
+    }
+
+    .content-card h3 {
+      margin: 0 0 12px;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .content-card p {
+      margin: 0 0 12px;
+      color: #3d3d3d;
+      font-size: 0.96rem;
+      text-align: justify;
+    }
+
+    .content-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer {
+      border-top: 2px solid var(--line);
+      border-bottom: 2px solid var(--line);
+      background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+      margin-top: 10px;
+      color: #2e2e2e;
+    }
+
+    .footer-main {
+      padding: 20px 0 14px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .footer-col {
+      border: 1px solid #bdbdbd;
+      background: #fff;
+      padding: 13px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .footer-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      border: 1px solid #222;
+      padding: 4px;
+      background: #fff;
+    }
+
+    .footer-title {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .footer-sub {
+      margin: 2px 0 0;
+      font-size: 0.84rem;
+      color: #666;
+    }
+
+    .contact-list,
+    .social-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      font-size: 0.9rem;
+    }
+
+    .contact-list strong {
+      display: inline-block;
+      min-width: 70px;
+    }
+
+    .social-item {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .social-dot {
+      width: 25px;
+      height: 25px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid #222;
+      background: #f4f4f4;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #bebebe;
+      padding: 10px 0 14px;
+      text-align: center;
+      font-size: 0.84rem;
+      color: #5c5c5c;
+    }
+
+    @media (max-width: 980px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .top-header .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .logo-box {
+        margin: 0 auto;
+      }
+
+      .nav-row {
+        justify-content: center;
+      }
+
+      .nav-dropdown {
+        width: 100%;
+      }
+
+      .nav-dropdown-menu {
+        position: static;
+        display: block;
+        box-shadow: none;
+        border: 1px dashed #c1c1c1;
+        margin-top: 6px;
+      }
+
+      .right-tools {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .search {
+        flex: 1 1 230px;
+      }
+
+      .search input {
+        width: 100%;
+      }
+
+      .hero {
+        min-height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header" id="topHeader">
+    <div class="container">
+      <div class="logo-box">
+        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
+      </div>
+      <div class="brand">
+        <h1>Crew Multimedia Baciro</h1>
+        <p>Wireframe Low-Fidelity - Halaman Tentang Crembo</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <div class="container nav-row">
+      <nav aria-label="Navigasi utama">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li class="nav-dropdown">
+            <a class="active" href="profil.html">Profil</a>
+            <div id="profileDropdownList" class="nav-dropdown-menu" aria-label="Submenu profil"></div>
+          </li>
+          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+          <li><a href="agenda.html">Agenda</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+          <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+        </ul>
+      </nav>
+      <div class="right-tools">
+        <form class="search" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+          <button type="submit">Search</button>
+        </form>
+        <a class="btn-login" href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Header tentang crembo">
+    <div>
+      <h2>Profil</h2>
+      <p>Header dengan latar foto sesuai referensi, konten dapat disesuaikan admin.</p>
+    </div>
+  </section>
+
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <ol class="breadcrumb" aria-label="Breadcrumb">
+        <li><a href="home.html">Beranda</a></li>
+        <li><a href="profil.html">Profil</a></li>
+        <li id="breadcrumbCurrent" aria-current="page">Profil</li>
+      </ol>
+    </div>
+  </div>
+
+  <main class="container content">
+    <div class="profile-layout">
+      <aside class="profile-sidebar" aria-label="Kategori profil">
+        <h4>Kategori Profil</h4>
+        <ul id="profileCategoryList" class="profile-list"></ul>
+      </aside>
+
+      <section class="content-card" aria-label="Isi konten tentang crembo">
+        <h3 id="profileTitle">Profil Singkat Crew Multimedia Baciro</h3>
+        <div id="profileContent"></div>
+        <div class="content-actions">
+          <a class="btn-ghost" href="home.html">Kembali ke Beranda</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container footer-grid">
+        <section class="footer-col" aria-label="Identitas Crembo">
+          <div class="footer-brand">
+            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+            <div>
+              <h4 class="footer-title">Crew Multimedia Baciro</h4>
+              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+            </div>
+          </div>
+          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
+        </section>
+        <section class="footer-col" aria-label="Kontak">
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="contact-list">
+            <li><strong>Email</strong> : crembomedia@example.com</li>
+            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+          </ul>
+        </section>
+        <section class="footer-col" aria-label="Media sosial">
+          <h4 class="footer-title">Media Sosial</h4>
+          <ul class="social-list">
+            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
+    </div>
+  </footer>
+
+  <script>
+    const topHeader = document.getElementById("topHeader");
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const profileDropdownList = document.getElementById("profileDropdownList");
+    const profileCategoryList = document.getElementById("profileCategoryList");
+    const profileTitle = document.getElementById("profileTitle");
+    const profileContent = document.getElementById("profileContent");
+    const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+
+    const PROFILE_STORAGE_KEY = "crembo-profile-menu";
+
+    const defaultProfileItems = [
+      {
+        id: "sejarah",
+        label: "Sejarah",
+        title: "Sejarah Singkat Crembo",
+        paragraphs: [
+          "Crew Multimedia Baciro dibentuk untuk mendukung pelayanan liturgi dengan fokus pada siaran, dokumentasi, dan distribusi informasi digital.",
+          "Dalam perjalanannya, tim ini berkembang dari layanan dokumentasi sederhana menjadi unit multimedia terstruktur yang melayani agenda mingguan dan perayaan besar."
+        ]
+      },
+      {
+        id: "tentang-crembo",
+        label: "Tentang Crembo",
+        title: "Profil Singkat Crew Multimedia Baciro",
+        paragraphs: [
+          "Crew Multimedia Baciro adalah tim pelayanan multimedia yang mendukung pelaksanaan kegiatan liturgi dan agenda komunitas melalui pengelolaan siaran, dokumentasi visual, dan manajemen konten informasi.",
+          "Konten deskripsi pada area ini dapat dikelola dari panel admin agar pengurus bisa memperbarui informasi profil secara mandiri."
+        ]
+      },
+      {
+        id: "struktur",
+        label: "Struktur",
+        title: "Struktur Organisasi Pelayanan",
+        paragraphs: [
+          "Struktur pelayanan terdiri dari koordinator, tim operator, kameramen, editor konten, serta tim dukungan teknis sesuai kebutuhan pelayanan.",
+          "Susunan ini dapat berubah mengikuti periode pelayanan dan kebijakan pengurus."
+        ]
+      },
+      {
+        id: "visi-misi",
+        label: "Visi & Misi",
+        title: "Visi dan Misi Crembo",
+        paragraphs: [
+          "Visi Crembo adalah menghadirkan pelayanan multimedia yang andal, rapi, dan berdampak bagi umat.",
+          "Misinya meliputi peningkatan kompetensi tim, standarisasi alur produksi, dan penguatan dokumentasi digital untuk kebutuhan komunitas."
+        ]
+      }
+    ];
+
+    function slugify(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
+    function normalizeProfileItem(item) {
+      if (typeof item === "string") {
+        const id = slugify(item);
+        return {
+          id: id || "profil",
+          label: item,
+          title: item,
+          paragraphs: ["Konten untuk kategori ini dapat diatur dari panel admin."]
+        };
+      }
+
+      const label = item && item.label ? String(item.label) : "Profil";
+      const id = item && item.id ? slugify(item.id) : slugify(label);
+      const paragraphs = Array.isArray(item && item.paragraphs)
+        ? item.paragraphs.map(function (text) { return String(text); }).filter(Boolean)
+        : ["Konten untuk kategori ini dapat diatur dari panel admin."];
+
+      return {
+        id: id || "profil",
+        label: label,
+        title: item && item.title ? String(item.title) : label,
+        paragraphs: paragraphs
+      };
+    }
+
+    function readProfileItems() {
+      try {
+        const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+        if (!raw) {
+          return defaultProfileItems;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          return defaultProfileItems;
+        }
+
+        return parsed.map(normalizeProfileItem);
+      } catch (err) {
+        return defaultProfileItems;
+      }
+    }
+
+    const profileItems = readProfileItems();
+
+    function getSelectedProfileId() {
+      const params = new URLSearchParams(window.location.search);
+      const requested = slugify(params.get("profil") || "");
+      const exists = profileItems.some(function (item) { return item.id === requested; });
+      return exists ? requested : profileItems[0].id;
+    }
+
+    function renderProfileMenu(activeId) {
+      profileDropdownList.innerHTML = profileItems.map(function (item) {
+        const activeClass = item.id === activeId ? "active" : "";
+        return '<a class="' + activeClass + '" href="profil.html?profil=' + encodeURIComponent(item.id) + '">' + item.label + '</a>';
+      }).join("");
+
+      profileCategoryList.innerHTML = profileItems.map(function (item) {
+        const activeClass = item.id === activeId ? "active" : "";
+        return '<li><a class="' + activeClass + '" href="profil.html?profil=' + encodeURIComponent(item.id) + '">' + item.label + '</a></li>';
+      }).join("");
+    }
+
+    function renderProfileContent(activeId) {
+      const current = profileItems.find(function (item) { return item.id === activeId; }) || profileItems[0];
+      profileTitle.textContent = current.title;
+      breadcrumbCurrent.textContent = current.label;
+      profileContent.innerHTML = current.paragraphs.map(function (text) {
+        return '<p>' + text + '</p>';
+      }).join("");
+    }
+
+    function syncStickyOffset() {
+      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
+      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
+    }
+
+    syncStickyOffset();
+    window.addEventListener("resize", syncStickyOffset);
+
+    const activeProfileId = getSelectedProfileId();
+    renderProfileMenu(activeProfileId);
+    renderProfileContent(activeProfileId);
+
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const keyword = searchInput.value.trim();
+      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
+    });
+  
+    (function () {
+      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+      const DEFAULT_PROFILE_MENU = [
+        { id: "sejarah", label: "Sejarah" },
+        { id: "tentang-crembo", label: "Tentang Crembo" },
+        { id: "struktur", label: "Struktur" },
+        { id: "visi-misi", label: "Visi & Misi" }
+      ];
+
+      function readProfileMenuItems() {
+        try {
+          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+          if (!raw) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            return DEFAULT_PROFILE_MENU;
+          }
+
+          return parsed.map(function (item) {
+            if (typeof item === "string") {
+              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+            }
+            return {
+              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
+              label: item && item.label ? String(item.label) : "Profil"
+            };
+          });
+        } catch (err) {
+          return DEFAULT_PROFILE_MENU;
+        }
+      }
+
+      function enhanceProfileHoverMenu() {
+        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
+        if (!navList) {
+          return;
+        }
+
+        const profileAnchor = navList.querySelector('a[href="profil.html"]');
+        if (!profileAnchor) {
+          return;
+        }
+
+        const profileItem = profileAnchor.closest("li");
+        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
+          return;
+        }
+
+        const menuItems = readProfileMenuItems();
+
+        profileItem.style.position = "relative";
+        profileItem.classList.add("nav-dropdown-enhanced");
+
+        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+          profileAnchor.setAttribute("data-profile-menu-label", "true");
+          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
+        }
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "profile-hover-menu";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = "calc(100% + 4px)";
+        dropdown.style.left = "0";
+        dropdown.style.minWidth = "210px";
+        dropdown.style.border = "1px solid #bdbdbd";
+        dropdown.style.background = "#fff";
+        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
+        dropdown.style.padding = "6px";
+        dropdown.style.display = "none";
+        dropdown.style.zIndex = "1300";
+
+        dropdown.innerHTML = menuItems.map(function (item) {
+          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
+        }).join("");
+
+        dropdown.addEventListener("mouseover", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "#b9b9b9";
+            link.style.background = "#ececec";
+          }
+        });
+
+        dropdown.addEventListener("mouseout", function (event) {
+          const link = event.target.closest("a");
+          if (link) {
+            link.style.borderColor = "transparent";
+            link.style.background = "transparent";
+          }
+        });
+
+        profileItem.appendChild(dropdown);
+
+        function showMenu() {
+          dropdown.style.display = "block";
+        }
+
+        function hideMenu() {
+          dropdown.style.display = "none";
+        }
+
+        profileItem.addEventListener("mouseenter", showMenu);
+        profileItem.addEventListener("mouseleave", hideMenu);
+        profileItem.addEventListener("focusin", showMenu);
+        profileItem.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (!profileItem.contains(document.activeElement)) {
+              hideMenu();
+            }
+          }, 0);
+        });
+      }
+
+      enhanceProfileHoverMenu();
+    })();
+  </script>
+</body>
+</html>

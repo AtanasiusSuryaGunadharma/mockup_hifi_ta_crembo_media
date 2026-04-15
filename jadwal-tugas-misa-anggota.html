@@ -1,0 +1,989 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jadwal Tugas Misa Biasa/Misa Besar - Anggota</title>
+  <style>
+    :root {
+      --bg: #edf1f8;
+      --surface: #ffffff;
+      --line: #d8dee9;
+      --ink: #111827;
+      --muted: #5b6473;
+      --blue-1: #202020;
+      --blue-2: #2d2d2d;
+      --blue-3: #141414;
+      --radius: 14px;
+      --soft-shadow: 0 8px 24px rgba(27, 43, 94, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px 1fr;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, var(--blue-1) 0%, var(--blue-2) 52%, var(--blue-3) 100%);
+      color: #f8fbff;
+      padding: 14px 12px 16px;
+      border-right: 1px solid #26408f;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar > * { margin-bottom: 12px; }
+    .sidebar > *:last-child { margin-bottom: 0; }
+
+    .brand {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .brand strong { font-size: 1rem; }
+    .brand small { font-size: 0.79rem; color: #dbe7ff; }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 10px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .account-text { min-width: 0; display: grid; gap: 2px; }
+    .account-text strong { font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .account-text small { color: #d8e4ff; font-size: 0.76rem; }
+
+    .menu-group {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .menu-toggle {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #f8fbff;
+      padding: 10px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.83rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .menu-toggle:hover { background: rgba(255, 255, 255, 0.1); }
+
+    .menu-items {
+      display: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 6px;
+    }
+
+    .menu-group.open .menu-items { display: block; }
+
+    .menu-link {
+      display: block;
+      text-decoration: none;
+      color: #eaf1ff;
+      border-radius: 9px;
+      padding: 7px 9px;
+      font-size: 0.79rem;
+      border: 1px solid transparent;
+      margin-bottom: 4px;
+    }
+
+    .menu-link:hover {
+      border-color: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .menu-link.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.55);
+      font-weight: 700;
+    }
+
+    .side-bottom { margin-top: 16px; display: grid; gap: 8px; }
+
+    .side-action {
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 10px;
+      color: #f8fbff;
+      text-align: center;
+      padding: 8px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .main { min-width: 0; }
+
+    .header {
+      height: 66px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header h1 { margin: 0; font-size: 1.05rem; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #374151;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fff;
+      padding: 5px 9px;
+      font-size: 0.8rem;
+    }
+
+    .home-globe {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #9ca3af;
+      background: #fff;
+      text-decoration: none;
+      color: #374151;
+    }
+
+    .home-globe svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .home-globe:hover { background: #eef2f7; }
+
+    .content {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+      box-shadow: var(--soft-shadow);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hero h2 { margin: 0; font-size: 1.25rem; }
+    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 0.88rem; }
+
+    .chip {
+      display: inline-block;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      color: #374151;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--soft-shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2 { margin: 0; font-size: 1.05rem; }
+
+    .panel-body { padding: 12px; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      border: 1px solid #c8d2df;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: #fff;
+      color: #1f2937;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(180deg, #4b5563 0%, #1f2937 100%);
+      color: #fff;
+      border-color: #1f2937;
+    }
+
+    .range-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .range-select {
+      border: 1px solid #c8d2df;
+      border-radius: 999px;
+      background: #fff;
+      padding: 7px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .month-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .month-tools select {
+      border: 1px solid #c8d2df;
+      border-radius: 999px;
+      background: #fff;
+      padding: 7px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .day-card {
+      border: 1px solid #dbe2ef;
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      background: #fbfdff;
+    }
+
+    .day-card h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.35;
+    }
+
+    .day-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    .day-card.blocked {
+      background: #f1f1f1;
+      border-style: dashed;
+    }
+
+    .schedule-card {
+      border: 1px solid #dbe2ef;
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      background: #fbfdff;
+    }
+
+    .schedule-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+
+    .schedule-card p { margin: 0; color: var(--muted); font-size: 0.84rem; }
+
+    .schedule-meta {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: #64748b;
+      font-size: 0.77rem;
+    }
+
+    .schedule-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      border-radius: 999px;
+      border: 1px solid #d3dae6;
+      background: #f8fafc;
+      color: #475569;
+      padding: 3px 8px;
+      width: fit-content;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #4b5563 0%, #1f2937 100%);
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 13px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn.ghost {
+      border: 1px solid #aeb9c8;
+      background: #fff;
+      color: #1f2937;
+    }
+
+    .btn.disabled {
+      background: #d1d5db;
+      color: #6b7280;
+      border: 1px solid #c4cad4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .summary-tools {
+      padding: 0 12px 12px;
+    }
+
+    .summary-search {
+      width: min(360px, 100%);
+      border: 1px solid #c8d2df;
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px 10px;
+      font-size: 0.84rem;
+      color: #1f2937;
+    }
+
+    .table-wrap {
+      padding: 12px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #e5e9f2;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 0.73rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: #f8fafc;
+    }
+
+    .status-ok {
+      display: inline-block;
+      font-size: 0.73rem;
+      color: #166534;
+      border: 1px solid #8bdb9f;
+      background: #ebf9ef;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 700;
+    }
+
+    .status-wait {
+      display: inline-block;
+      font-size: 0.73rem;
+      color: #8a6d00;
+      border: 1px solid #f0d978;
+      background: #fff9df;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 700;
+    }
+
+    .note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        top: 66px;
+        left: 0;
+        width: 292px;
+        height: calc(100vh - 66px);
+        display: none;
+        z-index: 20;
+      }
+      .sidebar.show { display: block; }
+      .mobile-menu { display: inline-block; }
+      .schedule-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Sidebar anggota">
+      <div class="brand">
+        <strong>CREMBO - Portal Anggota</strong>
+        <small>Jadwal tugas misa biasa / misa besar</small>
+      </div>
+
+      <div class="account">
+        <div class="avatar">AG</div>
+        <div class="account-text">
+          <strong id="memberName">Atanasius Surya Guna</strong>
+          <small>Role: Anggota Multimedia</small>
+        </div>
+      </div>
+
+      <div class="menu-group open">
+        <button class="menu-toggle" type="button">Dashboard Utama <span>-</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="dashboard-anggota.html?role=anggota">Ringkasan Dashboard</a>
+          <a class="menu-link" href="profil-anggota.html">Profil Saya</a>
+          <a class="menu-link" href="#">Log Aktivitas Saya</a>
+        </div>
+      </div>
+
+      <div class="menu-group open">
+        <button class="menu-toggle" type="button">Tugas Streaming / Multimedia <span>-</span></button>
+        <div class="menu-items">
+          <a class="menu-link active" href="jadwal-tugas-misa-anggota.html">Jadwal Tugas Misa Biasa/Misa Besar</a>
+          <a class="menu-link" href="request-tugas-anggota.html">Request Tugas Anggota</a>
+          <a class="menu-link" href="pembatalan-tugas-anggota.html">Pembatalan Tugas (maks H-3)</a>
+          <a class="menu-link" href="penukaran-jadwal-tugas-anggota.html">Penukaran Jadwal Tugas</a>
+          <a class="menu-link" href="riwayat-tugas-saya.html">Riwayat Tugas Saya</a>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Monitoring Kewajiban Tugas <span>+</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="monitoring-kewajiban-tugas-anggota.html">Monitoring Kewajiban Tugas</a>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Peminjaman Barang <span>+</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="#">Daftar Barang Dapat Dipinjam</a>
+          <a class="menu-link" href="#">Pengajuan Peminjaman</a>
+          <a class="menu-link" href="#">Status Pengajuan</a>
+          <a class="menu-link" href="#">Input Pengambilan Barang</a>
+          <a class="menu-link" href="#">Input Pengembalian Barang</a>
+          <a class="menu-link" href="#">Pembatalan Pengajuan</a>
+          <a class="menu-link" href="#">Riwayat Peminjaman Saya</a>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Kegiatan & Informasi <span>+</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="#">Form Pendaftaran Kegiatan</a>
+          <a class="menu-link" href="#">Status Pendaftaran</a>
+          <a class="menu-link" href="#">Agenda Kegiatan Aktif</a>
+          <a class="menu-link" href="#">Pengumuman Aktif</a>
+          <a class="menu-link" href="#">Detail Agenda / Pengumuman</a>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Evaluasi & Notifikasi <span>+</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="#">Notifikasi Pengingat Tugas</a>
+          <a class="menu-link" href="#">Notifikasi Tukar Jadwal</a>
+          <a class="menu-link" href="#">Notifikasi Peminjaman</a>
+          <a class="menu-link" href="#">Notifikasi Agenda/Pengumuman</a>
+          <a class="menu-link" href="#">Notifikasi Status Keanggotaan</a>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Akun & Keanggotaan <span>+</span></button>
+        <div class="menu-items">
+          <a class="menu-link" href="profil-anggota.html">Profil Anggota (Semua Pengaturan)</a>
+          <a class="menu-link" href="sertifikat-anggota.html">Unduh Sertifikat Anggota</a>
+        </div>
+      </div>
+
+      <div class="side-bottom">
+        <a class="side-action" href="home.html?session=active">Kembali ke Home (Tetap Login)</a>
+        <a class="side-action" href="login.html">Keluar</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <h1>Jadwal Tugas Misa Biasa/Misa Besar</h1>
+        <div class="header-right">
+          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+          <span id="liveDateTime">-</span>
+          <a class="home-globe" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="hero">
+          <div>
+            <h2>View Jadwal Anggota</h2>
+            <p>Lihat jadwal tugas misa biasa selama satu bulan dan jadwal misa besar khusus untuk anggota panel.</p>
+          </div>
+          <span class="chip">Panel Anggota</span>
+        </section>
+
+        <section class="panel">
+          <header class="panel-head">
+            <h2>Daftar Jadwal</h2>
+            <div class="range-tools">
+              <div class="tabs" role="tablist" aria-label="Jenis jadwal">
+                <button id="biasaTab" class="tab-btn active" type="button">Misa Biasa</button>
+                <button id="besarTab" class="tab-btn" type="button">Misa Besar</button>
+              </div>
+              <div class="month-tools" aria-label="Pemilih bulan dan tahun">
+                <select id="monthSelect" class="range-select">
+                  <option value="0">Januari</option>
+                  <option value="1">Februari</option>
+                  <option value="2">Maret</option>
+                  <option value="3" selected>April</option>
+                  <option value="4">Mei</option>
+                  <option value="5">Juni</option>
+                  <option value="6">Juli</option>
+                  <option value="7">Agustus</option>
+                  <option value="8">September</option>
+                  <option value="9">Oktober</option>
+                  <option value="10">November</option>
+                  <option value="11">Desember</option>
+                </select>
+                <select id="yearSelect" class="range-select">
+                  <option selected>2026</option>
+                  <option>2027</option>
+                </select>
+              </div>
+            </div>
+          </header>
+          <div class="panel-body">
+            <p class="note">Jadwal yang ditampilkan berupa dummy interaktif selama satu bulan untuk misa biasa, sedangkan misa besar menampilkan sesi khusus hari raya.</p>
+            <div id="scheduleGrid" class="schedule-grid"></div>
+            <div class="btn-row">
+              <a class="btn" href="request-tugas-anggota.html">Buka Request Tugas</a>
+              <a class="btn ghost" href="dashboard-anggota.html?role=anggota">Kembali ke Dashboard</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <header class="panel-head">
+            <h2>Ringkasan Jadwal</h2>
+            <span class="chip">Terpisah dari Request</span>
+          </header>
+          <div class="summary-tools">
+            <input id="summarySearch" class="summary-search" type="search" placeholder="Cari jadwal, jam, role, atau nama petugas..." aria-label="Cari ringkasan jadwal">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Jenis</th>
+                  <th>Jadwal</th>
+                  <th>Jam</th>
+                  <th>Petugas Terdaftar</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="summaryRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const memberName = document.getElementById("memberName");
+    const biasaTab = document.getElementById("biasaTab");
+    const besarTab = document.getElementById("besarTab");
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+    const scheduleGrid = document.getElementById("scheduleGrid");
+    const summaryRows = document.getElementById("summaryRows");
+    const summarySearch = document.getElementById("summarySearch");
+
+    let activeJenis = "biasa";
+
+    function safeParse(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function getDaysInMonth(year, monthIndex) {
+      return new Date(year, monthIndex + 1, 0).getDate();
+    }
+
+    function getSelectedMonthYear() {
+      return {
+        monthIndex: Number(monthSelect.value),
+        year: Number(yearSelect.value)
+      };
+    }
+
+    function formatMonthLabel(monthIndex, year) {
+      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      return monthNames[monthIndex] + " " + year;
+    }
+
+    function buildMonthlyRegularSchedule() {
+      const monthYear = getSelectedMonthYear();
+      const totalDays = getDaysInMonth(monthYear.year, monthYear.monthIndex);
+      const blockedDays = [10, 18, 26];
+      const operatorNames = ["Rikha", "Jeni", "Tyas", "Lisa", "Evan", "Jose", "Asha", "Kanes", "Claire", "Rossa", "Aurel", "Belinda"];
+      const cameramenNames = ["Deva", "Vio", "Reva", "Arya", "Nadia", "Panji", "Wima", "Bian", "Florencia", "Niko", "Ketrin", "Arun"];
+      const supervisorNames = ["Tyas", "Evan", "Asha", "Luciana", "Stella", "Panji", "Arya", "Rafael", "Aurel", "Dhani", "Belinda", "Kane"];
+
+      const list = [];
+      for (let day = 1; day <= totalDays; day += 1) {
+        const date = new Date(monthYear.year, monthYear.monthIndex, day);
+        const dayName = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][date.getDay()];
+        const isBlocked = blockedDays.includes(day) || date.getDay() === 0;
+        const operator = operatorNames[day % operatorNames.length];
+        const cameramen = cameramenNames[day % cameramenNames.length];
+        const supervisor = supervisorNames[day % supervisorNames.length];
+        const fullByPattern = day % 5 === 0 || day % 8 === 0;
+        const assignments = isBlocked
+          ? { operator: "-", cameramen: "-", supervisor: "-" }
+          : (fullByPattern
+            ? { operator: operator, cameramen: cameramen, supervisor: supervisor }
+            : {
+                operator: day % 3 === 0 ? "-" : operator,
+                cameramen: day % 4 === 0 ? "-" : cameramen,
+                supervisor: day % 6 === 0 ? "-" : supervisor
+              });
+        const isFull = !isBlocked && assignments.operator !== "-" && assignments.cameramen !== "-" && assignments.supervisor !== "-";
+        const isOpen = !isBlocked && !isFull;
+        list.push({
+          day: day,
+          title: day === 1 ? "Misa Awal Bulan" : (day === totalDays ? "Misa Akhir Bulan" : "Misa Harian"),
+          schedule: String(day).padStart(2, "0") + " " + formatMonthLabel(monthYear.monthIndex, monthYear.year),
+          dayName: dayName,
+          time: isBlocked ? "-" : "18:00",
+          role: "Operator, Kameramen, Supervisor",
+          status: isBlocked ? "Tertutup" : (isFull ? "Tertutup" : "Terbuka"),
+          blocked: isBlocked,
+          isOpen: isOpen,
+          operator: assignments.operator,
+          cameramen: assignments.cameramen,
+          supervisor: assignments.supervisor
+        });
+      }
+      return list;
+    }
+
+    function getSpecialEvents() {
+      const monthYear = getSelectedMonthYear();
+      return [
+        { title: "Misa Minggu Palma", date: "10 " + formatMonthLabel(monthYear.monthIndex, monthYear.year), sessions: [
+          { label: "Misa 1", time: "07:30", operator: "Ketrin, Deva", cameramen: "Jeni, Rikha, Jose", supervisor: "Nadia, Luciana Tyas", status: "Tertutup" },
+          { label: "Misa 2", time: "16:30", operator: "Vio, Oly", cameramen: "Reva, Kane, Arya", supervisor: "Evan, There, Panji", status: "Tertutup" }
+        ] },
+        { title: "Misa Kamis Putih", date: "18 " + formatMonthLabel(monthYear.monthIndex, monthYear.year), sessions: [
+          { label: "Misa 1", time: "17:00", operator: "Bian, Belinda", cameramen: "Lisa, Reva, Vio", supervisor: "Panji, Arya, Evan", status: "Tertutup" },
+          { label: "Misa 2", time: "19:30", operator: "Tita, Rossa", cameramen: "Chessa, Rikha, Jeni", supervisor: "Stella, Arya, Bolun", status: "Tertutup" }
+        ] },
+        { title: "Misa Malam Paskah", date: "04 " + formatMonthLabel(monthYear.monthIndex, monthYear.year), sessions: [
+          { label: "Misa 1", time: "17:00", operator: "Niko, Vio", cameramen: "Dhani, Evan, Bian", supervisor: "Panji, There, Arya", status: "Tertutup" },
+          { label: "Misa 2", time: "20:30", operator: "Pria, Asha", cameramen: "Wima, Rafael, Nadia", supervisor: "Panji, Egi, Tyas", status: "Tertutup" }
+        ] }
+      ];
+    }
+
+    function requestActionButton(isOpen, jenis) {
+      if (!isOpen) {
+        return '<button class="btn disabled" type="button">Slot Penuh / Ditutup</button>';
+      }
+      return '<a class="btn" href="request-tugas-anggota.html?jenis=' + jenis + '">Request Tugas</a>';
+    }
+
+    function buildPetugasText(item) {
+      return 'Operator: ' + item.operator + '<br>Kameramen: ' + item.cameramen + '<br>Supervisor: ' + item.supervisor;
+    }
+
+    function renderSchedules() {
+      if (activeJenis === "biasa") {
+        const list = buildMonthlyRegularSchedule();
+        scheduleGrid.innerHTML = list.map(function (item) {
+          const cardClass = item.blocked ? "day-card blocked" : "day-card";
+          return '<article class="' + cardClass + '">'
+            + '<span class="schedule-pill">' + (item.blocked ? "Diblok / Hari Raya" : "Misa Biasa") + '</span>'
+            + '<h3>' + item.dayName + ', ' + String(item.day).padStart(2, "0") + '</h3>'
+            + '<p>' + item.title + ' - ' + item.schedule + '</p>'
+            + '<div class="schedule-meta">'
+            + '<span>Jam: ' + item.time + '</span>'
+            + '<span>Status: ' + item.status + '</span>'
+            + '</div>'
+            + '<p><strong>Operator:</strong> ' + item.operator + '<br><strong>Kameramen:</strong> ' + item.cameramen + '<br><strong>Supervisor:</strong> ' + item.supervisor + '</p>'
+            + requestActionButton(item.isOpen, "biasa")
+            + '</article>';
+        }).join("");
+      } else {
+        const events = getSpecialEvents();
+        scheduleGrid.innerHTML = events.map(function (event) {
+          const sessionHtml = event.sessions.map(function (session) {
+            return '<div class="session">'
+              + '<h4>' + session.label + ' - Jam ' + session.time + '</h4>'
+              + '<p><strong>Operator:</strong> ' + session.operator + '<br><strong>Kameramen:</strong> ' + session.cameramen + '<br><strong>Supervisor:</strong> ' + session.supervisor + '</p>'
+              + '<p class="note">Status: ' + session.status + '</p>'
+              + '</div>';
+          }).join("");
+          return '<article class="schedule-card">'
+            + '<span class="schedule-pill">Misa Besar</span>'
+            + '<h3>' + event.title + '</h3>'
+            + '<p>' + event.date + '</p>'
+            + '<div class="schedule-meta">'
+            + '<span>Sesi: ' + event.sessions.length + '</span>'
+            + '<span>Status: Tertutup</span>'
+            + '</div>'
+            + sessionHtml
+            + requestActionButton(false, "besar")
+            + '</article>';
+        }).join("");
+      }
+
+      if (!scheduleGrid.innerHTML.trim()) {
+        scheduleGrid.innerHTML = '<div class="schedule-card"><h3>Tidak ada jadwal pada bulan ini.</h3><p>Coba ubah bulan atau tahun yang dipilih.</p></div>';
+      }
+    }
+
+    function renderSummary() {
+      const keyword = summarySearch.value.trim().toLowerCase();
+
+      if (activeJenis === "biasa") {
+        const rows = buildMonthlyRegularSchedule().filter(function (item) {
+          const text = [
+            "misa biasa",
+            item.title,
+            item.schedule,
+            item.time,
+            item.operator,
+            item.cameramen,
+            item.supervisor,
+            item.status
+          ].join(" ").toLowerCase();
+          return !keyword || text.includes(keyword);
+        });
+        summaryRows.innerHTML = rows.map(function (item) {
+          return '<tr>'
+            + '<td>Misa Biasa</td>'
+            + '<td>' + item.title + ' - ' + item.schedule + '</td>'
+            + '<td>' + item.time + '</td>'
+            + '<td>' + buildPetugasText(item) + '</td>'
+            + '<td><span class="' + (item.status === 'Tertutup' ? 'status-wait' : 'status-ok') + '">' + item.status + '</span></td>'
+            + '</tr>';
+        }).join("");
+      } else {
+        const events = getSpecialEvents();
+        const rows = events.flatMap(function (event) {
+          return event.sessions.map(function (session) {
+            return {
+              jenis: "Misa Besar",
+              jadwal: event.title + ' - ' + event.date + ' - ' + session.label,
+              jam: session.time,
+              petugas: 'Operator: ' + session.operator + '<br>Kameramen: ' + session.cameramen + '<br>Supervisor: ' + session.supervisor,
+              status: session.status
+            };
+          });
+        }).filter(function (item) {
+          const text = [item.jenis, item.jadwal, item.jam, item.petugas, item.status].join(" ").toLowerCase();
+          return !keyword || text.includes(keyword);
+        });
+
+        summaryRows.innerHTML = rows.map(function (item) {
+          return '<tr>'
+            + '<td>' + item.jenis + '</td>'
+            + '<td>' + item.jadwal + '</td>'
+            + '<td>' + item.jam + '</td>'
+            + '<td>' + item.petugas + '</td>'
+            + '<td><span class="status-wait">' + item.status + '</span></td>'
+            + '</tr>';
+        }).join("");
+      }
+
+      if (!summaryRows.innerHTML.trim()) {
+        summaryRows.innerHTML = '<tr><td colspan="5">Tidak ada jadwal yang cocok dengan pencarian.</td></tr>';
+      }
+    }
+
+    function setActiveJenis(jenis) {
+      activeJenis = jenis;
+      biasaTab.classList.toggle("active", jenis === "biasa");
+      besarTab.classList.toggle("active", jenis === "besar");
+      renderSchedules();
+      renderSummary();
+    }
+
+    const sessionRaw = localStorage.getItem("crembo-login-session");
+    if (sessionRaw) {
+      try {
+        const session = safeParse(sessionRaw);
+        if (session && session.fullName) {
+          memberName.textContent = session.fullName;
+        }
+      } catch (error) {
+      }
+    }
+
+    biasaTab.addEventListener("click", function () {
+      setActiveJenis("biasa");
+    });
+
+    besarTab.addEventListener("click", function () {
+      setActiveJenis("besar");
+    });
+
+    monthSelect.addEventListener("change", function () {
+      renderSchedules();
+      renderSummary();
+    });
+
+    yearSelect.addEventListener("change", function () {
+      renderSchedules();
+      renderSummary();
+    });
+
+    summarySearch.addEventListener("input", function () {
+      renderSummary();
+    });
+
+    document.querySelectorAll(".menu-toggle").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const group = button.closest(".menu-group");
+        group.classList.toggle("open");
+        const mark = button.querySelector("span");
+        mark.textContent = group.classList.contains("open") ? "-" : "+";
+      });
+    });
+
+    mobileMenuBtn.addEventListener("click", function () {
+      sidebar.classList.toggle("show");
+    });
+
+    function updateLiveDateTime() {
+      const now = new Date();
+      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+      const day = dayNames[now.getDay()];
+      const date = String(now.getDate()).padStart(2, "0");
+      const month = monthNames[now.getMonth()];
+      const year = now.getFullYear();
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+      document.getElementById("liveDateTime").textContent = day + ", " + date + " " + month + " " + year + " " + hour + ":" + minute + ":" + second;
+    }
+
+    setActiveJenis("biasa");
+    updateLiveDateTime();
+    setInterval(updateLiveDateTime, 1000);
+  </script>
+</body>
+</html>
