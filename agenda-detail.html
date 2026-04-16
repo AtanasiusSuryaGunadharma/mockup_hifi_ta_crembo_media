@@ -1,361 +1,405 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Detail Agenda - Wireframe</title>
-  <style>
-    :root {
-      --bg: #f2f2f2;
-      --surface: #ffffff;
-      --ink: #141414;
-      --muted: #666666;
-      --line: #202020;
-      --line-soft: #c4c4c4;
-      --hover: #ececec;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.45; }
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(1140px, 94vw); margin: 0 auto; }
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Detail Agenda - Crembo Media</title>
+	<meta name="description" content="Detail agenda dan kegiatan komunitas Crew Multimedia Baciro.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--primary: #800000; --primary-dark: #5c0000; --primary-deeper: #3a0000; --primary-light: #a52a2a;
+			--accent-gold: #d4a017; --accent-gold-light: #f0c040;
+			--bg: #faf8f6; --surface: #ffffff; --ink: #1a1a1a; --ink-secondary: #4a4a4a; --muted: #7a7a7a;
+			--line: rgba(128,0,0,0.15); --line-soft: rgba(128,0,0,0.08); --hover: rgba(128,0,0,0.04);
+			--shadow-sm: 0 1px 3px rgba(128,0,0,0.06); --shadow-md: 0 4px 14px rgba(128,0,0,0.08);
+			--shadow-lg: 0 10px 30px rgba(128,0,0,0.12);
+			--radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+			--transition: 0.3s cubic-bezier(0.4,0,0.2,1); --header-h: 104px;
+		}
+		* { box-sizing: border-box; }
+		body { margin: 0; font-family: 'Inter',-apple-system,sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+		a { color: inherit; text-decoration: none; transition: var(--transition); }
+		.container { width: min(1200px, 92vw); margin: 0 auto; }
 
-    .top-header { border-bottom: 2px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 1200; }
-    .top-header .container { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; padding: 14px 0; }
-    .logo-box { width: 86px; height: 86px; border: 2px solid var(--line); display: grid; place-items: center; background: #fff; padding: 6px; }
-    .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(100%); }
-    .brand h1 { margin: 0; font-size: clamp(1.3rem, 2.7vw, 1.9rem); text-transform: uppercase; letter-spacing: 0.35px; }
-    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+		.top-header { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 40%, var(--primary-light) 100%); position: sticky; top: 0; z-index: 1200; box-shadow: 0 4px 20px rgba(128,0,0,0.3); }
+		.top-header .container { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; padding: 16px 0; }
+		.logo-box { width: 72px; height: 72px; display: grid; place-items: center; padding: 4px; background: rgba(255,255,255,0.1); border-radius: var(--radius-md); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: var(--transition); }
+		.logo-box:hover { background: rgba(255,255,255,0.18); }
+		.logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+		.brand h1 { margin: 0; font-size: clamp(1.4rem, 2.8vw, 2rem); text-transform: uppercase; letter-spacing: 0.5px; color: #fff; font-weight: 800; }
+		.brand p { margin: 4px 0 0; color: rgba(255,255,255,0.75); font-size: 0.88rem; }
+		.nav-wrap { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: var(--header-h); z-index: 1150; box-shadow: var(--shadow-sm); }
+		.nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+		nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; flex-wrap: wrap; }
+		nav a { display: inline-block; padding: 8px 14px; font-size: 0.9rem; font-weight: 500; border-radius: var(--radius-sm); color: var(--ink-secondary); transition: var(--transition); position: relative; }
+		nav a:hover { color: var(--primary); background: var(--hover); }
+		nav a.active { color: var(--primary); font-weight: 700; }
+		nav a.active::after { content: ""; position: absolute; bottom: 2px; left: 14px; right: 14px; height: 2px; background: var(--primary); border-radius: 999px; }
+		.right-tools { display: flex; align-items: center; gap: 10px; }
+		.search { display: flex; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); overflow: hidden; }
+		.search:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(128,0,0,0.1); }
+		.search input { border: 0; outline: none; padding: 8px 16px; width: clamp(130px,16vw,180px); font-size: 0.88rem; background: transparent; font-family: inherit; }
+		.search button { border: 0; background: var(--primary); color: #fff; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+		.search button:hover { background: var(--primary-dark); }
+		.btn-login { border: 1.5px solid var(--primary); background: transparent; color: var(--primary); padding: 8px 18px; font-size: 0.88rem; font-weight: 600; border-radius: 999px; cursor: pointer; font-family: inherit; transition: var(--transition); }
+		.btn-login:hover { background: var(--primary); color: #fff; }
 
-    .nav-wrap { background: var(--surface); border-bottom: 2px solid var(--line); position: sticky; top: var(--header-h, 118px); z-index: 1150; }
-    .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
-    nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
-    nav a { display: inline-block; padding: 8px 10px; border: 1px solid transparent; font-size: 0.94rem; }
-    nav a:hover, nav a:focus-visible, nav a.active { border-color: var(--line-soft); background: var(--hover); outline: none; }
+		/* HERO BANNER */
+		.hero {
+			min-height: 280px;
+			position: relative;
+			display: grid;
+			place-items: center;
+			text-align: center;
+			padding: 60px 20px;
+			overflow: hidden;
+			isolation: isolate;
+			background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 50%, var(--primary-light) 100%);
+		}
+		.hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; opacity: 0.15; z-index: -1; }
+		.badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 999px; padding: 5px 16px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; backdrop-filter: blur(8px); margin-bottom: 12px; }
+		.hero h2 { margin: 0; color: #fff; font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 800; text-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+		.hero-meta { margin-top: 10px; color: rgba(255,255,255,0.75); font-size: 0.9rem; }
 
-    .right-tools { display: flex; align-items: center; gap: 8px; }
-    .search { display: flex; border: 1px solid var(--line); background: #fff; }
-    .search input { border: 0; outline: none; padding: 8px 10px; width: clamp(130px, 17vw, 180px); font-size: 0.9rem; background: transparent; }
-    .search button, .btn-login, .btn, .btn-primary { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 8px 12px; font-size: 0.9rem; cursor: pointer; }
-    .search button:hover, .btn-login:hover, .btn:hover, .btn-primary:hover { background: var(--hover); }
-    .btn-primary { background: #121212; color: #fff; border-color: #121212; }
-    .btn-primary:hover { background: #2c2c2c; }
+		/* BREADCRUMB */
+		.breadcrumb-wrap { background: var(--surface); border-bottom: 1px solid var(--line-soft); }
+		.breadcrumb { margin: 0; padding: 12px 0; list-style: none; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); }
+		.breadcrumb li + li::before { content: "/"; margin-right: 8px; color: var(--line); }
+		.breadcrumb a:hover { color: var(--primary); }
+		.breadcrumb [aria-current] { color: var(--primary); font-weight: 600; }
 
-    .hero { min-height: 255px; position: relative; display: grid; place-items: center; text-align: center; padding: 20px 16px; border-bottom: 2px solid var(--line); overflow: hidden; isolation: isolate; }
-    .hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; filter: grayscale(100%); z-index: -2; }
-    .hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.52); z-index: -1; }
-    .badge { display: inline-block; border: 1px solid #d7d7d7; background: rgba(255,255,255,0.18); color: #fff; border-radius: 999px; padding: 4px 12px; font-size: 0.84rem; }
-    .hero h2 { margin: 10px 0 0; color: #fff; font-size: clamp(1.8rem, 4.2vw, 3rem); text-shadow: 0 2px 6px rgba(0,0,0,.45); }
-    .hero-meta { margin-top: 8px; color: #e8e8e8; font-size: .9rem; }
+		/* CONTENT */
+		.page-content { padding: 32px 0 48px; }
+		.detail-layout { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
 
-    .breadcrumb-wrap { border-bottom: 1px solid var(--line-soft); background: #fafafa; }
-    .breadcrumb { margin: 0; padding: 11px 0; list-style: none; display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.88rem; color: #545454; }
-    .breadcrumb li + li::before { content: "/"; margin-right: 10px; color: #8a8a8a; }
+		/* Article card */
+		.article-card {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			padding: 32px;
+			position: relative;
+			overflow: hidden;
+			animation: fadeInUp 0.5s ease both;
+		}
+		.article-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
 
-    .content { padding: 24px 0 34px; }
-    .grid { display: grid; grid-template-columns: 1.7fr .85fr; gap: 16px; align-items: start; }
-    .article-card, .side-card { border: 2px solid var(--line); background: #fff; padding: 14px; }
-    .article-card h3 { margin: 0 0 10px; font-size: clamp(1.3rem, 2.3vw, 1.8rem); }
-    .hero-image { min-height: 260px; border: 1px solid var(--line-soft); margin-bottom: 12px; background: repeating-linear-gradient(135deg,#f8f8f8,#f8f8f8 12px,#efefef 12px,#efefef 24px); display: grid; place-items: center; color: #666; }
-    .article-card p { margin: 0 0 12px; font-size: 0.95rem; color: #3f3f3f; text-align: justify; }
-    .inline-image { min-height: 200px; border: 1px solid var(--line-soft); background: repeating-linear-gradient(135deg,#f8f8f8,#f8f8f8 12px,#efefef 12px,#efefef 24px); display: grid; place-items: center; margin: 6px 0 12px; color: #666; }
-    .source { font-size: .86rem; color: #555; }
+		.article-card h3 { margin: 0 0 20px; font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 800; color: var(--ink); padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); }
 
-    .side-card + .side-card { margin-top: 12px; }
-    .side-card h4 { margin: 0 0 10px; font-size: 1rem; }
-    .detail-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .9rem; color: #404040; }
-    .detail-list strong { display: inline-block; min-width: 66px; }
-    .lampiran-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
-    .lampiran-item { border: 1px solid #d5d5d5; background: #f8f8f8; padding: 8px; font-size: .84rem; color: #545454; overflow-wrap: anywhere; }
-    .register-btn { width: 100%; margin-top: 8px; text-align: center; }
+		.hero-image {
+			width: 100%;
+			height: 260px;
+			border-radius: var(--radius-md);
+			background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 60%, var(--primary-light) 100%);
+			display: grid;
+			place-items: center;
+			color: rgba(255,255,255,0.4);
+			font-size: 0.85rem;
+			margin-bottom: 24px;
+			overflow: hidden;
+		}
 
-    .back-wrap { margin-top: 14px; }
+		.article-card p { margin: 0 0 16px; font-size: 0.96rem; color: var(--ink-secondary); line-height: 1.85; text-align: justify; }
 
-    .footer { border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%); margin-top: 10px; color: #2e2e2e; }
-    .footer-main { padding: 20px 0 14px; }
-    .footer-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 16px; }
-    .footer-col { border: 1px solid #bdbdbd; background: #fff; padding: 13px; }
-    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-    .footer-logo { width: 50px; height: 50px; object-fit: contain; filter: grayscale(100%); border: 1px solid #222; padding: 4px; background: #fff; }
-    .footer-title { margin: 0; font-size: 0.98rem; }
-    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
-    .contact-list, .social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 0.9rem; }
-    .contact-list strong { display: inline-block; min-width: 70px; }
-    .social-item { display: flex; gap: 9px; align-items: center; }
-    .social-dot { width: 25px; height: 25px; border-radius: 999px; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; border: 1px solid #222; background: #f4f4f4; }
-    .footer-bottom { border-top: 1px solid #bebebe; padding: 10px 0 14px; text-align: center; font-size: 0.84rem; color: #5c5c5c; }
+		.inline-image {
+			width: 100%;
+			height: 200px;
+			border-radius: var(--radius-md);
+			background: linear-gradient(135deg, rgba(128,0,0,0.08) 0%, rgba(128,0,0,0.04) 100%);
+			border: 1px solid var(--line-soft);
+			display: grid;
+			place-items: center;
+			color: var(--muted);
+			font-size: 0.85rem;
+			margin: 8px 0 16px;
+		}
 
-    @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 760px) {
-      .top-header .container { grid-template-columns: 1fr; text-align: center; }
-      .logo-box { margin: 0 auto; }
-      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
-      .search { flex: 1 1 230px; }
-      .search input { width: 100%; }
-    }
-  </style>
+		.source { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-top: 8px !important; }
+		.back-wrap { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line-soft); }
+
+		.btn-ghost { border: 1.5px solid var(--line); background: transparent; color: var(--ink-secondary); padding: 9px 20px; font-size: 0.85rem; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; }
+		.btn-ghost:hover { border-color: var(--primary); color: var(--primary); background: var(--hover); }
+
+		/* Sidebar */
+		.sidebar { display: grid; gap: 20px; }
+
+		.side-card {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			padding: 24px;
+			position: relative;
+			overflow: hidden;
+			animation: fadeInUp 0.5s ease 0.1s both;
+		}
+		.side-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
+		.side-card h4 { margin: 0 0 16px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); }
+
+		.detail-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+		.detail-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--ink-secondary); padding-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+		.detail-list li:last-child { border-bottom: none; padding-bottom: 0; }
+		.detail-list strong { min-width: 70px; color: var(--primary-dark); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.3px; }
+
+		.btn-primary {
+			display: block;
+			text-align: center;
+			border: none;
+			background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+			color: #fff;
+			padding: 12px 20px;
+			font-size: 0.9rem;
+			font-weight: 700;
+			border-radius: var(--radius-md);
+			cursor: pointer;
+			font-family: inherit;
+			transition: var(--transition);
+			margin-top: 16px;
+			box-shadow: 0 4px 12px rgba(128,0,0,0.25);
+			letter-spacing: 0.3px;
+		}
+		.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(128,0,0,0.35); }
+
+		.lampiran-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+		.lampiran-item {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 10px 14px;
+			background: var(--bg);
+			border: 1px solid var(--line-soft);
+			border-radius: var(--radius-sm);
+			font-size: 0.82rem;
+			color: var(--ink-secondary);
+			overflow-wrap: anywhere;
+			transition: var(--transition);
+		}
+		.lampiran-item:hover { border-color: var(--primary); color: var(--primary); background: var(--hover); }
+		.lampiran-icon { width: 28px; height: 28px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 0.65rem; flex-shrink: 0; }
+
+		/* FOOTER */
+		.footer { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 60%, var(--primary-dark) 100%); margin-top: 48px; color: rgba(255,255,255,0.85); position: relative; overflow: hidden; }
+		.footer::before { content: ""; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,0.03); pointer-events: none; }
+		.footer-main { padding: 40px 0 28px; position: relative; z-index: 1; }
+		.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 30px; }
+		.footer-col { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); padding: 24px; border-radius: var(--radius-md); transition: var(--transition); }
+		.footer-col:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+		.footer-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+		.footer-logo { width: 56px; height: 56px; object-fit: contain; border: 1px solid rgba(255,255,255,0.2); padding: 6px; background: rgba(255,255,255,0.08); border-radius: var(--radius-sm); }
+		.footer-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: #fff; }
+		.footer-sub { margin: 3px 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+		.contact-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 0.9rem; }
+		.contact-list li { color: rgba(255,255,255,0.8); display: flex; gap: 8px; }
+		.contact-list strong { display: inline-block; min-width: 70px; color: var(--accent-gold-light); font-weight: 600; }
+		.social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 0.9rem; }
+		.social-item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.8); transition: var(--transition); padding: 4px 0; }
+		.social-item:hover { color: #fff; }
+		.social-dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(212,160,23,0.4); background: rgba(212,160,23,0.15); color: var(--accent-gold-light); transition: var(--transition); }
+		.social-item:hover .social-dot { background: rgba(212,160,23,0.3); transform: scale(1.1); }
+		.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 16px 0 20px; text-align: center; font-size: 0.84rem; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+
+		@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+		@media (max-width: 980px) { .detail-layout { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr; } }
+		@media (max-width: 760px) { .top-header .container { grid-template-columns: 1fr; text-align: center; } .logo-box { margin: 0 auto; } .right-tools { width: 100%; justify-content: center; flex-wrap: wrap; } .search { flex: 1 1 230px; } }
+	</style>
 </head>
 <body>
-  <header class="top-header" id="topHeader">
-    <div class="container">
-      <div class="logo-box"><img src="logo crembo hitam.png" alt="Logo Crembo Media"></div>
-      <div class="brand">
-        <h1>Crew Multimedia Baciro</h1>
-        <p>Wireframe Low-Fidelity - Detail Agenda</p>
-      </div>
-    </div>
-  </header>
+	<header class="top-header" id="topHeader">
+		<div class="container">
+			<a href="home.html" class="logo-box" aria-label="Halaman utama Crembo Media">
+				<img src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+			</a>
+			<div class="brand">
+				<h1>Crew Multimedia Baciro</h1>
+				<p>Jalan Melati Wetan 47 Baciro Gondokusuman Yogyakarta</p>
+			</div>
+		</div>
+	</header>
 
-  <div class="nav-wrap">
-    <div class="container nav-row">
-      <nav aria-label="Navigasi utama">
-        <ul>
-          <li><a href="home.html">Home</a></li>
-          <li><a href="profil.html">Profil</a></li>
-          <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
-          <li><a class="active" href="agenda.html">Agenda</a></li>
-          <li><a href="pengumuman.html">Pengumuman</a></li>
-          <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
-        </ul>
-      </nav>
-      <div class="right-tools">
-        <form class="search" id="searchForm">
-          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
-          <button type="submit">Search</button>
-        </form>
-        <a class="btn-login" href="login.html">Login</a>
-      </div>
-    </div>
-  </div>
+	<div class="nav-wrap">
+		<div class="container nav-row">
+			<nav aria-label="Navigasi utama">
+				<ul>
+					<li><a href="home.html">Home</a></li>
+					<li><a href="profil.html">Profil</a></li>
+					<li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
+					<li><a class="active" href="agenda.html">Agenda</a></li>
+					<li><a href="pengumuman.html">Pengumuman</a></li>
+					<li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+				</ul>
+			</nav>
+			<div class="right-tools">
+				<form class="search" id="searchForm">
+					<input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+					<button type="submit">Cari</button>
+				</form>
+				<a class="btn-login" href="login.html">Login</a>
+			</div>
+		</div>
+	</div>
 
-  <section class="hero" aria-label="Header detail agenda">
-    <div>
-      <span class="badge">Agenda</span>
-      <h2>Promo Pembuatan website</h2>
-      <div class="hero-meta">21 Februari 2026</div>
-    </div>
-  </section>
+	<section class="hero" aria-label="Header detail agenda">
+		<div>
+			<span class="badge">Agenda</span>
+			<h2>Promo Pembuatan Website</h2>
+			<div class="hero-meta">21 Februari 2026 &bull; STP Ampta Yogyakarta</div>
+		</div>
+	</section>
 
-  <div class="breadcrumb-wrap">
-    <div class="container">
-      <ol class="breadcrumb" aria-label="Breadcrumb">
-        <li><a href="home.html">Beranda</a></li>
-        <li><a href="agenda.html">Agenda</a></li>
-        <li aria-current="page">Promo Pembuatan website</li>
-      </ol>
-    </div>
-  </div>
+	<div class="breadcrumb-wrap">
+		<div class="container">
+			<ol class="breadcrumb" aria-label="Breadcrumb">
+				<li><a href="home.html">Beranda</a></li>
+				<li><a href="agenda.html">Agenda</a></li>
+				<li aria-current="page">Promo Pembuatan Website</li>
+			</ol>
+		</div>
+	</div>
 
-  <main class="container content">
-    <div class="grid">
-      <article class="article-card">
-        <h3>Promo Pembuatan website</h3>
-        <div class="hero-image">Preview Gambar Utama Agenda</div>
-        <p>Program Studi Sarjana Informatika Universitas Atma Jaya Yogyakarta (UAJY) menyelenggarakan kuliah umum bertema memahami pengguna dengan metode riset sederhana. Acara berlangsung di ruang seminar kampus dan terbuka untuk mahasiswa.</p>
-        <p>Rangkaian acara dibuka oleh narasumber internal, dilanjutkan sesi materi yang membahas cara menggali kebutuhan pengguna sebelum proses implementasi aplikasi. Materi disusun agar peserta mudah mengadaptasikan ke proyek organisasi maupun tugas akademik.</p>
-        <div class="inline-image">Preview Dokumentasi Agenda</div>
-        <p>Selain pemaparan teori, peserta juga mengikuti sesi praktik ringan, diskusi, dan tanya jawab untuk memperdalam pemahaman metode riset pengguna. Melalui agenda ini diharapkan peserta mampu merancang solusi yang lebih relevan dengan kebutuhan pengguna.</p>
-        <p class="source">Sumber: https://www.uajy.ac.id/...</p>
+	<main class="container page-content">
+		<div class="detail-layout">
+			<article class="article-card" aria-label="Isi detail agenda">
+				<h3>Promo Pembuatan Website</h3>
 
-        <div class="back-wrap">
-          <a class="btn" href="agenda.html">Kembali ke Daftar Agenda</a>
-        </div>
-      </article>
+				<div class="hero-image" aria-hidden="true">Preview Gambar Utama Agenda</div>
 
-      <aside>
-        <section class="side-card" aria-label="Detail agenda">
-          <h4>Detail Agenda</h4>
-          <ul class="detail-list">
-            <li><strong>Tanggal</strong>: 21 Feb 2026</li>
-            <li><strong>Waktu</strong>: 10:50 - 16:50 WIB</li>
-            <li><strong>Lokasi</strong>: STP Ampta Yogyakarta</li>
-          </ul>
-          <a class="btn-primary register-btn" href="#">Daftar</a>
-        </section>
+				<p>Program Studi Sarjana Informatika Universitas Atma Jaya Yogyakarta (UAJY) menyelenggarakan kuliah umum bertema memahami pengguna dengan metode riset sederhana. Acara berlangsung di ruang seminar kampus dan terbuka untuk mahasiswa.</p>
 
-        <section class="side-card" aria-label="Lampiran agenda">
-          <h4>Lampiran</h4>
-          <ul class="lampiran-list">
-            <li class="lampiran-item">CVI5EMN4NdcNHCJH...pdf</li>
-            <li class="lampiran-item">tutsM0fKecXNEIX...pdf</li>
-          </ul>
-        </section>
-      </aside>
-    </div>
-  </main>
+				<p>Rangkaian acara dibuka oleh narasumber internal, dilanjutkan sesi materi yang membahas cara menggali kebutuhan pengguna sebelum proses implementasi aplikasi. Materi disusun agar peserta mudah mengadaptasikan ke proyek organisasi maupun tugas akademik.</p>
 
-  <footer class="footer">
-    <div class="footer-main">
-      <div class="container footer-grid">
-        <section class="footer-col" aria-label="Identitas Crembo">
-          <div class="footer-brand">
-            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-            <div>
-              <h4 class="footer-title">Crew Multimedia Baciro</h4>
-              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
-            </div>
-          </div>
-          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
-        </section>
-        <section class="footer-col" aria-label="Kontak">
-          <h4 class="footer-title">Kontak</h4>
-          <ul class="contact-list">
-            <li><strong>Email</strong> : crembomedia@example.com</li>
-            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
-            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
-          </ul>
-        </section>
-        <section class="footer-col" aria-label="Media sosial">
-          <h4 class="footer-title">Media Sosial</h4>
-          <ul class="social-list">
-            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
-            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
-            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
-          </ul>
-        </section>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
-    </div>
-  </footer>
+				<div class="inline-image" aria-hidden="true">Preview Dokumentasi Agenda</div>
 
-  <script>
-    const topHeader = document.getElementById("topHeader");
-    const searchForm = document.getElementById("searchForm");
-    const searchInput = document.getElementById("searchInput");
+				<p>Selain pemaparan teori, peserta juga mengikuti sesi praktik ringan, diskusi, dan tanya jawab untuk memperdalam pemahaman metode riset pengguna. Melalui agenda ini diharapkan peserta mampu merancang solusi yang lebih relevan dengan kebutuhan pengguna.</p>
 
-    function syncStickyOffset() {
-      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
-      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
-    }
+				<p class="source">Sumber: Panitia Agenda Crembo Media &bull; 2026</p>
 
-    syncStickyOffset();
-    window.addEventListener("resize", syncStickyOffset);
+				<div class="back-wrap">
+					<a class="btn-ghost" href="agenda.html">← Kembali ke Daftar Agenda</a>
+				</div>
+			</article>
 
-    searchForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const keyword = searchInput.value.trim();
-      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
-    });
-  
-    (function () {
-      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
-      const DEFAULT_PROFILE_MENU = [
-        { id: "sejarah", label: "Sejarah" },
-        { id: "tentang-crembo", label: "Tentang Crembo" },
-        { id: "struktur", label: "Struktur" },
-        { id: "visi-misi", label: "Visi & Misi" }
-      ];
+			<aside class="sidebar">
+				<section class="side-card" aria-label="Detail agenda">
+					<h4>Detail Agenda</h4>
+					<ul class="detail-list">
+						<li><strong>Tanggal</strong> 21 Februari 2026</li>
+						<li><strong>Waktu</strong> 10:50 – 16:50 WIB</li>
+						<li><strong>Lokasi</strong> STP Ampta Yogyakarta</li>
+						<li><strong>Status</strong> <span style="color:#22c55e;font-weight:700;">Pendaftaran Buka</span></li>
+						<li><strong>Kuota</strong> 50 peserta</li>
+					</ul>
+					<a class="btn-primary" href="form-pendaftaran.html">Daftar Sekarang</a>
+				</section>
 
-      function readProfileMenuItems() {
-        try {
-          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
-          if (!raw) {
-            return DEFAULT_PROFILE_MENU;
-          }
+				<section class="side-card" aria-label="Lampiran agenda">
+					<h4>Lampiran</h4>
+					<ul class="lampiran-list">
+						<li class="lampiran-item">
+							<span class="lampiran-icon">PDF</span>
+							CVI5EMN4NdcNHCJH_rundown.pdf
+						</li>
+						<li class="lampiran-item">
+							<span class="lampiran-icon">PDF</span>
+							tutsM0fKecXNEIX_materials.pdf
+						</li>
+					</ul>
+				</section>
+			</aside>
+		</div>
+	</main>
 
-          const parsed = JSON.parse(raw);
-          if (!Array.isArray(parsed) || parsed.length === 0) {
-            return DEFAULT_PROFILE_MENU;
-          }
+	<footer class="footer">
+		<div class="footer-main">
+			<div class="container footer-grid">
+				<section class="footer-col" aria-label="Identitas Crembo">
+					<div class="footer-brand">
+						<img class="footer-logo" src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+						<div>
+							<h4 class="footer-title">Crew Multimedia Baciro</h4>
+							<p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+						</div>
+					</div>
+					<p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
+				</section>
+				<section class="footer-col" aria-label="Kontak">
+					<h4 class="footer-title">Kontak</h4>
+					<ul class="contact-list" style="margin-top:14px;">
+						<li><strong>Email</strong> : crembomedia@example.com</li>
+						<li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+						<li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+					</ul>
+				</section>
+				<section class="footer-col" aria-label="Media sosial">
+					<h4 class="footer-title">Media Sosial</h4>
+					<ul class="social-list" style="margin-top:14px;">
+						<li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+						<li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+						<li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<div class="container">&copy; 2026 Crew Multimedia Baciro &mdash; Mockup High-Fidelity</div>
+		</div>
+	</footer>
 
-          return parsed.map(function (item) {
-            if (typeof item === "string") {
-              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
-            }
-            return {
-              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
-              label: item && item.label ? String(item.label) : "Profil"
-            };
-          });
-        } catch (err) {
-          return DEFAULT_PROFILE_MENU;
-        }
-      }
+	<script>
+		const topHeader = document.getElementById("topHeader");
+		const searchForm = document.getElementById("searchForm");
+		const searchInput = document.getElementById("searchInput");
 
-      function enhanceProfileHoverMenu() {
-        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
-        if (!navList) {
-          return;
-        }
+		function syncStickyOffset() {
+			const h = topHeader ? topHeader.offsetHeight : 104;
+			document.documentElement.style.setProperty("--header-h", h + "px");
+		}
+		syncStickyOffset();
+		window.addEventListener("resize", syncStickyOffset);
 
-        const profileAnchor = navList.querySelector('a[href="profil.html"]');
-        if (!profileAnchor) {
-          return;
-        }
+		searchForm.addEventListener("submit", function(e) {
+			e.preventDefault();
+			const q = searchInput.value.trim();
+			window.location.href = "search.html?q=" + encodeURIComponent(q);
+		});
 
-        const profileItem = profileAnchor.closest("li");
-        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
-          return;
-        }
-
-        const menuItems = readProfileMenuItems();
-
-        profileItem.style.position = "relative";
-        profileItem.classList.add("nav-dropdown-enhanced");
-
-        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
-          profileAnchor.setAttribute("data-profile-menu-label", "true");
-          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
-        }
-
-        const dropdown = document.createElement("div");
-        dropdown.className = "profile-hover-menu";
-        dropdown.style.position = "absolute";
-        dropdown.style.top = "calc(100% + 4px)";
-        dropdown.style.left = "0";
-        dropdown.style.minWidth = "210px";
-        dropdown.style.border = "1px solid #bdbdbd";
-        dropdown.style.background = "#fff";
-        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
-        dropdown.style.padding = "6px";
-        dropdown.style.display = "none";
-        dropdown.style.zIndex = "1300";
-
-        dropdown.innerHTML = menuItems.map(function (item) {
-          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
-        }).join("");
-
-        dropdown.addEventListener("mouseover", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "#b9b9b9";
-            link.style.background = "#ececec";
-          }
-        });
-
-        dropdown.addEventListener("mouseout", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "transparent";
-            link.style.background = "transparent";
-          }
-        });
-
-        profileItem.appendChild(dropdown);
-
-        function showMenu() {
-          dropdown.style.display = "block";
-        }
-
-        function hideMenu() {
-          dropdown.style.display = "none";
-        }
-
-        profileItem.addEventListener("mouseenter", showMenu);
-        profileItem.addEventListener("mouseleave", hideMenu);
-        profileItem.addEventListener("focusin", showMenu);
-        profileItem.addEventListener("focusout", function () {
-          setTimeout(function () {
-            if (!profileItem.contains(document.activeElement)) {
-              hideMenu();
-            }
-          }, 0);
-        });
-      }
-
-      enhanceProfileHoverMenu();
-    })();
-  </script>
+		(function() {
+			const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+			const DEFAULT_PROFILE_MENU = [{ id: "sejarah", label: "Sejarah" }, { id: "tentang-crembo", label: "Tentang Crembo" }, { id: "struktur", label: "Struktur" }, { id: "visi-misi", label: "Visi & Misi" }];
+			function readProfileMenuItems() {
+				try {
+					const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+					if (!raw) return DEFAULT_PROFILE_MENU;
+					const parsed = JSON.parse(raw);
+					if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_PROFILE_MENU;
+					return parsed.map(function(item) {
+						if (typeof item === "string") return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+						return { id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"), label: item && item.label ? String(item.label) : "Profil" };
+					});
+				} catch (err) { return DEFAULT_PROFILE_MENU; }
+			}
+			function enhanceProfileHoverMenu() {
+				const navList = document.querySelector(".nav-row nav ul");
+				if (!navList) return;
+				const profileAnchor = navList.querySelector('a[href="profil.html"]');
+				if (!profileAnchor) return;
+				const profileItem = profileAnchor.closest("li");
+				if (!profileItem) return;
+				const menuItems = readProfileMenuItems();
+				profileItem.style.position = "relative";
+				const dropdown = document.createElement("div");
+				Object.assign(dropdown.style, { position: "absolute", top: "calc(100% + 4px)", left: "0", minWidth: "200px", border: "1px solid rgba(128,0,0,0.15)", background: "#fff", boxShadow: "0 10px 30px rgba(128,0,0,0.12)", padding: "6px", display: "none", zIndex: "1300", borderRadius: "12px" });
+				dropdown.innerHTML = menuItems.map(function(item) { return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:8px 12px;font-size:0.87rem;border-radius:8px;color:#4a4a4a;margin-bottom:2px;transition:all 0.2s;">' + item.label + '</a>'; }).join("");
+				dropdown.addEventListener("mouseover", function(e) { const link = e.target.closest("a"); if (link) { link.style.background = "rgba(128,0,0,0.06)"; link.style.color = "#800000"; } });
+				dropdown.addEventListener("mouseout", function(e) { const link = e.target.closest("a"); if (link) { link.style.background = "transparent"; link.style.color = "#4a4a4a"; } });
+				profileItem.appendChild(dropdown);
+				profileItem.addEventListener("mouseenter", function() { dropdown.style.display = "block"; });
+				profileItem.addEventListener("mouseleave", function() { dropdown.style.display = "none"; });
+			}
+			enhanceProfileHoverMenu();
+		})();
+	</script>
 </body>
 </html>

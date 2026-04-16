@@ -1,931 +1,710 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jadwal Petugas Streaming - Wireframe</title>
-  <style>
-    :root {
-      --bg: #f3f3f3;
-      --surface: #ffffff;
-      --ink: #131313;
-      --muted: #666666;
-      --line: #1f1f1f;
-      --line-soft: #b8b8b8;
-      --hover: #ececec;
-      --pill: #efefef;
-      --alert-bg: #f6f6f6;
-      --alert-ink: #1e1e1e;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.4;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .container {
-      width: min(1140px, 94vw);
-      margin: 0 auto;
-    }
-
-    .top-header {
-      border-bottom: 2px solid var(--line);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 1200;
-    }
-
-    .top-header .container {
-      display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 16px;
-      align-items: center;
-      padding: 14px 0;
-    }
-
-    .logo-box {
-      width: 90px;
-      height: 90px;
-      border: 2px solid var(--line);
-      background: #fff;
-      display: grid;
-      place-items: center;
-      padding: 6px;
-    }
-
-    .logo-box img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: grayscale(100%);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(1.4rem, 2.8vw, 2rem);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .nav-wrap {
-      border-bottom: 2px solid var(--line);
-      background: var(--surface);
-      position: sticky;
-      top: var(--header-h, 118px);
-      z-index: 1150;
-    }
-
-    .nav-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      padding: 10px 0;
-    }
-
-    nav ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      display: inline-block;
-      padding: 8px 10px;
-      border: 1px solid transparent;
-      font-size: 0.95rem;
-    }
-
-    nav a:hover,
-    nav a:focus-visible,
-    nav a.active {
-      border-color: var(--line-soft);
-      background: var(--hover);
-      outline: none;
-    }
-
-    .right-tools {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .search {
-      display: flex;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-
-    .search input {
-      border: 0;
-      outline: none;
-      padding: 8px 10px;
-      width: clamp(120px, 16vw, 180px);
-      background: transparent;
-      font-size: 0.9rem;
-    }
-
-    .search button,
-    .btn-login,
-    .btn,
-    .toggle button {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink);
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .search button:hover,
-    .btn-login:hover,
-    .btn:hover,
-    .toggle button:hover { background: var(--hover); }
-
-    .page {
-      padding: 20px 0 30px;
-    }
-
-    .panel {
-      background: var(--surface);
-      border: 2px solid var(--line);
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    .panel h2 {
-      margin: 0 0 6px;
-      font-size: clamp(1.2rem, 2vw, 1.6rem);
-    }
-
-    .muted {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .toolbar {
-      margin-top: 14px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .field {
-      display: grid;
-      gap: 5px;
-    }
-
-    .field label {
-      font-size: 0.84rem;
-      color: #4f4f4f;
-    }
-
-    .field select {
-      border: 1px solid var(--line-soft);
-      background: #fff;
-      padding: 8px 10px;
-      font-size: 0.9rem;
-    }
-
-    .toggle {
-      display: inline-flex;
-      border: 1px solid var(--line);
-      background: var(--pill);
-      padding: 3px;
-      gap: 4px;
-      border-radius: 6px;
-    }
-
-    .toggle button.active {
-      background: #111;
-      color: #fff;
-    }
-
-    .legend {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border: 1px solid var(--line-soft);
-      background: #fff;
-      padding: 6px 10px;
-      font-size: 0.83rem;
-    }
-
-    .swatch {
-      width: 12px;
-      height: 12px;
-      border: 1px solid #444;
-      background: #f6f6f6;
-    }
-
-    .swatch.normal { background: #ffffff; }
-    .swatch.blocked { background: #dcdcdc; }
-    .swatch.raya { background: #111111; }
-
-    .view {
-      background: var(--surface);
-      border: 2px solid var(--line);
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .table-wrap {
-      overflow: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px;
-      font-size: 0.9rem;
-    }
-
-    th, td {
-      border: 1px solid var(--line-soft);
-      padding: 9px 10px;
-      vertical-align: top;
-    }
-
-    th {
-      background: #efefef;
-      text-align: left;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    .day-cell small {
-      color: var(--muted);
-      display: block;
-      margin-top: 2px;
-    }
-
-    .blocked-row td {
-      background: #e3e3e3;
-    }
-
-    .blocked-banner {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      border: 1px dashed #444;
-      background: var(--alert-bg);
-      color: var(--alert-ink);
-      padding: 8px 10px;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-
-    .blocked-banner span {
-      font-weight: 400;
-      color: #4f4f4f;
-    }
-
-    .raya-wrap {
-      padding: 12px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .raya-card {
-      border: 1px solid var(--line-soft);
-      background: #fff;
-      padding: 12px;
-    }
-
-    .raya-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: baseline;
-      margin-bottom: 10px;
-    }
-
-    .raya-head h3 {
-      margin: 0;
-      font-size: 1.04rem;
-    }
-
-    .raya-date {
-      color: #555;
-      font-size: 0.86rem;
-    }
-
-    .session-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .session {
-      border: 1px solid #d3d3d3;
-      padding: 10px;
-      background: #fafafa;
-    }
-
-    .session h4 {
-      margin: 0 0 8px;
-      font-size: 0.95rem;
-    }
-
-    .roles {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 4px;
-      font-size: 0.88rem;
-    }
-
-    .roles strong { min-width: 82px; display: inline-block; }
-
-    .footer {
-      margin-top: 24px;
-      border-top: 2px solid var(--line);
-      border-bottom: 2px solid var(--line);
-      background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
-      color: #2e2e2e;
-    }
-
-    .footer-main { padding: 20px 0 14px; }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr;
-      gap: 16px;
-    }
-
-    .footer-col {
-      border: 1px solid #bdbdbd;
-      background: #fff;
-      padding: 13px;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 9px;
-    }
-
-    .footer-logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      filter: grayscale(100%);
-      border: 1px solid #222;
-      padding: 4px;
-      background: #fff;
-    }
-
-    .footer-title { margin: 0; font-size: 0.98rem; }
-    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
-
-    .contact-list,
-    .social-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 7px;
-      font-size: 0.9rem;
-    }
-
-    .contact-list strong { display: inline-block; min-width: 70px; }
-
-    .social-item {
-      display: flex;
-      gap: 9px;
-      align-items: center;
-    }
-
-    .social-dot {
-      width: 25px;
-      height: 25px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      border: 1px solid #222;
-      background: #f4f4f4;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #bebebe;
-      padding: 10px 0 14px;
-      text-align: center;
-      font-size: 0.84rem;
-      color: #5c5c5c;
-    }
-
-    @media (max-width: 980px) {
-      .toolbar { grid-template-columns: 1fr; }
-      .session-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 760px) {
-      .top-header .container {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .logo-box { margin: 0 auto; }
-
-      .filters { grid-template-columns: 1fr; }
-
-      .right-tools {
-        width: 100%;
-        justify-content: stretch;
-        flex-wrap: wrap;
-      }
-
-      .search { flex: 1 1 220px; }
-      .search input { width: 100%; }
-      .btn-login { flex: 1 1 auto; }
-    }
-  </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Jadwal Streaming - Crembo Media</title>
+	<meta name="description" content="Jadwal pelayanan streaming mingguan dan hari raya Crew Multimedia Baciro.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--primary: #800000;
+			--primary-dark: #5c0000;
+			--primary-deeper: #3a0000;
+			--primary-light: #a52a2a;
+			--accent-gold: #d4a017;
+			--accent-gold-light: #f0c040;
+			--bg: #faf8f6;
+			--surface: #ffffff;
+			--ink: #1a1a1a;
+			--ink-secondary: #4a4a4a;
+			--muted: #7a7a7a;
+			--line: rgba(128,0,0,0.15);
+			--line-soft: rgba(128,0,0,0.08);
+			--hover: rgba(128,0,0,0.04);
+			--shadow-sm: 0 1px 3px rgba(128,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+			--shadow-md: 0 4px 14px rgba(128,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+			--shadow-lg: 0 10px 30px rgba(128,0,0,0.12);
+			--radius-sm: 8px;
+			--radius-md: 12px;
+			--radius-lg: 16px;
+			--transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+			--header-h: 104px;
+		}
+		* { box-sizing: border-box; }
+		body { margin: 0; font-family: 'Inter',-apple-system,sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+		a { color: inherit; text-decoration: none; transition: var(--transition); }
+		.container { width: min(1200px, 92vw); margin: 0 auto; }
+
+		/* HEADER */
+		.top-header { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 40%, var(--primary-light) 100%); position: sticky; top: 0; z-index: 1200; box-shadow: 0 4px 20px rgba(128,0,0,0.3); }
+		.top-header .container { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; padding: 16px 0; }
+		.logo-box { width: 72px; height: 72px; display: grid; place-items: center; padding: 4px; background: rgba(255,255,255,0.1); border-radius: var(--radius-md); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: var(--transition); }
+		.logo-box:hover { background: rgba(255,255,255,0.18); }
+		.logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+		.brand h1 { margin: 0; font-size: clamp(1.4rem, 2.8vw, 2rem); text-transform: uppercase; letter-spacing: 0.5px; color: #fff; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+		.brand p { margin: 4px 0 0; color: rgba(255,255,255,0.75); font-size: 0.88rem; }
+
+		/* NAV */
+		.nav-wrap { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: var(--header-h); z-index: 1150; box-shadow: var(--shadow-sm); }
+		.nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+		nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; flex-wrap: wrap; }
+		nav a { display: inline-block; padding: 8px 14px; font-size: 0.9rem; font-weight: 500; border-radius: var(--radius-sm); color: var(--ink-secondary); transition: var(--transition); position: relative; }
+		nav a:hover { color: var(--primary); background: var(--hover); }
+		nav a.active { color: var(--primary); font-weight: 700; }
+		nav a.active::after { content: ""; position: absolute; bottom: 2px; left: 14px; right: 14px; height: 2px; background: var(--primary); border-radius: 999px; }
+		.right-tools { display: flex; align-items: center; gap: 10px; }
+		.search { display: flex; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); overflow: hidden; transition: var(--transition); }
+		.search:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(128,0,0,0.1); }
+		.search input { border: 0; outline: none; padding: 8px 16px; width: clamp(130px,16vw,180px); font-size: 0.88rem; background: transparent; font-family: inherit; }
+		.search button { border: 0; background: var(--primary); color: #fff; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: var(--transition); }
+		.search button:hover { background: var(--primary-dark); }
+		.btn-login { border: 1.5px solid var(--primary); background: transparent; color: var(--primary); padding: 8px 18px; font-size: 0.88rem; font-weight: 600; border-radius: 999px; cursor: pointer; font-family: inherit; transition: var(--transition); }
+		.btn-login:hover { background: var(--primary); color: #fff; }
+
+		/* HERO */
+		.hero { min-height: 240px; display: grid; place-items: center; text-align: center; padding: 60px 20px; position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 50%, var(--primary-light) 100%); }
+		.hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; opacity: 0.15; z-index: -1; }
+		.hero h2 { margin: 0; font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+		.hero p { margin: 10px 0 0; color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+
+		/* BREADCRUMB */
+		.breadcrumb-wrap { background: var(--surface); border-bottom: 1px solid var(--line-soft); }
+		.breadcrumb { margin: 0; padding: 12px 0; list-style: none; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); }
+		.breadcrumb li + li::before { content: "/"; margin-right: 8px; color: var(--line); }
+		.breadcrumb a:hover { color: var(--primary); }
+		.breadcrumb [aria-current] { color: var(--primary); font-weight: 600; }
+
+		/* PAGE CONTENT */
+		.page-content { padding: 32px 0 48px; }
+
+		/* FILTER BAR */
+		.filter-bar {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			padding: 20px 24px;
+			margin-bottom: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			flex-wrap: wrap;
+			position: relative;
+			overflow: hidden;
+		}
+		.filter-bar::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
+
+		.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+		.filter-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+		.filter-select {
+			border: 1.5px solid var(--line);
+			background: var(--bg);
+			color: var(--ink);
+			padding: 8px 14px;
+			font-size: 0.88rem;
+			font-family: inherit;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			transition: var(--transition);
+			outline: none;
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23800000'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 12px center;
+			padding-right: 32px;
+		}
+		.filter-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(128,0,0,0.1); }
+
+		/* MODE PILLS */
+		.mode-pills-wrap {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			padding: 20px 24px;
+			margin-bottom: 24px;
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			flex-wrap: wrap;
+		}
+		.mode-pills { display: flex; gap: 8px; background: var(--bg); border-radius: 999px; padding: 5px; border: 1px solid var(--line); }
+		.mode-pill {
+			padding: 9px 24px;
+			font-size: 0.88rem;
+			font-weight: 600;
+			border-radius: 999px;
+			border: none;
+			cursor: pointer;
+			font-family: inherit;
+			transition: var(--transition);
+			color: var(--muted);
+			background: transparent;
+		}
+		.mode-pill.active {
+			background: linear-gradient(135deg, var(--primary), var(--primary-light));
+			color: #fff;
+			box-shadow: 0 2px 8px rgba(128,0,0,0.25);
+		}
+		.mode-pill.active-gold {
+			background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+			color: #3a0000;
+			box-shadow: 0 2px 8px rgba(212,160,23,0.3);
+		}
+		.mode-note { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+		/* LEGEND */
+		.schedule-legend {
+			display: flex;
+			gap: 16px;
+			margin-bottom: 16px;
+			flex-wrap: wrap;
+		}
+		.legend-chip {
+			display: flex;
+			align-items: center;
+			gap: 7px;
+			font-size: 0.83rem;
+			color: var(--ink-secondary);
+			background: var(--surface);
+			border: 1px solid var(--line-soft);
+			border-radius: 999px;
+			padding: 5px 14px;
+			font-weight: 500;
+		}
+		.legend-dot {
+			width: 10px; height: 10px;
+			border-radius: 50%;
+			display: inline-block;
+			flex-shrink: 0;
+		}
+		.dot-normal { background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+		.dot-blocked { background: var(--primary); box-shadow: 0 0 0 2px rgba(128,0,0,0.2); }
+		.dot-raya { background: var(--accent-gold); box-shadow: 0 0 0 2px rgba(212,160,23,0.2); }
+
+		/* SCHEDULE TABLE */
+		.schedule-card {
+			background: var(--surface);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow-md);
+			overflow: hidden;
+			position: relative;
+		}
+		.schedule-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
+
+		.schedule-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+		.schedule-table thead tr {
+			background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 100%);
+			color: #fff;
+		}
+		.schedule-table th {
+			padding: 14px 16px;
+			text-align: left;
+			font-weight: 600;
+			font-size: 0.82rem;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+		.schedule-table td { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); color: var(--ink-secondary); vertical-align: middle; }
+		.schedule-table tbody tr:last-child td { border-bottom: none; }
+		.schedule-table tbody tr:hover { background: var(--hover); }
+
+		/* Normal row — green left border */
+		.schedule-table tbody tr.normal-row {
+			border-left: 3px solid #22c55e;
+		}
+		.schedule-table tbody tr.normal-row td:first-child { border-left: 3px solid #22c55e; }
+
+		/* Blocked row */
+		.schedule-table tbody tr.blocked-row { background: rgba(128,0,0,0.06); border-left: 3px solid var(--primary); }
+		.schedule-table tbody tr.blocked-row td { color: var(--primary-dark); }
+		.blocked-inline {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-weight: 600;
+			font-size: 0.85rem;
+			color: var(--primary);
+		}
+		.blocked-inline span { font-weight: 400; color: var(--muted); font-style: italic; }
+
+		/* Hari raya row */
+		.hariraya-row { background: linear-gradient(135deg, rgba(212,160,23,0.06) 0%, rgba(240,192,64,0.04) 100%); border-left: 3px solid var(--accent-gold); }
+		.hariraya-row:hover { background: rgba(212,160,23,0.1) !important; }
+		.hariraya-label { font-size: 0.78rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+
+		/* Hari raya banner */
+		.hari-raya-banner {
+			background: linear-gradient(135deg, rgba(212,160,23,0.1) 0%, rgba(240,192,64,0.06) 100%);
+			border: 1px solid rgba(212,160,23,0.3);
+			border-radius: var(--radius-md);
+			padding: 14px 20px;
+			margin-bottom: 16px;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+		.hari-raya-badge {
+			background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+			color: var(--primary-deeper);
+			font-size: 0.78rem;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.8px;
+			padding: 4px 14px;
+			border-radius: 999px;
+			white-space: nowrap;
+		}
+		.hari-raya-banner p { margin: 0; font-size: 0.88rem; color: var(--ink-secondary); }
+
+		/* PAGINATION */
+		.pagination-wrap { display: flex; justify-content: center; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+		.pagination-wrap button {
+			min-width: 38px; height: 38px;
+			border: 1.5px solid var(--line);
+			background: var(--surface);
+			color: var(--ink-secondary);
+			font-size: 0.88rem;
+			font-weight: 600;
+			border-radius: var(--radius-sm);
+			cursor: pointer;
+			font-family: inherit;
+			transition: var(--transition);
+		}
+		.pagination-wrap button:hover { border-color: var(--primary); color: var(--primary); background: var(--hover); }
+		.pagination-wrap button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+		/* FOOTER */
+		.footer { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 60%, var(--primary-dark) 100%); margin-top: 48px; color: rgba(255,255,255,0.85); position: relative; overflow: hidden; }
+		.footer::before { content: ""; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(255,255,255,0.03); pointer-events: none; }
+		.footer-main { padding: 40px 0 28px; position: relative; z-index: 1; }
+		.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 30px; }
+		.footer-col { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); padding: 24px; border-radius: var(--radius-md); transition: var(--transition); }
+		.footer-col:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+		.footer-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+		.footer-logo { width: 56px; height: 56px; object-fit: contain; border: 1px solid rgba(255,255,255,0.2); padding: 6px; background: rgba(255,255,255,0.08); border-radius: var(--radius-sm); }
+		.footer-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: #fff; }
+		.footer-sub { margin: 3px 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+		.contact-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 0.9rem; }
+		.contact-list li { color: rgba(255,255,255,0.8); display: flex; gap: 8px; }
+		.contact-list strong { display: inline-block; min-width: 70px; color: var(--accent-gold-light); font-weight: 600; }
+		.social-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 0.9rem; }
+		.social-item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.8); transition: var(--transition); padding: 4px 0; }
+		.social-item:hover { color: #fff; }
+		.social-dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(212,160,23,0.4); background: rgba(212,160,23,0.15); color: var(--accent-gold-light); transition: var(--transition); }
+		.social-item:hover .social-dot { background: rgba(212,160,23,0.3); transform: scale(1.1); }
+		.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 16px 0 20px; text-align: center; font-size: 0.84rem; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+
+		/* ANIMATIONS */
+		@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+		.schedule-card { animation: fadeInUp 0.5s ease both; }
+
+		/* RESPONSIVE */
+		@media (max-width: 980px) { .footer-grid { grid-template-columns: 1fr; } }
+		@media (max-width: 760px) {
+			.top-header .container { grid-template-columns: 1fr; text-align: center; }
+			.logo-box { margin: 0 auto; }
+			.right-tools { width: 100%; justify-content: center; flex-wrap: wrap; }
+			.search { flex: 1 1 230px; }
+			.schedule-table { font-size: 0.8rem; }
+			.schedule-table th, .schedule-table td { padding: 10px 10px; }
+			.filter-bar { flex-direction: column; align-items: flex-start; }
+		}
+	</style>
 </head>
 <body>
-  <header class="top-header" id="topHeader">
-    <div class="container">
-      <div class="logo-box">
-        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
-      </div>
-      <div class="brand">
-        <h1>Crew Multimedia Baciro</h1>
-        <p>Jadwal petugas streaming dengan mode bulanan dan hari raya</p>
-      </div>
-    </div>
-  </header>
+	<header class="top-header" id="topHeader">
+		<div class="container">
+			<a href="home.html" class="logo-box" aria-label="Halaman utama Crembo Media">
+				<img src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+			</a>
+			<div class="brand">
+				<h1>Crew Multimedia Baciro</h1>
+				<p>Jalan Melati Wetan 47 Baciro Gondokusuman Yogyakarta</p>
+			</div>
+		</div>
+	</header>
 
-  <div class="nav-wrap">
-    <div class="container nav-row">
-      <nav aria-label="Navigasi utama">
-        <ul>
-          <li><a href="home.html">Home</a></li>
-          <li><a href="profil.html">Profil</a></li>
-          <li><a class="active" href="jadwal-streaming.html">Jadwal Streaming</a></li>
-          <li><a href="agenda.html">Agenda</a></li>
-          <li><a href="pengumuman.html">Pengumuman</a></li>
-          <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
-        </ul>
-      </nav>
-      <div class="right-tools">
-        <form class="search" id="searchForm">
-          <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
-          <button type="submit">Search</button>
-        </form>
-        <a class="btn-login" href="login.html">Login</a>
-      </div>
-    </div>
-  </div>
+	<div class="nav-wrap">
+		<div class="container nav-row">
+			<nav aria-label="Navigasi utama">
+				<ul>
+					<li><a href="home.html">Home</a></li>
+					<li><a href="profil.html">Profil</a></li>
+					<li><a class="active" href="jadwal-streaming.html">Jadwal Streaming</a></li>
+					<li><a href="agenda.html">Agenda</a></li>
+					<li><a href="pengumuman.html">Pengumuman</a></li>
+					<li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
+				</ul>
+			</nav>
+			<div class="right-tools">
+				<form class="search" id="searchForm">
+					<input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
+					<button type="submit">Cari</button>
+				</form>
+				<a class="btn-login" href="login.html">Login</a>
+			</div>
+		</div>
+	</div>
 
-  <main class="container page">
-    <section class="panel">
-      <h2>Jadwal Petugas Streaming</h2>
-      <p class="muted">Tampilan dibuat untuk memudahkan anggota melihat jadwal bulanan dan jadwal khusus hari raya tanpa tertukar.</p>
+	<section class="hero" aria-label="Header jadwal streaming">
+		<div>
+			<h2>Jadwal Streaming</h2>
+			<p>Jadwal pelayanan multimedia mingguan dan perayaan hari raya</p>
+		</div>
+	</section>
 
-      <div class="toolbar">
-        <div class="filters">
-          <div class="field">
-            <label for="monthSelect">Pilih Bulan</label>
-            <select id="monthSelect">
-              <option value="03" selected>Maret</option>
-              <option value="04">April</option>
-              <option value="05">Mei</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="yearSelect">Tahun</label>
-            <select id="yearSelect">
-              <option selected>2026</option>
-              <option>2027</option>
-            </select>
-          </div>
-        </div>
+	<div class="breadcrumb-wrap">
+		<div class="container">
+			<ol class="breadcrumb" aria-label="Breadcrumb">
+				<li><a href="home.html">Beranda</a></li>
+				<li aria-current="page">Jadwal Streaming</li>
+			</ol>
+		</div>
+	</div>
 
-        <div class="toggle" role="tablist" aria-label="Mode jadwal">
-          <button id="modeRegular" class="active" role="tab" aria-selected="true" type="button">Bulanan Biasa</button>
-          <button id="modeRaya" role="tab" aria-selected="false" type="button">Hari Raya</button>
-        </div>
-      </div>
+	<main class="container page-content">
+		<!-- Filter bar -->
+		<div class="filter-bar">
+			<div class="filter-group">
+				<span class="filter-label">Filter:</span>
+				<select id="filterBulan" class="filter-select" aria-label="Filter bulan">
+					<option value="">Semua Bulan</option>
+					<option value="1">Januari 2026</option>
+					<option value="2">Februari 2026</option>
+					<option value="3">Maret 2026</option>
+					<option value="4" selected>April 2026</option>
+					<option value="5">Mei 2026</option>
+					<option value="6">Juni 2026</option>
+				</select>
+				<select id="filterTahun" class="filter-select" aria-label="Filter tahun">
+					<option value="2026" selected>2026</option>
+					<option value="2027">2027</option>
+				</select>
+			</div>
+			<div class="filter-group">
+				<span class="filter-label">Tampilan:</span>
+				<select id="filterView" class="filter-select" aria-label="Mode tampilan">
+					<option value="table">Tabel</option>
+					<option value="card">Kartu</option>
+				</select>
+			</div>
+		</div>
 
-      <div class="legend">
-        <span class="chip"><span class="swatch normal"></span> Jadwal normal</span>
-        <span class="chip"><span class="swatch blocked"></span> Tanggal diblok karena hari raya</span>
-        <span class="chip"><span class="swatch raya"></span> Jadwal khusus hari raya</span>
-      </div>
-    </section>
+		<!-- Mode toggle -->
+		<div class="mode-pills-wrap">
+			<div class="mode-pills" role="tablist" aria-label="Mode jadwal">
+				<button id="pillBulanan" class="mode-pill active" type="button" role="tab" aria-selected="true" onclick="switchMode('bulanan')">Bulanan Biasa</button>
+				<button id="pillHariRaya" class="mode-pill" type="button" role="tab" aria-selected="false" onclick="switchMode('hariraya')">Hari Raya</button>
+			</div>
+			<span class="mode-note">Tanggal hari raya diblok dan diarahkan ke mode Hari Raya</span>
+		</div>
 
-    <section id="regularView" class="view" aria-label="View jadwal bulanan biasa">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 72px;">No</th>
-              <th style="width: 190px;">Tanggal</th>
-              <th style="width: 120px;">Jam</th>
-              <th>Operator</th>
-              <th>Kameramen</th>
-              <th>Supervisor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td class="day-cell">01 Maret 2026<small>Minggu</small></td>
-              <td>18:00</td>
-              <td>Rikha</td>
-              <td>Jeni</td>
-              <td>Tyas</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td class="day-cell">02 Maret 2026<small>Senin</small></td>
-              <td>18:00</td>
-              <td>Lisa</td>
-              <td>Evan</td>
-              <td>Jose</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td class="day-cell">03 Maret 2026<small>Selasa</small></td>
-              <td>18:00</td>
-              <td>Evan</td>
-              <td>Kanes</td>
-              <td>Claire</td>
-            </tr>
-            <tr class="blocked-row">
-              <td>10</td>
-              <td class="day-cell">10 Maret 2026<small>Selasa</small></td>
-              <td colspan="4">
-                <div class="blocked-banner">
-                  <strong>DIBLOK: Misa Minggu Palma (Hari Raya)</strong>
-                  <span>Tugas reguler tidak ditampilkan. Cek mode Hari Raya.</span>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>11</td>
-              <td class="day-cell">11 Maret 2026<small>Rabu</small></td>
-              <td>18:00</td>
-              <td>Rossa</td>
-              <td>Aurel</td>
-              <td>Asha</td>
-            </tr>
-            <tr>
-              <td>12</td>
-              <td class="day-cell">12 Maret 2026<small>Kamis</small></td>
-              <td>18:00</td>
-              <td>Asha</td>
-              <td>Paul</td>
-              <td>Christoforus Tadeus</td>
-            </tr>
-            <tr class="blocked-row">
-              <td>18</td>
-              <td class="day-cell">18 Maret 2026<small>Rabu</small></td>
-              <td colspan="4">
-                <div class="blocked-banner">
-                  <strong>DIBLOK: Misa Kamis Putih / Pekan Suci</strong>
-                  <span>Gunakan mode Hari Raya untuk detail petugas khusus.</span>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>19</td>
-              <td class="day-cell">19 Maret 2026<small>Kamis</small></td>
-              <td>18:00</td>
-              <td>Tyas</td>
-              <td>Belinda</td>
-              <td>Aura</td>
-            </tr>
-            <tr>
-              <td>20</td>
-              <td class="day-cell">20 Maret 2026<small>Jumat</small></td>
-              <td>18:00</td>
-              <td>Jose</td>
-              <td>Alta</td>
-              <td>Florencia</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+		<!-- Legend -->
+		<div class="schedule-legend" aria-label="Keterangan warna jadwal">
+			<span class="legend-chip"><span class="legend-dot dot-normal"></span> Jadwal Normal</span>
+			<span class="legend-chip"><span class="legend-dot dot-blocked"></span> Diblok karena Hari Raya</span>
+			<span class="legend-chip"><span class="legend-dot dot-raya"></span> Misa Hari Raya Khusus</span>
+		</div>
 
-    <section id="rayaView" class="view" aria-label="View jadwal hari raya" hidden>
-      <div class="raya-wrap">
-        <article class="raya-card">
-          <div class="raya-head">
-            <h3>Misa Minggu Palma</h3>
-            <span class="raya-date">10 Maret 2026</span>
-          </div>
-          <div class="session-grid">
-            <section class="session">
-              <h4>Misa 1 - Jam 07:30</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Ketrin, Deva</li>
-                <li><strong>Kameramen</strong>: Jeni, Rikha, Jose</li>
-                <li><strong>Supervisor</strong>: Nadia, Luciana Tyas</li>
-                <li><strong>Fotografer</strong>: Aoki, Aruna</li>
-              </ul>
-            </section>
-            <section class="session">
-              <h4>Misa 2 - Jam 16:30</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Vio, Oly</li>
-                <li><strong>Kameramen</strong>: Reva, Kane, Arya</li>
-                <li><strong>Supervisor</strong>: Evan, There, Panji</li>
-                <li><strong>Fotografer</strong>: Belinda, Bian</li>
-              </ul>
-            </section>
-          </div>
-        </article>
+		<!-- BULANAN TABLE -->
+		<div id="tableBulanan" class="schedule-card">
+			<table class="schedule-table" id="tblBulanan">
+				<thead>
+					<tr>
+						<th class="no-col" style="width:44px;">No</th>
+						<th>Tanggal</th>
+						<th>Jam</th>
+						<th>Operator</th>
+						<th>Kameramen</th>
+						<th>Supervisor</th>
+					</tr>
+				</thead>
+				<tbody id="schedBulananBody">
+					<tr class="normal-row">
+						<td>1</td>
+						<td>05 April 2026</td>
+						<td>18:00</td>
+						<td>Rikha</td>
+						<td>Jeni</td>
+						<td>Tyas</td>
+					</tr>
+					<tr class="normal-row">
+						<td>2</td>
+						<td>12 April 2026</td>
+						<td>18:00</td>
+						<td>Lisa</td>
+						<td>Evan</td>
+						<td>Jose</td>
+					</tr>
+					<tr class="blocked-row" style="border-left:3px solid #800000;">
+						<td>3</td>
+						<td>19 April 2026</td>
+						<td colspan="4">
+							<div class="blocked-inline">🚫 DIBLOK: Paskah Kebangkitan (Hari Raya) <span>— buka mode Hari Raya untuk detail petugas khusus.</span></div>
+						</td>
+					</tr>
+					<tr class="normal-row">
+						<td>4</td>
+						<td>26 April 2026</td>
+						<td>18:00</td>
+						<td>Rossa</td>
+						<td>Aurel</td>
+						<td>Asha</td>
+					</tr>
+					<tr class="normal-row">
+						<td>5</td>
+						<td>03 Mei 2026</td>
+						<td>18:00</td>
+						<td>Dewi</td>
+						<td>Bagas</td>
+						<td>Citra</td>
+					</tr>
+					<tr class="blocked-row" style="border-left:3px solid #800000;">
+						<td>6</td>
+						<td>31 Mei 2026</td>
+						<td colspan="4">
+							<div class="blocked-inline">🚫 DIBLOK: Hari Raya Pentakosta <span>— buka mode Hari Raya untuk detail petugas khusus.</span></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-        <article class="raya-card">
-          <div class="raya-head">
-            <h3>Misa Kamis Putih</h3>
-            <span class="raya-date">18 Maret 2026</span>
-          </div>
-          <div class="session-grid">
-            <section class="session">
-              <h4>Misa 1 - Jam 17:00</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Bian, Belinda</li>
-                <li><strong>Kameramen</strong>: Lisa, Reva, Vio</li>
-                <li><strong>Supervisor</strong>: Panji, Arya, Evan</li>
-                <li><strong>Fotografer</strong>: Aurel, Dhani</li>
-              </ul>
-            </section>
-            <section class="session">
-              <h4>Misa 2 - Jam 19:30</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Tita, Rossa</li>
-                <li><strong>Kameramen</strong>: Chessa, Rikha, Jeni</li>
-                <li><strong>Supervisor</strong>: Stella, Arya, Bolun</li>
-                <li><strong>Fotografer</strong>: Claire, Nawung</li>
-              </ul>
-            </section>
-          </div>
-        </article>
+		<!-- HARI RAYA TABLE -->
+		<div id="tableHariRaya" style="display:none;">
+			<div class="hari-raya-banner">
+				<span class="hari-raya-badge">Mode Hari Raya</span>
+				<p>Jadwal khusus misa hari raya dengan formasi petugas lengkap.</p>
+			</div>
+			<div class="schedule-card">
+				<table class="schedule-table">
+					<thead>
+						<tr>
+							<th style="width:44px;">No</th>
+							<th>Tanggal &amp; Acara</th>
+							<th>Jam</th>
+							<th>Operator</th>
+							<th>Kameramen</th>
+							<th>Supervisor</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="hariraya-row">
+							<td>1</td>
+							<td><strong>29 Maret 2026</strong><br><span class="hariraya-label">Misa Minggu Palma</span></td>
+							<td>08:00</td>
+							<td>Andi</td>
+							<td>Budi</td>
+							<td>Citra</td>
+						</tr>
+						<tr class="hariraya-row">
+							<td>2</td>
+							<td><strong>2 April 2026</strong><br><span class="hariraya-label">Misa Kamis Putih</span></td>
+							<td>18:00</td>
+							<td>Dewi</td>
+							<td>Fajar</td>
+							<td>Hanafi</td>
+						</tr>
+						<tr class="hariraya-row">
+							<td>3</td>
+							<td><strong>3 April 2026</strong><br><span class="hariraya-label">Ibadat Jumat Agung</span></td>
+							<td>15:00</td>
+							<td>Lisa</td>
+							<td>Evan</td>
+							<td>Jose</td>
+						</tr>
+						<tr class="hariraya-row">
+							<td>4</td>
+							<td><strong>4 April 2026</strong><br><span class="hariraya-label">Misa Malam Paskah</span></td>
+							<td>20:00</td>
+							<td>Rikha</td>
+							<td>Jeni</td>
+							<td>Tyas</td>
+						</tr>
+						<tr class="hariraya-row">
+							<td>5</td>
+							<td><strong>5 April 2026 (Paskah)</strong><br><span class="hariraya-label">Misa Paskah Kebangkitan</span></td>
+							<td>08:00</td>
+							<td>Rossa</td>
+							<td>Aurel</td>
+							<td>Asha</td>
+						</tr>
+						<tr class="hariraya-row">
+							<td>6</td>
+							<td><strong>31 Mei 2026</strong><br><span class="hariraya-label">Misa Pentakosta</span></td>
+							<td>08:00</td>
+							<td>Bagas</td>
+							<td>Citra</td>
+							<td>Dewi</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-        <article class="raya-card">
-          <div class="raya-head">
-            <h3>Misa Malam Paskah</h3>
-            <span class="raya-date">04 April 2026</span>
-          </div>
-          <div class="session-grid">
-            <section class="session">
-              <h4>Misa 1 - Jam 17:00</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Niko, Vio</li>
-                <li><strong>Kameramen</strong>: Dhani, Evan, Bian</li>
-                <li><strong>Supervisor</strong>: Panji, There, Arya</li>
-                <li><strong>Fotografer</strong>: Weka, Kane</li>
-              </ul>
-            </section>
-            <section class="session">
-              <h4>Misa 2 - Jam 20:30</h4>
-              <ul class="roles">
-                <li><strong>Operator</strong>: Pria, Asha</li>
-                <li><strong>Kameramen</strong>: Wima, Rafael, Nadia</li>
-                <li><strong>Supervisor</strong>: Panji, Egi, Tyas</li>
-                <li><strong>Fotografer</strong>: Nawung, Paul</li>
-              </ul>
-            </section>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
+		<!-- Pagination -->
+		<nav class="pagination-wrap" aria-label="Halaman jadwal" id="paginationWrap">
+			<button class="active" type="button">1</button>
+			<button type="button">2</button>
+			<button type="button">3</button>
+		</nav>
+	</main>
 
-  <footer class="footer">
-    <div class="footer-main">
-      <div class="container footer-grid">
-        <section class="footer-col" aria-label="Identitas Crembo">
-          <div class="footer-brand">
-            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-            <div>
-              <h4 class="footer-title">Crew Multimedia Baciro</h4>
-              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
-            </div>
-          </div>
-          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
-        </section>
-        <section class="footer-col" aria-label="Kontak">
-          <h4 class="footer-title">Kontak</h4>
-          <ul class="contact-list">
-            <li><strong>Email</strong> : crembomedia@example.com</li>
-            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
-            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
-          </ul>
-        </section>
-        <section class="footer-col" aria-label="Media sosial">
-          <h4 class="footer-title">Media Sosial</h4>
-          <ul class="social-list">
-            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
-            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
-            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
-          </ul>
-        </section>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
-    </div>
-  </footer>
+	<footer class="footer">
+		<div class="footer-main">
+			<div class="container footer-grid">
+				<section class="footer-col" aria-label="Identitas Crembo">
+					<div class="footer-brand">
+						<img class="footer-logo" src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+						<div>
+							<h4 class="footer-title">Crew Multimedia Baciro</h4>
+							<p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
+						</div>
+					</div>
+					<p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
+				</section>
+				<section class="footer-col" aria-label="Kontak">
+					<h4 class="footer-title">Kontak</h4>
+					<ul class="contact-list" style="margin-top:14px;">
+						<li><strong>Email</strong> : crembomedia@example.com</li>
+						<li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
+						<li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
+					</ul>
+				</section>
+				<section class="footer-col" aria-label="Media sosial">
+					<h4 class="footer-title">Media Sosial</h4>
+					<ul class="social-list" style="margin-top:14px;">
+						<li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
+						<li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
+						<li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<div class="container">&copy; 2026 Crew Multimedia Baciro &mdash; Mockup High-Fidelity</div>
+		</div>
+	</footer>
 
-  <script>
-    const topHeader = document.getElementById("topHeader");
-    const searchForm = document.getElementById("searchForm");
-    const searchInput = document.getElementById("searchInput");
-    const modeRegular = document.getElementById("modeRegular");
-    const modeRaya = document.getElementById("modeRaya");
-    const regularView = document.getElementById("regularView");
-    const rayaView = document.getElementById("rayaView");
+	<script>
+		const topHeader = document.getElementById("topHeader");
+		const searchForm = document.getElementById("searchForm");
+		const searchInput = document.getElementById("searchInput");
 
-    function syncStickyOffset() {
-      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
-      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
-    }
+		function syncStickyOffset() {
+			const h = topHeader ? topHeader.offsetHeight : 104;
+			document.documentElement.style.setProperty("--header-h", h + "px");
+		}
+		syncStickyOffset();
+		window.addEventListener("resize", syncStickyOffset);
 
-    syncStickyOffset();
-    window.addEventListener("resize", syncStickyOffset);
+		searchForm.addEventListener("submit", function(e) {
+			e.preventDefault();
+			const q = searchInput.value.trim();
+			window.location.href = "search.html?q=" + encodeURIComponent(q);
+		});
 
-    searchForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const keyword = searchInput.value.trim();
-      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
-    });
+		function switchMode(mode) {
+			const pillBulanan = document.getElementById("pillBulanan");
+			const pillHariRaya = document.getElementById("pillHariRaya");
+			const tableBulanan = document.getElementById("tableBulanan");
+			const tableHariRaya = document.getElementById("tableHariRaya");
+			const paginationWrap = document.getElementById("paginationWrap");
 
-    function setMode(mode) {
-      const isRegular = mode === "regular";
-      regularView.hidden = !isRegular;
-      rayaView.hidden = isRegular;
-      modeRegular.classList.toggle("active", isRegular);
-      modeRaya.classList.toggle("active", !isRegular);
-      modeRegular.setAttribute("aria-selected", String(isRegular));
-      modeRaya.setAttribute("aria-selected", String(!isRegular));
-    }
+			if (mode === "bulanan") {
+				tableBulanan.style.display = "";
+				tableHariRaya.style.display = "none";
+				pillBulanan.classList.add("active");
+				pillBulanan.classList.remove("active-gold");
+				pillHariRaya.classList.remove("active", "active-gold");
+				pillBulanan.setAttribute("aria-selected", "true");
+				pillHariRaya.setAttribute("aria-selected", "false");
+				if (paginationWrap) paginationWrap.style.display = "flex";
+			} else {
+				tableBulanan.style.display = "none";
+				tableHariRaya.style.display = "";
+				pillHariRaya.classList.add("active-gold");
+				pillHariRaya.classList.remove("active");
+				pillBulanan.classList.remove("active", "active-gold");
+				pillHariRaya.setAttribute("aria-selected", "true");
+				pillBulanan.setAttribute("aria-selected", "false");
+				if (paginationWrap) paginationWrap.style.display = "none";
+			}
+		}
 
-    modeRegular.addEventListener("click", function () { setMode("regular"); });
-    modeRaya.addEventListener("click", function () { setMode("raya"); });
-  
-    (function () {
-      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
-      const DEFAULT_PROFILE_MENU = [
-        { id: "sejarah", label: "Sejarah" },
-        { id: "tentang-crembo", label: "Tentang Crembo" },
-        { id: "struktur", label: "Struktur" },
-        { id: "visi-misi", label: "Visi & Misi" }
-      ];
+		// Pagination buttons
+		document.querySelectorAll(".pagination-wrap button").forEach(function(btn) {
+			btn.addEventListener("click", function() {
+				document.querySelectorAll(".pagination-wrap button").forEach(function(b) { b.classList.remove("active"); });
+				btn.classList.add("active");
+			});
+		});
 
-      function readProfileMenuItems() {
-        try {
-          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
-          if (!raw) {
-            return DEFAULT_PROFILE_MENU;
-          }
+		// Profile dropdown
+		(function() {
+			const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+			const DEFAULT_PROFILE_MENU = [
+				{ id: "sejarah", label: "Sejarah" },
+				{ id: "tentang-crembo", label: "Tentang Crembo" },
+				{ id: "struktur", label: "Struktur" },
+				{ id: "visi-misi", label: "Visi & Misi" }
+			];
 
-          const parsed = JSON.parse(raw);
-          if (!Array.isArray(parsed) || parsed.length === 0) {
-            return DEFAULT_PROFILE_MENU;
-          }
+			function readProfileMenuItems() {
+				try {
+					const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+					if (!raw) return DEFAULT_PROFILE_MENU;
+					const parsed = JSON.parse(raw);
+					if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_PROFILE_MENU;
+					return parsed.map(function(item) {
+						if (typeof item === "string") return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
+						return { id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"), label: item && item.label ? String(item.label) : "Profil" };
+					});
+				} catch (err) { return DEFAULT_PROFILE_MENU; }
+			}
 
-          return parsed.map(function (item) {
-            if (typeof item === "string") {
-              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
-            }
-            return {
-              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
-              label: item && item.label ? String(item.label) : "Profil"
-            };
-          });
-        } catch (err) {
-          return DEFAULT_PROFILE_MENU;
-        }
-      }
+			function enhanceProfileHoverMenu() {
+				const navList = document.querySelector(".nav-row nav ul");
+				if (!navList) return;
+				const profileAnchor = navList.querySelector('a[href="profil.html"]');
+				if (!profileAnchor) return;
+				const profileItem = profileAnchor.closest("li");
+				if (!profileItem) return;
 
-      function enhanceProfileHoverMenu() {
-        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
-        if (!navList) {
-          return;
-        }
+				const menuItems = readProfileMenuItems();
+				profileItem.style.position = "relative";
 
-        const profileAnchor = navList.querySelector('a[href="profil.html"]');
-        if (!profileAnchor) {
-          return;
-        }
+				const dropdown = document.createElement("div");
+				Object.assign(dropdown.style, { position: "absolute", top: "calc(100% + 4px)", left: "0", minWidth: "200px", border: "1px solid rgba(128,0,0,0.15)", background: "#fff", boxShadow: "0 10px 30px rgba(128,0,0,0.12)", padding: "6px", display: "none", zIndex: "1300", borderRadius: "12px" });
 
-        const profileItem = profileAnchor.closest("li");
-        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
-          return;
-        }
+				dropdown.innerHTML = menuItems.map(function(item) {
+					return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:8px 12px;font-size:0.87rem;margin-bottom:2px;border-radius:8px;color:#4a4a4a;transition:all 0.2s;">' + item.label + '</a>';
+				}).join("");
 
-        const menuItems = readProfileMenuItems();
+				dropdown.addEventListener("mouseover", function(e) {
+					const link = e.target.closest("a");
+					if (link) { link.style.background = "rgba(128,0,0,0.06)"; link.style.color = "#800000"; }
+				});
+				dropdown.addEventListener("mouseout", function(e) {
+					const link = e.target.closest("a");
+					if (link) { link.style.background = "transparent"; link.style.color = "#4a4a4a"; }
+				});
 
-        profileItem.style.position = "relative";
-        profileItem.classList.add("nav-dropdown-enhanced");
+				profileItem.appendChild(dropdown);
+				profileItem.addEventListener("mouseenter", function() { dropdown.style.display = "block"; });
+				profileItem.addEventListener("mouseleave", function() { dropdown.style.display = "none"; });
+			}
 
-        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
-          profileAnchor.setAttribute("data-profile-menu-label", "true");
-          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
-        }
-
-        const dropdown = document.createElement("div");
-        dropdown.className = "profile-hover-menu";
-        dropdown.style.position = "absolute";
-        dropdown.style.top = "calc(100% + 4px)";
-        dropdown.style.left = "0";
-        dropdown.style.minWidth = "210px";
-        dropdown.style.border = "1px solid #bdbdbd";
-        dropdown.style.background = "#fff";
-        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
-        dropdown.style.padding = "6px";
-        dropdown.style.display = "none";
-        dropdown.style.zIndex = "1300";
-
-        dropdown.innerHTML = menuItems.map(function (item) {
-          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
-        }).join("");
-
-        dropdown.addEventListener("mouseover", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "#b9b9b9";
-            link.style.background = "#ececec";
-          }
-        });
-
-        dropdown.addEventListener("mouseout", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "transparent";
-            link.style.background = "transparent";
-          }
-        });
-
-        profileItem.appendChild(dropdown);
-
-        function showMenu() {
-          dropdown.style.display = "block";
-        }
-
-        function hideMenu() {
-          dropdown.style.display = "none";
-        }
-
-        profileItem.addEventListener("mouseenter", showMenu);
-        profileItem.addEventListener("mouseleave", hideMenu);
-        profileItem.addEventListener("focusin", showMenu);
-        profileItem.addEventListener("focusout", function () {
-          setTimeout(function () {
-            if (!profileItem.contains(document.activeElement)) {
-              hideMenu();
-            }
-          }, 0);
-        });
-      }
-
-      enhanceProfileHoverMenu();
-    })();
-  </script>
+			enhanceProfileHoverMenu();
+		})();
+	</script>
 </body>
 </html>
