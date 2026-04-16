@@ -35,6 +35,8 @@
     .brand p{margin:4px 0 0;color:rgba(255,255,255,0.75);font-size:.88rem;}
     .nav-wrap{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:var(--header-h);z-index:1150;box-shadow:var(--shadow-sm);}
     .nav-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;flex-wrap:wrap;}
+    .menu-toggle{display:none;border:1px solid var(--line);background:var(--surface);padding:10px 16px;font-size:.9rem;cursor:pointer;border-radius:var(--radius-sm);font-family:inherit;font-weight:500;color:var(--primary);transition:var(--transition);}
+    .menu-toggle:hover{background:var(--hover);}
     nav ul{margin:0;padding:0;list-style:none;display:flex;gap:4px;flex-wrap:wrap;}
     nav a{display:inline-block;padding:8px 14px;font-size:.9rem;font-weight:500;border-radius:var(--radius-sm);color:var(--ink-secondary);transition:var(--transition);position:relative;}
     nav a:hover{color:var(--primary);background:var(--hover);}
@@ -198,11 +200,19 @@
     @media(max-width:700px){.row-3,.row-2,.select-grid,.extra-staff-picker{grid-template-columns:1fr;}.staff-eval-grid{grid-template-columns:1fr;}}
     @media(max-width:760px){
       .top-header .container{grid-template-columns:auto 1fr;align-items:center;gap:10px;padding:10px 0;text-align:left;}
+      .menu-toggle{display:inline-block;}
+      nav{width:100%;display:none;}
+      nav.open{display:block;animation:fadeSlideDown .3s ease;}
+      @keyframes fadeSlideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+      nav ul{flex-direction:column;align-items:stretch;}
+      nav a{display:block;border:1px solid var(--line);border-bottom-width:3px;text-align:center;}
       .logo-box{width:52px;height:52px;padding:3px;margin:0;}
       .brand h1{font-size:clamp(1.02rem,5vw,1.35rem);line-height:1.2;letter-spacing:.4px;}
       .brand p{margin-top:3px;font-size:.76rem;line-height:1.35;}
-      .right-tools{width:100%;justify-content:center;flex-wrap:wrap;}
+      .nav-row{align-items:stretch;}
+      .right-tools{width:100%;justify-content:stretch;flex-wrap:wrap;}
       .search{flex:1 1 230px;}
+      .btn-login{flex:1 1 auto;justify-content:center;}
     }
     @media(max-width:520px){
       .top-header .container{padding:8px 0;}
@@ -227,7 +237,8 @@
 
   <div class="nav-wrap">
     <div class="container nav-row">
-      <nav aria-label="Navigasi utama">
+      <button id="menuToggle" class="menu-toggle" type="button" aria-controls="mainNav" aria-expanded="false">☰ Menu</button>
+      <nav id="mainNav" aria-label="Navigasi utama">
         <ul>
           <li><a href="home.html">Home</a></li>
           <li><a href="profil.html">Profil</a></li>
@@ -509,6 +520,8 @@
     const fallbackActiveMembers = ["Rikha","Jeni","Tyas","Lisa","Evan","Jose","Rossa","Aurel","Asha","Andre","Bima","Chandra","Dian","Elin","Ferry","Gita","Hana"];
 
     const topHeader        = document.getElementById("topHeader");
+    const menuToggle       = document.getElementById("menuToggle");
+    const mainNav          = document.getElementById("mainNav");
     const searchForm       = document.getElementById("searchForm");
     const searchInput      = document.getElementById("searchInput");
     const scheduleSelect   = document.getElementById("scheduleSelect");
@@ -634,6 +647,8 @@
     function cancelForm() { resetFormState(); setStatus("Pengisian evaluasi dibatalkan.",false); }
 
     syncStickyOffset(); window.addEventListener("resize",syncStickyOffset);
+    menuToggle.addEventListener("click",function(){const isOpen=mainNav.classList.toggle("open");menuToggle.setAttribute("aria-expanded",String(isOpen));});
+    mainNav.querySelectorAll("a").forEach(function(link){link.addEventListener("click",function(){if(mainNav.classList.contains("open")){mainNav.classList.remove("open");menuToggle.setAttribute("aria-expanded","false");}});});
     initActiveMembers(); dynamicQuestions=readQuestionConfig(); refreshComboSelections();
     Object.keys(comboConfig).forEach(function(k){renderComboOptions(k,"");});
     drawScheduleOptions(); renderDynamicQuestions();
