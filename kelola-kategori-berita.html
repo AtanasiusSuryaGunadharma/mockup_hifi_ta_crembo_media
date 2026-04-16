@@ -190,14 +190,44 @@
       flex-wrap: wrap;
     }
 
+    .headline-main {
+      display: grid;
+      gap: 4px;
+      min-width: 240px;
+      flex: 1 1 320px;
+    }
+
+    .headline-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .headline h1 {
       margin: 0;
       font-size: clamp(1.4rem, 2.6vw, 2rem);
+      color: #fff;
     }
 
     .headline p {
       margin: 6px 0 0;
-      color: #4b5563;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .headline .btn.ghost {
+      min-height: 36px;
+      padding: 7px 14px;
+      white-space: nowrap;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .headline .btn.ghost:hover {
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.52);
     }
 
     .grid {
@@ -383,29 +413,25 @@
     </aside>
 
     <main class="main">
-      <header class="meta-header" aria-label="Header dashboard waktu berjalan">
-        <h1 class="meta-title">Dashboard</h1>
-        <div class="meta-badges">
-          <span id="liveDateTime" class="chip">-</span>
-          <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
-              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
-              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
-              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
-            </svg>
-          </a>
-        </div>
-      </header>
-
       <section class="container">
         <header class="headline">
-          <div>
+          <div class="headline-main">
             <button id="mobileSidebarBtn" class="mobile-toggle" type="button">Menu</button>
             <h1>Kelola Kategori Berita</h1>
             <p>Tambah, edit, dan hapus kategori untuk artikel pengumuman.</p>
           </div>
-          <a class="btn primary" href="kelola-berita.html">Kembali ke Berita</a>
+          <div class="headline-actions">
+            <a class="btn ghost" href="kelola-berita.html">Kembali ke Berita</a>
+            <span id="liveDateTime" class="chip">-</span>
+            <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+                <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+                <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              </svg>
+            </a>
+          </div>
         </header>
 
         <section class="grid">
