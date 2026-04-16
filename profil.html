@@ -116,6 +116,22 @@
 			flex-wrap: wrap;
 		}
 
+		.menu-toggle {
+			display: none;
+			border: 1px solid var(--line);
+			background: var(--surface);
+			padding: 10px 16px;
+			font-size: 0.9rem;
+			cursor: pointer;
+			border-radius: var(--radius-sm);
+			font-family: inherit;
+			font-weight: 500;
+			color: var(--primary);
+			transition: var(--transition);
+		}
+
+		.menu-toggle:hover { background: var(--hover); }
+
 		nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; flex-wrap: wrap; }
 
 		nav a {
@@ -134,8 +150,6 @@
 		nav a.active {
 			color: var(--primary);
 			font-weight: 700;
-		.menu-toggle { display: none; border: 1px solid var(--line); background: var(--surface); padding: 10px 16px; font-size: 0.9rem; cursor: pointer; border-radius: var(--radius-sm); font-family: inherit; font-weight: 500; color: var(--primary); transition: var(--transition); }
-		.menu-toggle:hover { background: var(--hover); }
 		}
 
 		nav a.active::after {
@@ -150,6 +164,7 @@
 
 		.nav-dropdown { position: relative; }
 		.nav-dropdown > a::after { content: " ▾"; font-size: 0.72rem; }
+		.nav-dropdown.open > a::after { content: " ▴"; }
 		.nav-dropdown-menu {
 			position: absolute;
 			top: calc(100% + 4px);
@@ -468,6 +483,22 @@
 			@keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 			nav ul { flex-direction: column; align-items: stretch; }
 			nav a { display: block; border: 1px solid var(--line); border-bottom-width: 3px; border-radius: var(--radius-sm); text-align: center; }
+			.nav-dropdown { position: static; }
+			.nav-dropdown > a::after { font-size: 0.84rem; margin-left: 6px; }
+			.nav-dropdown-menu {
+				position: static;
+				top: auto;
+				left: auto;
+				min-width: 0;
+				margin-top: 6px;
+				box-shadow: none;
+				border-radius: var(--radius-sm);
+				background: var(--bg);
+				display: none;
+			}
+			.nav-dropdown.open .nav-dropdown-menu { display: block; }
+			.nav-dropdown-menu a { border: 1px solid var(--line); margin-bottom: 4px; text-align: center; background: var(--surface); }
+			.nav-dropdown-menu a:last-child { margin-bottom: 0; }
 			.logo-box { width: 52px; height: 52px; padding: 3px; margin: 0; }
 			.brand h1 { font-size: clamp(1.02rem, 5vw, 1.35rem); line-height: 1.2; letter-spacing: 0.4px; }
 			.brand p { margin-top: 3px; font-size: 0.76rem; line-height: 1.35; }
@@ -505,7 +536,7 @@
 				<ul>
 					<li><a href="home.html">Home</a></li>
 					<li class="nav-dropdown">
-						<a class="active" href="profil.html">Profil</a>
+						<a class="active profile-parent-link" href="profil.html" aria-expanded="false">Profil</a>
 						<div id="profileDropdownList" class="nav-dropdown-menu" aria-label="Submenu profil"></div>
 					</li>
 					<li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
@@ -605,6 +636,8 @@
 		const profileTitle = document.getElementById("profileTitle");
 		const profileContent = document.getElementById("profileContent");
 		const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+		const profileNavItem = mainNav ? mainNav.querySelector(".nav-dropdown") : null;
+		const profileNavLink = profileNavItem ? profileNavItem.querySelector(".profile-parent-link") : null;
 
 		const PROFILE_STORAGE_KEY = "crembo-profile-menu";
 
@@ -679,15 +712,43 @@
 		menuToggle.addEventListener("click", function () {
 			const isOpen = mainNav.classList.toggle("open");
 			menuToggle.setAttribute("aria-expanded", String(isOpen));
+			if (!isOpen && profileNavItem && profileNavLink) {
+				profileNavItem.classList.remove("open");
+				profileNavLink.setAttribute("aria-expanded", "false");
+			}
 		});
+
+		if (profileNavLink && profileNavItem) {
+			profileNavLink.addEventListener("click", function (event) {
+				if (window.matchMedia("(max-width: 760px)").matches) {
+					event.preventDefault();
+					const isOpen = profileNavItem.classList.toggle("open");
+					profileNavLink.setAttribute("aria-expanded", String(isOpen));
+				}
+			});
+		}
 
 		mainNav.querySelectorAll("a").forEach(function (link) {
 			link.addEventListener("click", function () {
+				if (link.classList.contains("profile-parent-link") && window.matchMedia("(max-width: 760px)").matches) {
+					return;
+				}
 				if (mainNav.classList.contains("open")) {
 					mainNav.classList.remove("open");
 					menuToggle.setAttribute("aria-expanded", "false");
+					if (profileNavItem && profileNavLink) {
+						profileNavItem.classList.remove("open");
+						profileNavLink.setAttribute("aria-expanded", "false");
+					}
 				}
 			});
+		});
+
+		window.addEventListener("resize", function () {
+			if (!window.matchMedia("(max-width: 760px)").matches && profileNavItem && profileNavLink) {
+				profileNavItem.classList.remove("open");
+				profileNavLink.setAttribute("aria-expanded", "false");
+			}
 		});
 
 		const activeProfileId = getSelectedProfileId();

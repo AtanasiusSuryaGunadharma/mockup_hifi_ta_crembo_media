@@ -209,6 +209,16 @@
 			width: 100%;
 		}
 
+		.nav-dropdown-enhanced {
+			position: relative;
+		}
+
+		.nav-dropdown-enhanced.open > a {
+			color: var(--primary);
+			font-weight: 700;
+			border-bottom-color: var(--primary);
+		}
+
 		.right-tools {
 			display: flex;
 			align-items: center;
@@ -1465,6 +1475,43 @@
 				text-align: center;
 			}
 
+			.nav-dropdown-enhanced {
+				position: static;
+			}
+
+			.nav-dropdown-enhanced .profile-hover-menu {
+				position: static !important;
+				top: auto !important;
+				left: auto !important;
+				min-width: 0 !important;
+				width: 100%;
+				margin-top: 6px;
+				border: 1px solid var(--line) !important;
+				box-shadow: none !important;
+				padding: 6px !important;
+				border-radius: var(--radius-sm) !important;
+				background: var(--bg) !important;
+				display: none !important;
+			}
+
+			.nav-dropdown-enhanced.open .profile-hover-menu {
+				display: block !important;
+			}
+
+			.nav-dropdown-enhanced .profile-hover-menu a {
+				display: block;
+				text-align: center;
+				border: 1px solid var(--line) !important;
+				border-radius: var(--radius-sm) !important;
+				background: var(--surface) !important;
+				margin-bottom: 4px !important;
+				color: var(--ink-secondary) !important;
+			}
+
+			.nav-dropdown-enhanced .profile-hover-menu a:last-child {
+				margin-bottom: 0 !important;
+			}
+
 			.right-tools {
 				width: 100%;
 				justify-content: stretch;
@@ -2052,13 +2099,32 @@
 		menuToggle.addEventListener("click", function () {
 			const isOpen = mainNav.classList.toggle("open");
 			menuToggle.setAttribute("aria-expanded", String(isOpen));
+			if (!isOpen) {
+				mainNav.querySelectorAll(".nav-dropdown-enhanced.open").forEach(function (item) {
+					item.classList.remove("open");
+					const link = item.querySelector("a");
+					if (link) {
+						link.setAttribute("aria-expanded", "false");
+					}
+				});
+			}
 		});
 
 		mainNav.querySelectorAll("a").forEach(function (link) {
 			link.addEventListener("click", function () {
+				if (link.classList.contains("profile-parent-link") && window.matchMedia("(max-width: 760px)").matches) {
+					return;
+				}
 				if (mainNav.classList.contains("open")) {
 					mainNav.classList.remove("open");
 					menuToggle.setAttribute("aria-expanded", "false");
+					mainNav.querySelectorAll(".nav-dropdown-enhanced.open").forEach(function (item) {
+						item.classList.remove("open");
+						const parentLink = item.querySelector("a");
+						if (parentLink) {
+							parentLink.setAttribute("aria-expanded", "false");
+						}
+					});
 				}
 			});
 		});
@@ -2404,13 +2470,15 @@
 
         const menuItems = readProfileMenuItems();
 
-        profileItem.style.position = "relative";
-        profileItem.classList.add("nav-dropdown-enhanced");
+		profileItem.style.position = "relative";
+		profileItem.classList.add("nav-dropdown-enhanced");
 
 		if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
 		  profileAnchor.setAttribute("data-profile-menu-label", "true");
 		  profileAnchor.textContent = profileAnchor.textContent.trim() + " ▾";
 		}
+		profileAnchor.classList.add("profile-parent-link");
+		profileAnchor.setAttribute("aria-expanded", "false");
 
         const dropdown = document.createElement("div");
         dropdown.className = "profile-hover-menu";
@@ -2450,6 +2518,15 @@
 
         profileItem.appendChild(dropdown);
 
+		profileAnchor.addEventListener("click", function (event) {
+			if (window.matchMedia("(max-width: 760px)").matches) {
+				event.preventDefault();
+				const isOpen = profileItem.classList.toggle("open");
+				profileAnchor.setAttribute("aria-expanded", String(isOpen));
+				dropdown.style.display = isOpen ? "block" : "none";
+			}
+		});
+
 			dropdown.querySelectorAll("a").forEach(function (link) {
 				link.addEventListener("click", hideMenu);
 			});
@@ -2460,6 +2537,8 @@
 
         function hideMenu() {
           dropdown.style.display = "none";
+			profileItem.classList.remove("open");
+			profileAnchor.setAttribute("aria-expanded", "false");
         }
 
         profileItem.addEventListener("mouseenter", showMenu);
