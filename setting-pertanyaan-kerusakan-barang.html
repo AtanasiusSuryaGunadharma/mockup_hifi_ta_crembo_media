@@ -341,10 +341,11 @@
       .sidebar { position: static; height: auto; }
     }
   </style>
+  <link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
-    <aside class="sidebar" aria-label="Sidebar admin">
+    <aside id="sidebar" class="sidebar" aria-label="Sidebar admin">
       <div class="brand">
         <h1>Crembo Media Panel</h1>
         <p>Setting form kerusakan barang anggota</p>
@@ -369,6 +370,7 @@
 
     <main class="main">
       <header class="dashboard-headline-bar">
+        <button id="mobileSidebarBtn" class="mobile-toggle" type="button">Menu</button>
         <h1>Setting Pertanyaan Form Kerusakan Barang</h1>
         <div class="head-meta">
           <span id="liveDateTime">-</span>
@@ -826,5 +828,6 @@
 
     bootstrap();
   </script>
+  <script src="_sidebar-fix.js"></script>
 </body>
 </html>
