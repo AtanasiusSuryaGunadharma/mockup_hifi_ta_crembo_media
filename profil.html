@@ -152,7 +152,7 @@
 			font-weight: 700;
 		}
 
-		nav a.active::after {
+		nav a.active:not(.profile-parent-link)::after {
 			content: "";
 			position: absolute;
 			bottom: 2px;
@@ -163,8 +163,29 @@
 		}
 
 		.nav-dropdown { position: relative; }
-		.nav-dropdown > a.profile-parent-link::before { content: "▾"; font-size: 0.72rem; margin-left: 6px; }
-		.nav-dropdown.open > a.profile-parent-link::before { content: "▴"; }
+		.nav-dropdown > a.profile-parent-link { padding-right: 30px; }
+		.nav-dropdown > a.profile-parent-link::after {
+			content: "▾";
+			position: absolute;
+			right: 12px;
+			top: 50%;
+			transform: translateY(-50%);
+			height: auto;
+			width: auto;
+			background: transparent;
+			font-size: 0.72rem;
+		}
+		.nav-dropdown.open > a.profile-parent-link::after { content: "▴"; }
+		.nav-dropdown > a.profile-parent-link.active::before {
+			content: "";
+			position: absolute;
+			bottom: 2px;
+			left: 14px;
+			right: 14px;
+			height: 2px;
+			background: var(--primary);
+			border-radius: 999px;
+		}
 		.nav-dropdown-menu {
 			position: absolute;
 			top: calc(100% + 4px);
@@ -484,7 +505,10 @@
 			nav ul { flex-direction: column; align-items: stretch; }
 			nav a { display: block; border: 1px solid var(--line); border-bottom-width: 3px; border-radius: var(--radius-sm); text-align: center; }
 			.nav-dropdown { position: static; }
-			.nav-dropdown > a.profile-parent-link::before { font-size: 0.84rem; margin-left: 6px; }
+			.nav-dropdown > a.profile-parent-link { padding-right: 36px; }
+			.nav-dropdown > a.profile-parent-link::after { font-size: 0.84rem; right: 14px; }
+			.nav-dropdown:hover .nav-dropdown-menu,
+			.nav-dropdown:focus-within .nav-dropdown-menu { display: none; }
 			.nav-dropdown-menu {
 				position: static;
 				top: auto;
