@@ -297,6 +297,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
+      touch-action: manipulation;
     }
 
     .panel-head {
@@ -836,17 +837,9 @@
           '<td data-label="Barang">' + escapeHtml((item.itemCode || "-") + " - " + (item.itemName || "-")) + '</td>' +
           '<td data-label="Tingkat">' + escapeHtml(item.severity || "-") + '</td>' +
           '<td data-label="Status"><span class="status-pill ' + statusClass(status) + '">' + escapeHtml(status) + '</span></td>' +
-          '<td data-label="Aksi"><button class="btn" type="button" data-detail-id="' + escapeHtml(item.id || "") + '" onclick="openDetailById(this)">Detail</button></td>' +
+          '<td data-label="Aksi"><button class="btn" type="button" data-detail-id="' + escapeHtml(item.id || "") + '">Detail</button></td>' +
         '</tr>';
       }).join("");
-    }
-
-    function openDetailById(button) {
-      const reportId = button.getAttribute("data-detail-id");
-      if (!reportId) {
-        return;
-      }
-      openDetail(reportId);
     }
 
     function openDetail(reportId) {
@@ -936,6 +929,21 @@
     searchInput.addEventListener("input", renderTable);
     statusFilter.addEventListener("change", renderTable);
     severityFilter.addEventListener("change", renderTable);
+
+    function handleDetailActivation(event) {
+      const button = event.target.closest ? event.target.closest("button[data-detail-id]") : null;
+      if (!button || !rows.contains(button)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      openDetail(String(button.getAttribute("data-detail-id") || ""));
+    }
+
+    rows.addEventListener("click", handleDetailActivation);
+    rows.addEventListener("pointerup", handleDetailActivation);
+    rows.addEventListener("touchend", handleDetailActivation, { passive: false });
 
     closeDetailBtn.addEventListener("click", closeDetail);
     detailModal.addEventListener("click", function (event) {
