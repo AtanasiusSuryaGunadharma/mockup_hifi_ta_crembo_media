@@ -85,6 +85,21 @@
     }
   }
 
+  /* Remove any existing page-level click handlers by replacing buttons */
+  var uniqueMobileBtns = [];
+  mobileBtns.forEach(function (btn) {
+    if (btn && uniqueMobileBtns.indexOf(btn) === -1) {
+      uniqueMobileBtns.push(btn);
+    }
+  });
+
+  mobileBtns = uniqueMobileBtns.map(function (btn) {
+    if (!btn || !btn.parentNode) return btn;
+    var freshBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(freshBtn, btn);
+    return freshBtn;
+  });
+
   var sidebarBackdrop = document.getElementById('sidebarBackdrop');
   if (sidebar && !sidebarBackdrop) {
     sidebarBackdrop = document.createElement('div');
@@ -122,7 +137,7 @@
     if (!sidebar || !sidebar.classList.contains('show')) return;
     if (sidebar.contains(e.target)) return;
     var isMobileBtn = mobileBtns.some(function (b) { return b && b.contains(e.target); });
-    if (!isMobileBtn) sidebar.classList.remove('show');
+    if (!isMobileBtn) closeSidebar();
   });
 
   if (sidebarBackdrop && !sidebarBackdrop._mobileFixed) {
