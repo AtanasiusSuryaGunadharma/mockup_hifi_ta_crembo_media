@@ -743,7 +743,7 @@
         html += "<tr><td colspan='10'>Tidak ada data sesuai filter.</td></tr>";
       }
 
-      html += '</table><script src="_sidebar-fix.js"></script></body></html>';
+      html += '</table></body></html>';
 
       const blob = new Blob([html], { type: "application/vnd.ms-excel" });
       const url = URL.createObjectURL(blob);
@@ -785,7 +785,7 @@
         '</head><body>' +
         '<h2>Rekap Form Kerusakan Barang</h2>' +
         '<table><thead><tr><th>ID</th><th>Tanggal Lapor</th><th>Kode Barang</th><th>Nama Barang</th><th>Pelapor</th><th>Tingkat</th><th>Status</th></tr></thead><tbody>' + bodyRows + '</tbody></table>' +
-        '<script src="_sidebar-fix.js"></script></body></html>'
+        '</body></html>'
       );
       popup.document.close();
       popup.focus();
