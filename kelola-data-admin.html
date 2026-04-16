@@ -208,6 +208,12 @@
 
     .panel-body { padding: 12px; }
 
+    .admin-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -358,6 +364,59 @@
         position: static;
         height: auto;
       }
+
+      .admin-table-wrap {
+        overflow: visible;
+      }
+
+      .admin-table-wrap table {
+        min-width: 0;
+      }
+
+      .admin-table-wrap thead {
+        display: none;
+      }
+
+      .admin-table-wrap tbody tr {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        border: 1px solid #cbcbcb;
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+      }
+
+      .admin-table-wrap tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        border: 0;
+        border-bottom: 1px dashed #d6d6d6;
+        padding: 4px 0 8px;
+        min-width: 0;
+      }
+
+      .admin-table-wrap tbody td::before {
+        content: attr(data-label);
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #7f1d1d;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        flex: 0 0 96px;
+      }
+
+      .admin-table-wrap tbody td:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .admin-table-wrap .inline-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -418,19 +477,21 @@
               <h3>Daftar Admin</h3>
             </header>
             <div class="panel-body">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Login ID</th>
-                    <th>Status</th>
-                    <th>Wewenang</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="adminTableBody"></tbody>
-              </table>
+              <div class="admin-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Login ID</th>
+                      <th>Status</th>
+                      <th>Wewenang</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminTableBody"></tbody>
+                </table>
+              </div>
             </div>
           </article>
 
@@ -640,12 +701,12 @@
       adminTableBody.innerHTML = admins.map(function (admin) {
         const statusClass = admin.status === "Nonaktif" ? "status nonaktif" : "status";
         return '<tr>'
-          + '<td>' + escapeHtml(admin.fullName) + '</td>'
-          + '<td>' + escapeHtml(admin.email) + '</td>'
-          + '<td>' + escapeHtml(admin.loginIdentifier) + '</td>'
-          + '<td><span class="' + statusClass + '">' + escapeHtml(admin.status) + '</span></td>'
-          + '<td>' + escapeHtml(permissionText(admin.permissions)) + '</td>'
-          + '<td><div class="inline-actions">'
+          + '<td data-label="Nama">' + escapeHtml(admin.fullName) + '</td>'
+          + '<td data-label="Email">' + escapeHtml(admin.email) + '</td>'
+          + '<td data-label="Login ID">' + escapeHtml(admin.loginIdentifier) + '</td>'
+          + '<td data-label="Status"><span class="' + statusClass + '">' + escapeHtml(admin.status) + '</span></td>'
+          + '<td data-label="Wewenang">' + escapeHtml(permissionText(admin.permissions)) + '</td>'
+          + '<td data-label="Aksi"><div class="inline-actions">'
           + '<button class="btn ghost" type="button" data-action="edit" data-id="' + admin.id + '">Edit</button>'
           + '<button class="btn warn" type="button" data-action="delete" data-id="' + admin.id + '">Hapus</button>'
           + '</div></td>'

@@ -210,6 +210,14 @@
 
     .panel-body { padding: 12px; }
 
+    .cert-preview-wrap {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+
     .form-grid {
       display: grid;
       gap: 10px;
@@ -397,6 +405,10 @@
         position: static;
         height: auto;
       }
+
+      .cert-preview {
+        min-width: 700px;
+      }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -490,35 +502,36 @@
             <h3>Preview Template Sertifikat</h3>
           </header>
           <div class="panel-body">
-            <div class="cert-preview" id="certPreview">
-              <div class="cert-head">
-                <img class="cert-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-                <!-- <h4>CREMBO MEDIA BACIRO</h4> -->
-                <p>Komunitas Multimedia Paroki Baciro - Yogyakarta</p>
-              </div>
-              <p class="cert-title">Sertifikat Keanggotaan</p>
-              <p class="cert-sub">Crew Multimedia Baciro</p>
+            <div class="cert-preview-wrap">
+              <div class="cert-preview" id="certPreview">
+                <div class="cert-head">
+                  <img class="cert-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
+                  <!-- <h4>CREMBO MEDIA BACIRO</h4> -->
+                  <p>Komunitas Multimedia Paroki Baciro - Yogyakarta</p>
+                </div>
+                <p class="cert-title">Sertifikat Keanggotaan</p>
+                <p class="cert-sub">Crew Multimedia Baciro</p>
 
-              <div class="cert-body">
-                Diberikan kepada:
-                <div class="cert-member">Nama Anggota Otomatis</div>
-                <div>
-                  sebagai anggota aktif Crembo Media<br>
-                  sejak terdaftar pada <strong id="previewDate">20 Agustus 2025</strong>
+                <div class="cert-body">
+                  Diberikan kepada:
+                  <div class="cert-member">Nama Anggota Otomatis</div>
+                  <div>
+                    sebagai anggota aktif Crembo Media<br>
+                    sejak terdaftar pada <strong id="previewDate">20 Agustus 2025</strong>
+                  </div>
                 </div>
-              </div>
 
-              <div class="sign-grid">
-                <div class="sign-card">
-                  <div class="sign-box"><img id="previewKetuaSign" alt="Tanda tangan ketua"></div>
-                  <strong id="previewKetuaName">Ketua Crembo</strong><br>
-                  Ketua Crembo Media
-                </div>
-                <div class="sign-card">
-                  <div class="sign-box"><img id="previewPembinaSign" alt="Tanda tangan pembina"></div>
-                  <strong id="previewPembinaName">Pembina</strong><br>
-                  Pembina Crembo Media
-                </div>
+                <div class="sign-grid">
+                  <div class="sign-card">
+                    <div class="sign-box"><img id="previewKetuaSign" alt="Tanda tangan ketua"></div>
+                    <strong id="previewKetuaName">Ketua Crembo</strong><br>
+                    Ketua Crembo Media
+                  </div>
+                  <div class="sign-card">
+                    <div class="sign-box"><img id="previewPembinaSign" alt="Tanda tangan pembina"></div>
+                    <strong id="previewPembinaName">Pembina</strong><br>
+                    Pembina Crembo Media
+                  </div>
               </div>
             </div>
           </div>
