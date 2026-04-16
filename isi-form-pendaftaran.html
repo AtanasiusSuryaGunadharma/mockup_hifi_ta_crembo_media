@@ -190,32 +190,36 @@
       padding: 0;
     }
 
-    .header {
-      height: 66px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--line);
+    .dashboard-headline-bar {
+      background: linear-gradient(135deg, #141414, #2d2d2d);
+      border-radius: var(--radius);
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 0 18px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: 12px;
+      margin-bottom: 14px;
+      box-shadow: var(--soft-shadow);
     }
 
-    .header h1 {
+    .dashboard-headline-bar h1 {
       margin: 0;
-      font-size: 1.05rem;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 800;
+      color: #fff;
     }
 
-    .header-right {
+    .head-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: #374151;
-      font-size: 0.82rem;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.85rem;
       font-weight: 600;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .home-globe {
@@ -536,25 +540,33 @@
       .content-layout { grid-template-columns: 1fr; }
       .cards,
       .form-wrap { max-height: none; }
+      .page { padding: 12px; }
     }
 
     @media (max-width: 1080px) {
       .app-layout { grid-template-columns: 1fr; }
       .sidebar {
         position: fixed;
-        top: 66px;
+        top: 0;
         left: 0;
         width: 292px;
-        height: calc(100vh - 66px);
+        height: 100vh;
         display: none;
         z-index: 20;
+        overflow-y: auto;
       }
       .sidebar.show { display: block; }
       .mobile-menu { display: inline-block; }
+      .dashboard-headline-bar { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
     }
 
     @media (max-width: 720px) {
       .filters { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .hero-actions { flex-direction: column; width: 100%; }
+      .hero-actions .btn, .hero-actions .chip { width: 100%; }
+      .content-layout { grid-template-columns: 1fr; }
+      .page { padding: 12px; }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -577,44 +589,23 @@
       </div>
 
       <div class="menu-group open">
-        <button class="menu-toggle" type="button">Dashboard Utama <span>-</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="dashboard-anggota.html">Ringkasan Dashboard</a>
-          <a class="menu-link" href="profil-anggota.html">Profil Saya</a>
-          <a class="menu-link" href="sertifikat-anggota.html">Unduh Sertifikat Anggota</a>
-          <a class="menu-link" href="#">Log Aktivitas Saya</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Tugas Streaming / Multimedia <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="jadwal-tugas-misa-anggota.html">Jadwal Tugas Misa Biasa/Misa Besar</a>
-          <a class="menu-link" href="request-tugas-anggota.html">Request Tugas Anggota</a>
-          <a class="menu-link" href="pembatalan-tugas-anggota.html">Pembatalan Tugas (maks H-3)</a>
-          <a class="menu-link" href="penukaran-jadwal-tugas-anggota.html">Penukaran Jadwal Tugas</a>
-          <a class="menu-link" href="riwayat-tugas-saya.html">Riwayat Tugas Saya</a>
-        </div>
-      </div>
-
-      <div class="menu-group open">
         <button class="menu-toggle" type="button">Form Pendaftaran Kegiatan <span>-</span></button>
         <div class="menu-items">
-          <a class="menu-link active" href="isi-form-pendaftaran.html">Isi Form Pendaftaran</a>
+          <a class="menu-link active" href="isi-form-pendaftaran.html">Daftar Kegiatan</a>
         </div>
       </div>
 
       <div class="side-bottom">
-        <a class="side-action" href="home.html?session=active">Kembali ke Home (Tetap Login)</a>
+        <a class="side-action" href="dashboard-anggota.html?role=anggota">Kembali ke Dashboard Utama</a>
         <a class="side-action" href="login.html">Keluar</a>
       </div>
     </aside>
 
     <main class="main">
-      <header class="header">
-        <h1>Isi Form Pendaftaran</h1>
-        <div class="header-right">
-          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+      <header class="dashboard-headline-bar">
+        <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+        <h1>Daftar Kegiatan</h1>
+        <div class="head-meta">
           <span id="liveDateTime">-</span>
           <a class="home-globe" href="dashboard-anggota.html" title="Kembali ke Dashboard">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -792,7 +783,60 @@
     function readData() {
       const rawForms = localStorage.getItem(FORM_STORAGE_KEY);
       const parsedForms = safeParse(rawForms, []);
-      forms = Array.isArray(parsedForms) ? parsedForms.map(normalizeForm) : [];
+      
+      // Default dummy data dengan periode panjang (jika kosong)
+      const DEMO_FORMS = [
+        {
+          id: "form-registrasi-2024",
+          title: "Form Registrasi Anggota Baru 2024-2025",
+          description: "Form registrasi untuk calon anggota baru tahun 2024-2025. Periode pendaftaran panjang untuk memastikan semua calon bisa mendaftar.",
+          target: "public",
+          visibility: "visible",
+          openDate: "2024-03-01",
+          closeDate: "2025-12-31",
+          quota: 50,
+          fields: [
+            { id: "field-1", label: "Nama Lengkap", type: "text", required: true, placeholder: "Masukkan nama lengkap Anda" },
+            { id: "field-2", label: "Nomor Anggota", type: "text", required: true, placeholder: "Nomor anggota dari pengurus" },
+            { id: "field-3", label: "Email", type: "email", required: true, placeholder: "Email aktif Anda" },
+            { id: "field-4", label: "Nomor Telepon", type: "tel", required: true, placeholder: "+62 8xxx xxxx xxx" },
+            { id: "field-5", label: "Divisi", type: "select", required: true, options: ["Multimedia", "Musik", "Liturgi", "Pengurus"] }
+          ]
+        },
+        {
+          id: "form-survey-2024",
+          title: "Survei Kepuasan Anggota Q2 2024",
+          description: "Survei kepuasan anggota untuk meningkatkan pelayanan di tahun 2024. Jawaban Anda sangat berharga bagi kemajuan organisasi.",
+          target: "internal",
+          visibility: "visible",
+          openDate: "2024-04-15",
+          closeDate: "2025-06-30",
+          quota: 0,
+          fields: [
+            { id: "field-6", label: "Berapa kepuasan Anda terhadap organisasi?", type: "radio", required: true, options: ["Sangat Puas", "Puas", "Cukup", "Kurang Puas"] },
+            { id: "field-7", label: "Aspek apa yang perlu ditingkatkan?", type: "checkbox", required: false, options: ["Program kegiatan", "Komunikasi", "Transparansi keuangan", "Fasilitas", "Lainnya"] },
+            { id: "field-8", label: "Saran dan masukan", type: "textarea", required: false, placeholder: "Tuliskan saran Anda di sini..." }
+          ]
+        },
+        {
+          id: "form-talent-show",
+          title: "Pendaftaran Talent Show Tahunan 2025",
+          description: "Daftarkan diri Anda untuk mengikuti talent show tahunan. Periode panjang memastikan semua anggota berkesempatan.",
+          target: "public",
+          visibility: "visible",
+          openDate: "2025-01-01",
+          closeDate: "2025-11-30",
+          quota: 100,
+          fields: [
+            { id: "field-9", label: "Nama Peserta", type: "text", required: true, placeholder: "Nama lengkap" },
+            { id: "field-10", label: "Kategori Bakat", type: "select", required: true, options: ["Musik Vokal", "Musik Instrumen", "Tari", "Drama", "Komedi", "Lainnya"] },
+            { id: "field-11", label: "Judul Penampilan", type: "text", required: true, placeholder: "Judul lagu/pertunjukan" },
+            { id: "field-12", label: "Durasi (menit)", type: "number", required: true, placeholder: "Estimasi durasi" }
+          ]
+        }
+      ];
+      
+      forms = Array.isArray(parsedForms) && parsedForms.length > 0 ? parsedForms.map(normalizeForm) : DEMO_FORMS.map(normalizeForm);
 
       const rawSubmissions = localStorage.getItem(SUBMISSION_STORAGE_KEY);
       const parsedSubmissions = safeParse(rawSubmissions, []);
