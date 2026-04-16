@@ -90,19 +90,19 @@
     .world-link svg{width:18px;height:18px;}
 
     /* TOPBAR */
-    .topbar{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
-    .topbar::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--primary),var(--primary-light));}
+    .topbar{border:1px solid transparent;background:linear-gradient(135deg,var(--primary-deeper),var(--primary));border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--shadow-md);position:relative;overflow:hidden;}
+    .topbar::before{display:none;content:none;}
     .mobile-toggle{display:none;border:1.5px solid var(--line);background:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:0.84rem;cursor:pointer;font-family:inherit;transition:var(--transition);}
     .mobile-toggle:hover{border-color:var(--primary);color:var(--primary);}
-    .headline{margin:0;font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:var(--ink);}
-    .subhead{margin:3px 0 0;color:var(--muted);font-size:0.84rem;}
+    .headline{margin:0;font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:#fff;}
+    .subhead{margin:3px 0 0;color:rgba(255,255,255,0.86);font-size:0.84rem;}
     .quick-filter{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end;}
     .chip{
-      border:1px solid var(--line);background:linear-gradient(135deg,rgba(128,0,0,0.05),rgba(128,0,0,0.02));
-      padding:5px 11px;font-size:0.74rem;border-radius:999px;color:var(--ink-secondary);
+      border:1px solid rgba(255,255,255,0.28);background:rgba(255,255,255,0.14);
+      padding:5px 11px;font-size:0.74rem;border-radius:999px;color:#fff;
       font-weight:600;
     }
-    .chip strong{color:var(--primary);}
+    .chip strong{color:var(--accent-gold-light);}
 
     /* METRIC CARDS */
     .cards{margin-top:14px;display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;}
@@ -225,7 +225,7 @@
       <div class="menu-group open">
         <button class="group-toggle" type="button">Ringkasan <span>-</span></button>
         <div class="group-items">
-          <a class="menu-link active" href="#">Dashboard Utama</a>
+          <a class="menu-link active" href="dashboard.html">Dashboard Utama</a>
           <a class="menu-link" href="profil-admin.html">Profil Saya</a>
         </div>
       </div>
@@ -288,6 +288,7 @@
 
     <main class="main">
       <header class="dashboard-headline-bar" aria-label="Header dashboard waktu berjalan">
+        <button id="mobileSidebarBtn" class="mobile-toggle" type="button">Menu</button>
         <h1>Dashboard</h1>
         <div class="head-meta">
           <button id="notificationBtn" class="head-notification" type="button" aria-label="Buka notifikasi" title="Notifikasi">
@@ -311,7 +312,6 @@
 
       <header class="topbar">
         <div>
-          <button id="mobileSidebarBtn" class="mobile-toggle" type="button">Menu</button>
           <h2 class="headline">Dashboard Operasional Crembo Media</h2>
           <p class="subhead">Menu mengikuti daftar fungsionalitas: streaming, inventaris, konten utama website, publikasi, anggota, log, dan notifikasi.</p>
         </div>

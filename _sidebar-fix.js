@@ -25,7 +25,11 @@
   /* ── 2. Mark active links & auto-open their parent group ── */
   allLinks.forEach(function (link) {
     var linkFile = getLinkFilename(link.getAttribute('href'));
-    if (linkFile && linkFile === path) {
+    var isDashboardHash = !linkFile
+      && (path === 'dashboard.html' || path === 'dashboard-anggota.html')
+      && /dashboard/i.test(String(link.textContent || ''));
+
+    if ((linkFile && linkFile === path) || isDashboardHash) {
       link.classList.add('active');
       var group = link.closest('.menu-group');
       if (group) {

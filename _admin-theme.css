@@ -1112,7 +1112,22 @@ button.btn {
   .sidebar.show { transform: translateX(0) !important; }
 
   .mobile-toggle,
-  .mobile-menu { display: inline-flex; }
+  .mobile-menu {
+    display: inline-flex;
+    order: -1;
+    align-self: flex-start !important;
+    margin: 0 0 8px 0 !important;
+  }
+
+  .headline,
+  .topbar,
+  .dashboard-headline-bar,
+  .meta-header,
+  .head,
+  .header {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
 
   .headline { flex-direction: column; align-items: flex-start; }
   .dashboard-headline-bar { flex-direction: column; align-items: flex-start; }
