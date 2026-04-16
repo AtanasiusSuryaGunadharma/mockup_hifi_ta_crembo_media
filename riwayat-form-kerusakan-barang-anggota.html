@@ -155,13 +155,16 @@
     .header h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 800; color: #fff; }
 
     .header-right {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       color: rgba(255, 255, 255, 0.88);
       font-size: 0.85rem;
       font-weight: 600;
       min-width: 0;
+      max-width: 100%;
     }
 
     .topbar {
@@ -530,6 +533,14 @@
         <h1>Riwayat Form Kerusakan Barang</h1>
         <div class="header-right">
           <span id="liveDateTime">-</span>
+          <a class="home-globe" href="dashboard-anggota.html" title="Kembali ke Dashboard">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </a>
         </div>
       </header>
 
@@ -825,9 +836,17 @@
           '<td data-label="Barang">' + escapeHtml((item.itemCode || "-") + " - " + (item.itemName || "-")) + '</td>' +
           '<td data-label="Tingkat">' + escapeHtml(item.severity || "-") + '</td>' +
           '<td data-label="Status"><span class="status-pill ' + statusClass(status) + '">' + escapeHtml(status) + '</span></td>' +
-          '<td data-label="Aksi"><button class="btn" type="button" data-detail-id="' + escapeHtml(item.id || "") + '">Detail</button></td>' +
+          '<td data-label="Aksi"><button class="btn" type="button" data-detail-id="' + escapeHtml(item.id || "") + '" onclick="openDetailById(this)">Detail</button></td>' +
         '</tr>';
       }).join("");
+    }
+
+    function openDetailById(button) {
+      const reportId = button.getAttribute("data-detail-id");
+      if (!reportId) {
+        return;
+      }
+      openDetail(reportId);
     }
 
     function openDetail(reportId) {
@@ -917,13 +936,6 @@
     searchInput.addEventListener("input", renderTable);
     statusFilter.addEventListener("change", renderTable);
     severityFilter.addEventListener("change", renderTable);
-
-    rows.addEventListener("click", function (event) {
-      const detailId = event.target.getAttribute("data-detail-id");
-      if (detailId) {
-        openDetail(detailId);
-      }
-    });
 
     closeDetailBtn.addEventListener("click", closeDetail);
     detailModal.addEventListener("click", function (event) {
