@@ -63,7 +63,12 @@
     }
 
     .headline h1 { margin: 0; font-size: clamp(1.2rem, 2.2vw, 2rem); }
-    .headline p { margin: 4px 0 0; color: #4b5563; font-size: 0.9rem; }
+    .headline h1 { color: #fff; }
+    .headline p { margin: 4px 0 0; color: rgba(255, 255, 255, 0.82); font-size: 0.9rem; }
+
+    .headline {
+      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
+    }
 
     .toolbar-grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr auto; gap: 8px; align-items: end; }
     .field { display: grid; gap: 6px; }
@@ -141,6 +146,7 @@
         <button class="group-toggle" type="button">Inventaris &amp; Peminjaman <span>-</span></button>
         <div class="group-items">
           <a class="menu-link" href="data-inventaris-barang.html">Data Inventaris Barang</a>
+          <a class="menu-link" href="hasil-form-kerusakan-barang.html">Hasil Form Kerusakan Barang</a>
           <a class="menu-link active" href="persetujuan-peminjaman.html">Persetujuan Peminjaman</a>
           <a class="menu-link" href="riwayat-peminjaman-pengembalian.html">Riwayat Peminjaman &amp; Pengembalian</a>
         </div>
@@ -845,9 +851,9 @@
 
     function downloadExcel() {
       const list = filteredRequests();
-      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body>';
+      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">' +
+        '<link rel="stylesheet" href="_admin-theme.css">' +
+        '</head><body>';
       html += '<h3>Laporan Persetujuan Peminjaman Barang</h3>';
       html += '<table border="1" cellspacing="0" cellpadding="6">';
       html += '<tr><th>Kode</th><th>Peminjam</th><th>Barang</th><th>Jumlah</th><th>Tanggal Pinjam</th><th>Target Kembali</th><th>Keperluan</th><th>Status</th><th>Diproses Oleh</th><th>Diproses Pada</th><th>Catatan</th></tr>';
@@ -870,8 +876,7 @@
           '</tr>';
         });
       }
-      html += '</table><script src="_sidebar-fix.js"></script>
-</body></html>';
+      html += '</table></body></html>';
 
       const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
       const url = URL.createObjectURL(blob);
@@ -909,12 +914,11 @@
       popup.document.write(
         '<!doctype html><html><head><meta charset="utf-8"><title>Laporan Persetujuan Peminjaman</title>' +
         '<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h2{margin:0 0 8px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #888;padding:6px;font-size:12px;text-align:left;vertical-align:top}th{background:#f2f2f2}</style>' +
-        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body><h2>Laporan Persetujuan Peminjaman Barang</h2>' +
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">' +
+        '<link rel="stylesheet" href="_admin-theme.css">' +
+        '</head><body><h2>Laporan Persetujuan Peminjaman Barang</h2>' +
         '<table><thead><tr><th>Kode</th><th>Peminjam</th><th>Barang</th><th>Qty</th><th>Tgl Pinjam</th><th>Tgl Kembali</th><th>Status</th><th>Catatan</th></tr></thead><tbody>' + bodyRows + '</tbody></table>' +
-        '<script src="_sidebar-fix.js"></script>
-</body></html>'
+        '</body></html>'
       );
       popup.document.close();
       popup.focus();
