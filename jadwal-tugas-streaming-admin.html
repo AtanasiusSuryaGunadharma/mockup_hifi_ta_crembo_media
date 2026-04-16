@@ -204,12 +204,39 @@
       flex-wrap: wrap;
     }
 
+    .schedule-topbar {
+      border: 2px solid var(--line);
+      background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 52%, #f5f5f5 100%);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
     .headline {
       margin: 0;
       font-size: clamp(1.05rem, 2.5vw, 1.5rem);
     }
 
+    .schedule-headline {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.5vw, 1.5rem);
+      color: #111827;
+      font-weight: 700;
+    }
+
     .subhead {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .schedule-subhead {
       margin: 3px 0 0;
       color: var(--muted);
       font-size: 0.85rem;
@@ -222,6 +249,11 @@
       padding: 5px 10px;
       font-size: 0.76rem;
       font-weight: 700;
+    }
+
+    #toggleWeeklySettingsBtn {
+      cursor: pointer;
+      pointer-events: auto;
     }
 
     .cards {
@@ -280,6 +312,10 @@
 
     .panel-body {
       padding: 12px;
+    }
+
+    #weeklySettingsBody[hidden] {
+      display: none !important;
     }
 
     .toolbar {
@@ -758,6 +794,7 @@
       <div class="brand">
         <h1>Crembo Media Panel</h1>
         <p>Modul jadwal tugas streaming login</p>
+        <span id="sidebarRoleBadge" class="role-chip">Role: -</span>
       </div>
 
       <div class="menu-group">
@@ -801,12 +838,11 @@
         </div>
       </header>
 
-      <header class="topbar">
+      <header class="schedule-topbar">
         <div>
-          <h2 class="headline">Jadwal Login Admin & Super Admin</h2>
-          <p class="subhead">Kelola dan pantau jadwal Misa Biasa serta Misa Besar dalam satu halaman operasional.</p>
+          <h2 class="schedule-headline">Jadwal Login Admin & Super Admin</h2>
+          <p class="schedule-subhead">Kelola dan pantau jadwal Misa Biasa serta Misa Besar dalam satu halaman operasional.</p>
         </div>
-        <span id="roleChip" class="role-chip">Role: -</span>
       </header>
 
       <section class="cards" aria-label="Ringkasan metrik jadwal streaming">
@@ -1040,7 +1076,7 @@
     ];
 
     const liveDateTime = document.getElementById("liveDateTime");
-    const roleChip = document.getElementById("roleChip");
+    const sidebarRoleBadge = document.getElementById("sidebarRoleBadge");
     const roleNote = document.getElementById("roleNote");
     const tabRegular = document.getElementById("tabRegular");
     const tabRaya = document.getElementById("tabRaya");
@@ -1468,13 +1504,30 @@
     }
 
     function updateRoleUi(role) {
-      roleChip.textContent = "Role: " + formatRole(role);
+      if (sidebarRoleBadge) {
+        sidebarRoleBadge.textContent = "Role: " + formatRole(role);
+      }
       if (role === "super_admin") {
         roleNote.textContent = "Mode Super Admin: dapat menambah jadwal dan mengatur petugas semua sesi.";
       } else {
         roleNote.textContent = "Mode Admin: fokus monitoring jadwal dan detail tim, dapat mengajukan update jadwal.";
       }
       addScheduleBtn.hidden = false;
+    }
+
+    function setWeeklySettingsVisibility(isOpen) {
+      if (isOpen) {
+        weeklySettingsBody.removeAttribute("hidden");
+        weeklySettingsBody.style.display = "grid";
+        toggleWeeklySettingsBtn.textContent = "Sembunyikan";
+        toggleWeeklySettingsBtn.setAttribute("aria-expanded", "true");
+        return;
+      }
+
+      weeklySettingsBody.setAttribute("hidden", "");
+      weeklySettingsBody.style.display = "none";
+      toggleWeeklySettingsBtn.textContent = "Tampilkan";
+      toggleWeeklySettingsBtn.setAttribute("aria-expanded", "false");
     }
 
     function updateLiveDateTime() {
@@ -1580,6 +1633,7 @@
     setCurrentMonthYearFilters();
     updateRoleUi(currentRole);
     renderWeeklyTimesInputs();
+    setWeeklySettingsVisibility(false);
     updateLiveDateTime();
     setInterval(updateLiveDateTime, 1000);
     rerender(currentRole);
@@ -1681,16 +1735,16 @@
     });
 
     toggleWeeklySettingsBtn.addEventListener("click", function () {
-      const isHidden = weeklySettingsBody.hasAttribute("hidden");
-      if (isHidden) {
-        weeklySettingsBody.removeAttribute("hidden");
-        toggleWeeklySettingsBtn.textContent = "Sembunyikan";
-        toggleWeeklySettingsBtn.setAttribute("aria-expanded", "true");
-      } else {
-        weeklySettingsBody.setAttribute("hidden", "");
-        toggleWeeklySettingsBtn.textContent = "Tampilkan";
-        toggleWeeklySettingsBtn.setAttribute("aria-expanded", "false");
+      const isOpen = !weeklySettingsBody.hasAttribute("hidden");
+      setWeeklySettingsVisibility(!isOpen);
+    });
+
+    toggleWeeklySettingsBtn.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
       }
+      event.preventDefault();
+      toggleWeeklySettingsBtn.click();
     });
 
     blackoutCloseBtn.addEventListener("click", closeBlackoutModal);
