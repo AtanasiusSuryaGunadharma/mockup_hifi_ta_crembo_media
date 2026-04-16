@@ -1,39 +1,30 @@
 /**
- * _sidebar-fix.js
- * Crembo Media - Auto-fix sidebar active state & open parent group
- * Include this at the END of every admin/anggota dashboard page <body>
+ * _sidebar-fix.js  v2
+ * Crembo Media — Auto-fix sidebar active state, toggle, mobile
+ * Place BEFORE </body> on every dashboard page
  */
 (function () {
   'use strict';
 
   var path = window.location.pathname.split('/').pop() || 'index.html';
-  var search = window.location.search;
 
-  // Map pages to their canonical filename (handles query params)
   function getLinkFilename(href) {
     if (!href) return '';
     return href.split('?')[0].split('#')[0].split('/').pop();
   }
 
-  // Remove all active from ALL menu links first
+  /* ── 1. Remove all existing active classes ── */
   var allLinks = Array.from(document.querySelectorAll('.menu-link'));
-  allLinks.forEach(function (link) {
-    link.classList.remove('active');
-  });
+  allLinks.forEach(function (link) { link.classList.remove('active'); });
 
-  // Find matching links and activate them
-  var activated = false;
+  /* ── 2. Mark active links & auto-open their parent group ── */
   allLinks.forEach(function (link) {
     var linkFile = getLinkFilename(link.getAttribute('href'));
     if (linkFile && linkFile === path) {
       link.classList.add('active');
-      activated = true;
-
-      // Auto-open parent menu-group
       var group = link.closest('.menu-group');
       if (group) {
         group.classList.add('open');
-        // Update toggle marker text
         var toggleBtn = group.querySelector('.group-toggle, .menu-toggle');
         if (toggleBtn) {
           var marker = toggleBtn.querySelector('span');
@@ -43,41 +34,102 @@
     }
   });
 
-  // Setup toggle for all group buttons (idempotent)
+  /* ── 3. REPLACE toggle handlers (prevents double-binding bug) ── */
   var groups = Array.from(document.querySelectorAll('.menu-group'));
   groups.forEach(function (group) {
     var btn = group.querySelector('.group-toggle, .menu-toggle');
-    if (!btn || btn._sidebarFixed) return;
-    btn._sidebarFixed = true;
+    if (!btn) return;
 
-    btn.addEventListener('click', function () {
+    /* Clone the button to wipe ALL previous listeners */
+    var freshBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(freshBtn, btn);
+
+    freshBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
       group.classList.toggle('open');
-      var marker = btn.querySelector('span');
+      var marker = freshBtn.querySelector('span');
       if (marker) marker.textContent = group.classList.contains('open') ? '-' : '+';
     });
   });
 
-  // Mobile sidebar toggle — find the button regardless of id
+  /* ── 4. Mobile sidebar toggle ── */
+  var sidebar = document.getElementById('sidebar');
   var mobileBtns = Array.from(document.querySelectorAll(
     '#mobileSidebarBtn, #mobileMenuBtn, .mobile-toggle, .mobile-menu'
   ));
-  var sidebar = document.getElementById('sidebar');
 
   mobileBtns.forEach(function (btn) {
-    if (!btn || btn._mobileSidebarFixed) return;
-    btn._mobileSidebarFixed = true;
-    btn.addEventListener('click', function () {
+    if (!btn || btn._mobileFixed) return;
+    btn._mobileFixed = true;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
       if (sidebar) sidebar.classList.toggle('show');
     });
   });
 
-  // Close sidebar when clicking outside (mobile)
+  /* ── 5. Click outside to close sidebar (mobile) ── */
   document.addEventListener('click', function (e) {
-    if (!sidebar) return;
-    if (!sidebar.classList.contains('show')) return;
+    if (!sidebar || !sidebar.classList.contains('show')) return;
     if (sidebar.contains(e.target)) return;
-    var isMobileBtn = mobileBtns.some(function (btn) { return btn && btn.contains(e.target); });
+    var isMobileBtn = mobileBtns.some(function (b) { return b && b.contains(e.target); });
     if (!isMobileBtn) sidebar.classList.remove('show');
   });
+
+  /* ── 6. Consistent topbar: inject datetime + globe if missing ── */
+  var dateEl = document.getElementById('liveDateTime');
+  var dayNames = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+  function fmtDate(now) {
+    return dayNames[now.getDay()] + ', '
+      + String(now.getDate()).padStart(2,'0') + ' '
+      + monthNames[now.getMonth()] + ' '
+      + now.getFullYear() + '  '
+      + String(now.getHours()).padStart(2,'0') + ':'
+      + String(now.getMinutes()).padStart(2,'0') + ':'
+      + String(now.getSeconds()).padStart(2,'0');
+  }
+
+  if (dateEl) {
+    dateEl.textContent = fmtDate(new Date());
+    setInterval(function () { dateEl.textContent = fmtDate(new Date()); }, 1000);
+  }
+
+  /* ── 7. Inject globe link into topbar/header if missing ── */
+  var header = document.querySelector('.headline, .topbar, .header, .head, .dashboard-headline-bar');
+  if (header && !header.querySelector('.world-link, .home-globe')) {
+    var sessionRaw = localStorage.getItem('crembo-login-session');
+    var role = 'admin';
+    try { role = JSON.parse(sessionRaw).role || 'admin'; } catch(e) {}
+    var homeHref = role === 'anggota' ? 'dashboard-anggota.html' : 'dashboard.html';
+
+    /* datetime chip if not already there */
+    if (!dateEl) {
+      var dtSpan = document.createElement('span');
+      dtSpan.id = 'liveDateTime';
+      dtSpan.className = 'chip';
+      dtSpan.textContent = fmtDate(new Date());
+      header.appendChild(dtSpan);
+      setInterval(function () { dtSpan.textContent = fmtDate(new Date()); }, 1000);
+    }
+
+    /* globe link */
+    var globe = document.createElement('a');
+    globe.className = 'world-link';
+    globe.href = homeHref;
+    globe.title = 'Kembali ke Dashboard';
+    globe.setAttribute('aria-label', 'Kembali ke Dashboard');
+    globe.innerHTML = '<svg viewBox="0 0 24 24" fill="none" width="17" height="17" aria-hidden="true">'
+      + '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>'
+      + '<path d="M3 12H21" stroke="currentColor" stroke-width="1.8"/>'
+      + '<path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"/>'
+      + '<path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"/>'
+      + '</svg>';
+
+    /* Append to right side of header */
+    var right = header.querySelector('.head-right, .header-right, .head-meta');
+    if (right) right.appendChild(globe);
+    else header.appendChild(globe);
+  }
 
 })();
