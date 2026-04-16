@@ -1,337 +1,206 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Verifikasi OTP - Crembo Media</title>
-  <style>
-    :root {
-      --brand: #1f1f1f;
-      --ink: #111111;
-      --line: #b8b8b8;
-      --muted: #666666;
-    }
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Verifikasi OTP - Crembo Media</title>
+	<meta name="description" content="Verifikasi kode OTP untuk reset password akun Crembo Media.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<style>
+		:root{--primary:#800000;--primary-dark:#5c0000;--primary-deeper:#3a0000;--primary-light:#a52a2a;--accent-gold:#d4a017;--bg:#faf8f6;--surface:#ffffff;--ink:#1a1a1a;--ink-secondary:#4a4a4a;--muted:#7a7a7a;--line:rgba(128,0,0,0.15);--line-soft:rgba(128,0,0,0.08);--shadow-lg:0 20px 60px rgba(128,0,0,0.18),0 8px 20px rgba(0,0,0,0.08);--radius-sm:8px;--radius-md:12px;--radius-xl:24px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);}
+		*{box-sizing:border-box;}
+		body{margin:0;font-family:'Inter',-apple-system,sans-serif;background:linear-gradient(135deg,var(--primary-deeper) 0%,var(--primary) 45%,var(--primary-light) 100%);min-height:100vh;display:grid;place-items:center;padding:24px;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden;}
+		body::before{content:"";position:absolute;inset:0;background-image:url("IMG_1970.JPG");background-size:cover;background-position:center;opacity:0.08;pointer-events:none;}
+		.deco-circle{position:absolute;border-radius:50%;pointer-events:none;}
+		.deco-1{width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.05),transparent);top:-120px;right:-80px;}
+		.deco-2{width:300px;height:300px;background:radial-gradient(circle,rgba(212,160,23,0.08),transparent);bottom:-80px;left:-60px;}
 
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--ink);
-      display: flex;
-      flex-direction: column;
-      background: #0b0b0b;
-    }
+		.auth-card{width:100%;max-width:440px;background:rgba(255,255,255,0.97);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);padding:40px;animation:slideUp 0.6s cubic-bezier(0.22,1,0.36,1) both;position:relative;z-index:2;}
 
-    a { text-decoration: none; color: inherit; }
+		.auth-logo{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:28px;}
+		.auth-logo-img{width:64px;height:64px;background:linear-gradient(135deg,var(--primary-deeper),var(--primary));border-radius:var(--radius-md);display:grid;place-items:center;padding:8px;box-shadow:0 4px 16px rgba(128,0,0,0.3);}
+		.auth-logo-img img{max-width:100%;max-height:100%;object-fit:contain;}
+		.auth-logo h1{margin:0;font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:0.5px;}
 
-    .video-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-    }
+		.step-indicator{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px;}
+		.step-dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:0.8rem;font-weight:700;border:2px solid var(--line);color:var(--muted);background:var(--bg);transition:var(--transition);}
+		.step-dot.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(128,0,0,0.3);}
+		.step-dot.done{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-color:var(--primary);}
+		.step-line{flex:1;height:2px;background:var(--line-soft);max-width:48px;border-radius:2px;}
+		.step-line.done{background:var(--primary);}
 
-    .video-bg video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(100%) contrast(108%);
-    }
+		.divider{height:1px;background:var(--line-soft);margin:0 0 28px;}
+		.auth-title{margin:0 0 6px;font-size:1.3rem;font-weight:800;color:var(--ink);}
+		.auth-sub{margin:0 0 24px;font-size:0.88rem;color:var(--muted);line-height:1.6;}
 
-    .video-bg::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-    }
+		/* OTP BOXES */
+		.otp-hint{background:rgba(128,0,0,0.06);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;font-size:0.85rem;color:var(--ink-secondary);margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+		.otp-code{font-size:1.4rem;font-weight:900;letter-spacing:6px;color:var(--primary);font-family:monospace;}
+		.otp-timer-label{font-size:0.78rem;color:var(--muted);}
 
-    .top {
-      border-bottom: 2px solid #1f1f1f;
-      background: rgba(255, 255, 255, 0.95);
-    }
+		.otp-inputs{display:flex;gap:10px;justify-content:center;margin-bottom:28px;}
+		.otp-input{width:52px;height:60px;border:2px solid var(--line);border-radius:var(--radius-sm);font-size:1.6rem;font-weight:700;text-align:center;font-family:inherit;outline:none;color:var(--ink);background:var(--bg);transition:var(--transition);caret-color:transparent;}
+		.otp-input:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(128,0,0,0.1);}
+		.otp-input.filled{border-color:var(--primary);background:rgba(128,0,0,0.04);color:var(--primary);}
 
-    .container {
-      width: min(1120px, 94vw);
-      margin: 0 auto;
-    }
+		.btn-submit{display:block;width:100%;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px;font-size:0.96rem;font-weight:700;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;transition:var(--transition);box-shadow:0 4px 12px rgba(128,0,0,0.25);}
+		.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(128,0,0,0.35);}
+		.btn-submit:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
 
-    .top-row {
-      min-height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+		.alert{padding:12px 14px;border-radius:var(--radius-sm);font-size:0.85rem;margin-bottom:18px;display:none;}
+		.alert.error{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);color:#991b1b;}
+		.alert.success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:#166534;}
+		.alert.show{display:block;}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+		.resend-row{text-align:center;margin-top:18px;font-size:0.84rem;color:var(--muted);}
+		.resend-btn{background:none;border:none;cursor:pointer;font-size:0.84rem;font-weight:700;color:var(--primary);font-family:inherit;transition:var(--transition);padding:0;}
+		.resend-btn:disabled{color:var(--muted);cursor:not-allowed;}
+		.back-home{position:absolute;top:24px;left:50%;transform:translateX(-50%);z-index:10;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:600;font-family:'Inter',sans-serif;text-decoration:none;transition:var(--transition);}
+		.back-home:hover{color:#fff;}
 
-    .brand img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border: 1px solid #bdbdbd;
-      border-radius: 999px;
-      background: #fff;
-      padding: 4px;
-      filter: grayscale(100%);
-    }
-
-    .brand strong { font-size: 0.95rem; }
-
-    .back {
-      border: 1px solid #b8b8b8;
-      background: #fff;
-      padding: 8px 11px;
-      font-size: 0.88rem;
-    }
-
-    .back:hover { background: #efefef; }
-
-    .main {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 30px 0;
-    }
-
-    .stack {
-      width: min(560px, 93vw);
-      display: grid;
-      gap: 12px;
-    }
-
-    .identity {
-      border: 1px solid rgba(255,255,255,0.3);
-      background: rgba(24, 24, 24, 0.62);
-      border-radius: 14px;
-      color: #fff;
-      text-align: center;
-      padding: 18px;
-    }
-
-    .identity img {
-      width: 66px;
-      height: 66px;
-      object-fit: contain;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: #fff;
-      padding: 5px;
-      filter: grayscale(100%);
-    }
-
-    .identity h2 { margin: 8px 0 4px; }
-
-    .card {
-      border: 2px solid #1f1f1f;
-      background: #fff;
-      overflow: hidden;
-    }
-
-    .card-head {
-      background: #1f1f1f;
-      color: #fff;
-      text-align: center;
-      padding: 14px 14px 10px;
-    }
-
-    .card-head h3 { margin: 0; font-size: 1.6rem; }
-
-    .card-head p {
-      margin: 4px 0 0;
-      font-size: 0.86rem;
-      color: #d4d4d4;
-    }
-
-    .body { padding: 14px; }
-
-    .ok {
-      border: 1px solid #9bc4a0;
-      background: #ebf7ed;
-      color: #24522d;
-      font-size: 0.84rem;
-      padding: 9px 10px;
-      margin-bottom: 9px;
-    }
-
-    .info {
-      border: 1px solid #b8b8b8;
-      background: #f4f4f4;
-      color: #3c3c3c;
-      font-size: 0.84rem;
-      padding: 9px 10px;
-      margin-bottom: 12px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .field label {
-      font-size: 0.86rem;
-      color: #353535;
-      font-weight: 600;
-    }
-
-    .field input {
-      width: 100%;
-      border: 1px solid #b8b8b8;
-      background: #fff;
-      padding: 10px 11px;
-      font-size: 1.1rem;
-      letter-spacing: 0.28em;
-      text-align: center;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: #707070;
-      box-shadow: 0 0 0 3px rgba(20,20,20,0.14);
-    }
-
-    .hint {
-      font-size: 0.8rem;
-      color: #666;
-      margin: 0 0 10px;
-      text-align: center;
-    }
-
-    .btn {
-      width: 100%;
-      border: 1px solid #1f1f1f;
-      background: #1f1f1f;
-      color: #fff;
-      padding: 10px;
-      font-size: 0.92rem;
-      cursor: pointer;
-    }
-
-    .btn:hover { background: #0f0f0f; }
-
-    .link-row {
-      margin-top: 10px;
-      display: grid;
-      gap: 6px;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #4f4f4f;
-    }
-
-    .link-row a:hover { text-decoration: underline; }
-  </style>
+		@keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+		@media(max-width:480px){.auth-card{padding:28px 20px;}.otp-input{width:42px;height:52px;font-size:1.3rem;}.otp-inputs{gap:6px;}}
+	</style>
 </head>
 <body>
-  <div class="video-bg" aria-hidden="true">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="bg_video_login.mp4" type="video/mp4">
-    </video>
-  </div>
+	<div class="deco-circle deco-1"></div>
+	<div class="deco-circle deco-2"></div>
+	<a class="back-home" href="home.html">← Kembali ke Beranda</a>
 
-  <header class="top">
-    <div class="container top-row">
-      <div class="brand">
-        <img src="logo crembo hitam.png" alt="Logo Crembo">
-        <strong>Crew Multimedia Baciro</strong>
-      </div>
-      <a class="back" href="login.html">&larr; Kembali ke Login</a>
-    </div>
-  </header>
+	<section class="auth-card" aria-label="Verifikasi OTP">
+		<div class="auth-logo">
+			<div class="auth-logo-img">
+				<img src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+			</div>
+			<h1>Crembo Media</h1>
+		</div>
 
-  <main class="main">
-    <div class="stack">
-      <section class="identity">
-        <img src="logo crembo hitam.png" alt="Logo sistem">
-        <h2>CREMBO</h2>
-        <p>Sistem Informasi Crew Multimedia Baciro</p>
-      </section>
+		<div class="step-indicator">
+			<div class="step-dot done">✓</div>
+			<div class="step-line done"></div>
+			<div class="step-dot active">2</div>
+			<div class="step-line"></div>
+			<div class="step-dot">3</div>
+		</div>
 
-      <section class="card" aria-label="Verifikasi kode OTP">
-        <div class="card-head">
-          <h3>Verifikasi Kode</h3>
-          <p>Masukkan OTP 4 digit yang dikirim</p>
-        </div>
-        <div class="body">
-          <div class="ok">Kode verifikasi telah dikirim ke kontak terdaftar.</div>
-          <div id="targetInfo" class="info">Kode telah dikirim ke: -</div>
-          <form id="otpForm">
-            <div class="field">
-              <label for="otpCode">Kode Verifikasi (4 Digit)</label>
-              <input id="otpCode" type="text" maxlength="4" inputmode="numeric" placeholder="0000" required>
-            </div>
-            <p class="hint">Kode berlaku 15 menit (prototipe OTP valid: 1234).</p>
-            <button class="btn" type="submit">Verifikasi Kode</button>
-          </form>
-          <div class="link-row">
-            <a href="otp-verification.html?resend=1">Kirim Ulang Kode</a>
-            <a href="login.html">&larr; Kembali ke Login</a>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
+		<div class="divider"></div>
 
-  <script>
-    const targetInfo = document.getElementById("targetInfo");
-    const otpForm = document.getElementById("otpForm");
-    const otpCodeInput = document.getElementById("otpCode");
+		<h2 class="auth-title">Verifikasi OTP</h2>
+		<p class="auth-sub">Kode OTP telah dikirim. Masukkan kode 6 digit di bawah ini. Kode berlaku selama 5 menit.</p>
 
-    function maskTarget(value) {
-      if (!value) {
-        return "-";
-      }
-      if (value.includes("@")) {
-        const parts = value.split("@");
-        const name = parts[0];
-        if (name.length <= 2) {
-          return value;
-        }
-        return name.slice(0, 2) + "***@" + parts[1];
-      }
-      const digits = value.replace(/\D/g, "");
-      if (digits.length < 5) {
-        return value;
-      }
-      return digits.slice(0, 3) + "****" + digits.slice(-2);
-    }
+		<!-- OTP hint for mockup -->
+		<div class="otp-hint">
+			<span>Kode OTP demo: <span class="otp-code" id="otpDisplay">–</span></span>
+			<span class="otp-timer-label">Sisa waktu: <strong id="timerDisplay">5:00</strong></span>
+		</div>
 
-    const contextRaw = localStorage.getItem("crembo-reset-context");
-    let resetContext = null;
-    if (contextRaw) {
-      try {
-        resetContext = JSON.parse(contextRaw);
-      } catch (err) {
-        resetContext = null;
-      }
-    }
+		<div id="alertOtp" class="alert error"></div>
 
-    if (!resetContext) {
-      window.location.href = "forgot-password.html";
-    } else {
-      targetInfo.textContent = "Kode telah dikirim ke: " + maskTarget(resetContext.destinationTarget);
-    }
+		<div class="otp-inputs" id="otpInputs" role="group" aria-label="Input kode OTP">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 1" id="otp0">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 2" id="otp1">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 3" id="otp2">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 4" id="otp3">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 5" id="otp4">
+			<input class="otp-input" type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit OTP 6" id="otp5">
+		</div>
 
-    otpForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const otp = otpCodeInput.value.trim();
-      if (!resetContext) {
-        return;
-      }
-      if (otp.length !== 4) {
-        alert("Masukkan 4 digit OTP.");
-        return;
-      }
-      if (otp !== resetContext.otp) {
-        alert("Kode OTP tidak valid. Gunakan 1234 untuk prototipe.");
-        return;
-      }
-      window.location.href = "reset-password.html";
-    });
-  </script>
+		<button class="btn-submit" id="verifyBtn" type="button" disabled>Verifikasi</button>
+
+		<div class="resend-row">
+			Tidak menerima kode?
+			<button class="resend-btn" id="resendBtn" type="button" disabled>Kirim ulang (<span id="resendTimer">60</span>s)</button>
+		</div>
+	</section>
+
+	<script>
+	const OTP_KEY = "crembo-otp-session";
+
+	// Load OTP session
+	let otpSession = null;
+	try { otpSession = JSON.parse(localStorage.getItem(OTP_KEY) || "null"); } catch(e){}
+
+	const otpDisplay   = document.getElementById("otpDisplay");
+	const timerDisplay = document.getElementById("timerDisplay");
+	const verifyBtn    = document.getElementById("verifyBtn");
+	const resendBtn    = document.getElementById("resendBtn");
+	const resendTimer  = document.getElementById("resendTimer");
+	const alertEl      = document.getElementById("alertOtp");
+
+	function showAlert(msg, type) { alertEl.textContent=msg; alertEl.className="alert "+(type||"error")+" show"; }
+	function hideAlert() { alertEl.className="alert error"; }
+
+	// Display OTP (mockup only)
+	if (otpSession && otpSession.otp) {
+		otpDisplay.textContent = otpSession.otp;
+	} else {
+		otpDisplay.textContent = "–";
+		showAlert("Sesi OTP tidak ditemukan. Silakan ulangi dari halaman Lupa Sandi.","error");
+	}
+
+	// OTP countdown
+	let otpInterval = null;
+	if (otpSession) {
+		otpInterval = setInterval(function() {
+			const remaining = Math.max(0, Math.floor((otpSession.expiry - Date.now()) / 1000));
+			const m = Math.floor(remaining / 60), s = remaining % 60;
+			timerDisplay.textContent = m + ":" + String(s).padStart(2,"0");
+			if (remaining === 0) { clearInterval(otpInterval); showAlert("Kode OTP sudah kedaluwarsa. Silakan kirim ulang.","error"); }
+		}, 1000);
+	}
+
+	// Resend countdown
+	let resendCount = 60;
+	const resendInterval = setInterval(function() {
+		resendCount--;
+		resendTimer.textContent = resendCount;
+		if (resendCount <= 0) { clearInterval(resendInterval); resendBtn.disabled=false; resendBtn.innerHTML="Kirim ulang OTP"; }
+	}, 1000);
+
+	resendBtn.addEventListener("click", function() {
+		window.location.href = "forgot-password.html";
+	});
+
+	// OTP Inputs logic
+	const inputs = Array.from(document.querySelectorAll(".otp-input"));
+	inputs.forEach(function(input, i) {
+		input.addEventListener("input", function() {
+			input.value = input.value.replace(/[^0-9]/g,"");
+			input.classList.toggle("filled", input.value !== "");
+			if (input.value && i < inputs.length - 1) inputs[i+1].focus();
+			verifyBtn.disabled = inputs.some(inp => !inp.value);
+		});
+		input.addEventListener("keydown", function(e) {
+			if (e.key === "Backspace" && !input.value && i > 0) {
+				inputs[i-1].value = "";
+				inputs[i-1].classList.remove("filled");
+				inputs[i-1].focus();
+			}
+		});
+		input.addEventListener("paste", function(e) {
+			e.preventDefault();
+			const text = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g,"");
+			text.split("").slice(0,6).forEach(function(ch, idx) {
+				if (inputs[idx]) { inputs[idx].value=ch; inputs[idx].classList.add("filled"); }
+			});
+			verifyBtn.disabled = inputs.some(inp => !inp.value);
+			const nxt = inputs.find(inp => !inp.value); if(nxt) nxt.focus();
+		});
+	});
+
+	verifyBtn.addEventListener("click", function() {
+		hideAlert();
+		const enteredOtp = inputs.map(i => i.value).join("");
+		if (!otpSession) { showAlert("Sesi OTP tidak ditemukan."); return; }
+		if (Date.now() > otpSession.expiry) { showAlert("Kode OTP sudah kedaluwarsa."); return; }
+		if (enteredOtp !== otpSession.otp) { showAlert("Kode OTP salah."); return; }
+		otpSession.used = true;
+		localStorage.setItem(OTP_KEY, JSON.stringify(otpSession));
+		showAlert("OTP terverifikasi! Mengalihkan ke halaman reset sandi...","success");
+		setTimeout(() => window.location.href = "reset-password.html", 1200);
+	});
+	</script>
 </body>
 </html>

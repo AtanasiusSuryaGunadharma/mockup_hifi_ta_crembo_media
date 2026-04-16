@@ -10,28 +10,15 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<style>
 		:root {
-			--primary: #800000;
-			--primary-dark: #5c0000;
-			--primary-deeper: #3a0000;
-			--primary-light: #a52a2a;
-			--accent-gold: #d4a017;
-			--accent-gold-light: #f0c040;
-			--bg: #faf8f6;
-			--surface: #ffffff;
-			--ink: #1a1a1a;
-			--ink-secondary: #4a4a4a;
-			--muted: #7a7a7a;
-			--line: rgba(128,0,0,0.15);
-			--line-soft: rgba(128,0,0,0.08);
-			--hover: rgba(128,0,0,0.04);
-			--shadow-sm: 0 1px 3px rgba(128,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-			--shadow-md: 0 4px 14px rgba(128,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+			--primary: #800000; --primary-dark: #5c0000; --primary-deeper: #3a0000; --primary-light: #a52a2a;
+			--accent-gold: #d4a017; --accent-gold-light: #f0c040;
+			--bg: #faf8f6; --surface: #ffffff; --ink: #1a1a1a; --ink-secondary: #4a4a4a; --muted: #7a7a7a;
+			--line: rgba(128,0,0,0.15); --line-soft: rgba(128,0,0,0.08); --hover: rgba(128,0,0,0.04);
+			--shadow-sm: 0 1px 3px rgba(128,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+			--shadow-md: 0 4px 14px rgba(128,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
 			--shadow-lg: 0 10px 30px rgba(128,0,0,0.12);
-			--radius-sm: 8px;
-			--radius-md: 12px;
-			--radius-lg: 16px;
-			--transition: 0.3s cubic-bezier(0.4,0,0.2,1);
-			--header-h: 104px;
+			--radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+			--transition: 0.3s cubic-bezier(0.4,0,0.2,1); --header-h: 104px;
 		}
 		* { box-sizing: border-box; }
 		body { margin: 0; font-family: 'Inter',-apple-system,sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
@@ -44,7 +31,7 @@
 		.logo-box { width: 72px; height: 72px; display: grid; place-items: center; padding: 4px; background: rgba(255,255,255,0.1); border-radius: var(--radius-md); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: var(--transition); }
 		.logo-box:hover { background: rgba(255,255,255,0.18); }
 		.logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-		.brand h1 { margin: 0; font-size: clamp(1.4rem, 2.8vw, 2rem); text-transform: uppercase; letter-spacing: 0.5px; color: #fff; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+		.brand h1 { margin: 0; font-size: clamp(1.4rem,2.8vw,2rem); text-transform: uppercase; letter-spacing: 0.5px; color: #fff; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 		.brand p { margin: 4px 0 0; color: rgba(255,255,255,0.75); font-size: 0.88rem; }
 
 		/* NAV */
@@ -67,13 +54,13 @@
 		/* HERO */
 		.hero { min-height: 240px; display: grid; place-items: center; text-align: center; padding: 60px 20px; position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 50%, var(--primary-light) 100%); }
 		.hero::before { content: ""; position: absolute; inset: 0; background-image: url("IMG_1970.JPG"); background-size: cover; background-position: center; opacity: 0.15; z-index: -1; }
-		.hero h2 { margin: 0; font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+		.hero h2 { margin: 0; font-size: clamp(1.8rem,4.5vw,2.8rem); font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 4px 16px rgba(0,0,0,0.4); }
 		.hero p { margin: 10px 0 0; color: rgba(255,255,255,0.8); font-size: 0.95rem; }
 
 		/* BREADCRUMB */
 		.breadcrumb-wrap { background: var(--surface); border-bottom: 1px solid var(--line-soft); }
 		.breadcrumb { margin: 0; padding: 12px 0; list-style: none; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); }
-		.breadcrumb li + li::before { content: "/"; margin-right: 8px; color: var(--line); }
+		.breadcrumb li+li::before { content: "/"; margin-right: 8px; color: var(--line); }
 		.breadcrumb a:hover { color: var(--primary); }
 		.breadcrumb [aria-current] { color: var(--primary); font-weight: 600; }
 
@@ -82,204 +69,91 @@
 
 		/* FILTER BAR */
 		.filter-bar {
-			background: var(--surface);
-			border-radius: var(--radius-lg);
-			box-shadow: var(--shadow-md);
-			padding: 20px 24px;
-			margin-bottom: 24px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 16px;
-			flex-wrap: wrap;
-			position: relative;
-			overflow: hidden;
+			background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+			padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px;
+			flex-wrap: wrap; position: relative; overflow: hidden;
 		}
 		.filter-bar::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
-
 		.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-		.filter-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+		.filter-label { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 		.filter-select {
-			border: 1.5px solid var(--line);
-			background: var(--bg);
-			color: var(--ink);
-			padding: 8px 14px;
-			font-size: 0.88rem;
-			font-family: inherit;
-			border-radius: var(--radius-sm);
-			cursor: pointer;
-			transition: var(--transition);
-			outline: none;
+			border: 1.5px solid var(--line); background: var(--bg); color: var(--ink);
+			padding: 8px 32px 8px 14px; font-size: 0.88rem; font-family: inherit;
+			border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); outline: none;
 			appearance: none;
 			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23800000'/%3E%3C/svg%3E");
-			background-repeat: no-repeat;
-			background-position: right 12px center;
-			padding-right: 32px;
+			background-repeat: no-repeat; background-position: right 12px center;
 		}
 		.filter-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(128,0,0,0.1); }
 
 		/* MODE PILLS */
 		.mode-pills-wrap {
-			background: var(--surface);
-			border-radius: var(--radius-lg);
-			box-shadow: var(--shadow-md);
-			padding: 20px 24px;
-			margin-bottom: 24px;
-			display: flex;
-			align-items: center;
-			gap: 16px;
-			flex-wrap: wrap;
+			background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+			padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
 		}
 		.mode-pills { display: flex; gap: 8px; background: var(--bg); border-radius: 999px; padding: 5px; border: 1px solid var(--line); }
 		.mode-pill {
-			padding: 9px 24px;
-			font-size: 0.88rem;
-			font-weight: 600;
-			border-radius: 999px;
-			border: none;
-			cursor: pointer;
-			font-family: inherit;
-			transition: var(--transition);
-			color: var(--muted);
-			background: transparent;
+			padding: 9px 24px; font-size: 0.88rem; font-weight: 600; border-radius: 999px; border: none;
+			cursor: pointer; font-family: inherit; transition: var(--transition); color: var(--muted); background: transparent;
 		}
-		.mode-pill.active {
-			background: linear-gradient(135deg, var(--primary), var(--primary-light));
-			color: #fff;
-			box-shadow: 0 2px 8px rgba(128,0,0,0.25);
-		}
-		.mode-pill.active-gold {
-			background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
-			color: #3a0000;
-			box-shadow: 0 2px 8px rgba(212,160,23,0.3);
-		}
+		.mode-pill.active { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; box-shadow: 0 2px 8px rgba(128,0,0,0.25); }
+		.mode-pill.active-gold { background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light)); color: #3a0000; box-shadow: 0 2px 8px rgba(212,160,23,0.3); }
 		.mode-note { font-size: 0.82rem; color: var(--muted); font-style: italic; }
 
-		/* LEGEND */
-		.schedule-legend {
-			display: flex;
-			gap: 16px;
-			margin-bottom: 16px;
-			flex-wrap: wrap;
-		}
-		.legend-chip {
-			display: flex;
-			align-items: center;
-			gap: 7px;
-			font-size: 0.83rem;
-			color: var(--ink-secondary);
-			background: var(--surface);
-			border: 1px solid var(--line-soft);
-			border-radius: 999px;
-			padding: 5px 14px;
-			font-weight: 500;
-		}
-		.legend-dot {
-			width: 10px; height: 10px;
-			border-radius: 50%;
-			display: inline-block;
-			flex-shrink: 0;
-		}
+		/* LEGEND — only 2 items now */
+		.schedule-legend { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+		.legend-chip { display: flex; align-items: center; gap: 7px; font-size: 0.83rem; color: var(--ink-secondary); background: var(--surface); border: 1px solid var(--line-soft); border-radius: 999px; padding: 5px 14px; font-weight: 500; }
+		.legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 		.dot-normal { background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
 		.dot-blocked { background: var(--primary); box-shadow: 0 0 0 2px rgba(128,0,0,0.2); }
-		.dot-raya { background: var(--accent-gold); box-shadow: 0 0 0 2px rgba(212,160,23,0.2); }
 
 		/* SCHEDULE TABLE */
-		.schedule-card {
-			background: var(--surface);
-			border-radius: var(--radius-lg);
-			box-shadow: var(--shadow-md);
-			overflow: hidden;
-			position: relative;
-		}
+		.schedule-card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; position: relative; animation: fadeInUp 0.5s ease both; }
 		.schedule-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
 
-		.schedule-table {
-			width: 100%;
-			border-collapse: collapse;
-			font-size: 0.9rem;
-		}
-		.schedule-table thead tr {
-			background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 100%);
-			color: #fff;
-		}
-		.schedule-table th {
-			padding: 14px 16px;
-			text-align: left;
-			font-weight: 600;
-			font-size: 0.82rem;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
-		}
+		.schedule-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+		.schedule-table thead tr { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 100%); color: #fff; }
+		.schedule-table th { padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
 		.schedule-table td { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); color: var(--ink-secondary); vertical-align: middle; }
 		.schedule-table tbody tr:last-child td { border-bottom: none; }
 		.schedule-table tbody tr:hover { background: var(--hover); }
 
-		/* Normal row — green left border */
-		.schedule-table tbody tr.normal-row {
-			border-left: 3px solid #22c55e;
-		}
+		/* Normal row */
 		.schedule-table tbody tr.normal-row td:first-child { border-left: 3px solid #22c55e; }
 
 		/* Blocked row */
-		.schedule-table tbody tr.blocked-row { background: rgba(128,0,0,0.06); border-left: 3px solid var(--primary); }
+		.schedule-table tbody tr.blocked-row { background: rgba(128,0,0,0.05); }
+		.schedule-table tbody tr.blocked-row td:first-child { border-left: 3px solid var(--primary); }
 		.schedule-table tbody tr.blocked-row td { color: var(--primary-dark); }
-		.blocked-inline {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			font-weight: 600;
-			font-size: 0.85rem;
-			color: var(--primary);
-		}
+		.blocked-inline { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; color: var(--primary); }
 		.blocked-inline span { font-weight: 400; color: var(--muted); font-style: italic; }
 
 		/* Hari raya row */
-		.hariraya-row { background: linear-gradient(135deg, rgba(212,160,23,0.06) 0%, rgba(240,192,64,0.04) 100%); border-left: 3px solid var(--accent-gold); }
-		.hariraya-row:hover { background: rgba(212,160,23,0.1) !important; }
-		.hariraya-label { font-size: 0.78rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+		.hariraya-row td:first-child { border-left: 3px solid var(--primary); }
+		.hariraya-row:hover { background: rgba(128,0,0,0.04) !important; }
+		.misa-name-cell { font-weight: 700; color: var(--ink); }
+		.misa-type-tag {
+			display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+			padding: 2px 10px; border-radius: 999px; margin-top: 4px;
+			background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff;
+		}
 
 		/* Hari raya banner */
-		.hari-raya-banner {
-			background: linear-gradient(135deg, rgba(212,160,23,0.1) 0%, rgba(240,192,64,0.06) 100%);
-			border: 1px solid rgba(212,160,23,0.3);
-			border-radius: var(--radius-md);
-			padding: 14px 20px;
-			margin-bottom: 16px;
-			display: flex;
-			align-items: center;
-			gap: 12px;
-			flex-wrap: wrap;
-		}
-		.hari-raya-badge {
-			background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
-			color: var(--primary-deeper);
-			font-size: 0.78rem;
-			font-weight: 800;
-			text-transform: uppercase;
-			letter-spacing: 0.8px;
-			padding: 4px 14px;
-			border-radius: 999px;
-			white-space: nowrap;
-		}
+		.hari-raya-banner { background: linear-gradient(135deg, rgba(128,0,0,0.06) 0%, rgba(128,0,0,0.02) 100%); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+		.hari-raya-badge { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 14px; border-radius: 999px; white-space: nowrap; }
 		.hari-raya-banner p { margin: 0; font-size: 0.88rem; color: var(--ink-secondary); }
 
-		/* PAGINATION */
-		.pagination-wrap { display: flex; justify-content: center; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
-		.pagination-wrap button {
-			min-width: 38px; height: 38px;
-			border: 1.5px solid var(--line);
-			background: var(--surface);
-			color: var(--ink-secondary);
-			font-size: 0.88rem;
-			font-weight: 600;
-			border-radius: var(--radius-sm);
-			cursor: pointer;
-			font-family: inherit;
-			transition: var(--transition);
-		}
-		.pagination-wrap button:hover { border-color: var(--primary); color: var(--primary); background: var(--hover); }
-		.pagination-wrap button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+		/* Month header row */
+		.month-header-row td { background: linear-gradient(135deg, var(--primary-deeper), var(--primary)); color: #fff !important; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; padding: 8px 16px; border-bottom: none; }
+
+		/* Empty state */
+		.empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+		.empty-state p { margin: 8px 0 0; font-size: 0.9rem; }
+
+		/* INFO BAR */
+		.info-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+		.info-bar-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.4px; }
+		.info-bar-count { font-size: 0.82rem; color: var(--muted); font-style: italic; }
 
 		/* FOOTER */
 		.footer { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 60%, var(--primary-dark) 100%); margin-top: 48px; color: rgba(255,255,255,0.85); position: relative; overflow: hidden; }
@@ -302,19 +176,16 @@
 		.social-item:hover .social-dot { background: rgba(212,160,23,0.3); transform: scale(1.1); }
 		.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 16px 0 20px; text-align: center; font-size: 0.84rem; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
 
-		/* ANIMATIONS */
 		@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-		.schedule-card { animation: fadeInUp 0.5s ease both; }
 
-		/* RESPONSIVE */
 		@media (max-width: 980px) { .footer-grid { grid-template-columns: 1fr; } }
 		@media (max-width: 760px) {
 			.top-header .container { grid-template-columns: 1fr; text-align: center; }
 			.logo-box { margin: 0 auto; }
 			.right-tools { width: 100%; justify-content: center; flex-wrap: wrap; }
 			.search { flex: 1 1 230px; }
-			.schedule-table { font-size: 0.8rem; }
-			.schedule-table th, .schedule-table td { padding: 10px 10px; }
+			.schedule-table { font-size: 0.78rem; }
+			.schedule-table th, .schedule-table td { padding: 8px 10px; }
 			.filter-bar { flex-direction: column; align-items: flex-start; }
 		}
 	</style>
@@ -357,7 +228,7 @@
 	<section class="hero" aria-label="Header jadwal streaming">
 		<div>
 			<h2>Jadwal Streaming</h2>
-			<p>Jadwal pelayanan multimedia mingguan dan perayaan hari raya</p>
+			<p>Jadwal pelayanan multimedia mingguan dan hari raya</p>
 		</div>
 	</section>
 
@@ -371,47 +242,49 @@
 	</div>
 
 	<main class="container page-content">
-		<!-- Filter bar -->
+		<!-- Filter bulan saja -->
 		<div class="filter-bar">
 			<div class="filter-group">
-				<span class="filter-label">Filter:</span>
+				<span class="filter-label">Bulan:</span>
 				<select id="filterBulan" class="filter-select" aria-label="Filter bulan">
-					<option value="">Semua Bulan</option>
-					<option value="1">Januari 2026</option>
-					<option value="2">Februari 2026</option>
-					<option value="3">Maret 2026</option>
-					<option value="4" selected>April 2026</option>
-					<option value="5">Mei 2026</option>
-					<option value="6">Juni 2026</option>
-				</select>
-				<select id="filterTahun" class="filter-select" aria-label="Filter tahun">
-					<option value="2026" selected>2026</option>
-					<option value="2027">2027</option>
+					<option value="1">Januari</option>
+					<option value="2">Februari</option>
+					<option value="3">Maret</option>
+					<option value="4">April</option>
+					<option value="5">Mei</option>
+					<option value="6">Juni</option>
+					<option value="7">Juli</option>
+					<option value="8">Agustus</option>
+					<option value="9">September</option>
+					<option value="10">Oktober</option>
+					<option value="11">November</option>
+					<option value="12">Desember</option>
 				</select>
 			</div>
-			<div class="filter-group">
-				<span class="filter-label">Tampilan:</span>
-				<select id="filterView" class="filter-select" aria-label="Mode tampilan">
-					<option value="table">Tabel</option>
-					<option value="card">Kartu</option>
-				</select>
+			<div id="filterInfo" class="filter-group" style="margin-left:auto;">
+				<span id="filterInfoText" class="info-bar-count"></span>
 			</div>
 		</div>
 
 		<!-- Mode toggle -->
 		<div class="mode-pills-wrap">
 			<div class="mode-pills" role="tablist" aria-label="Mode jadwal">
-				<button id="pillBulanan" class="mode-pill active" type="button" role="tab" aria-selected="true" onclick="switchMode('bulanan')">Bulanan Biasa</button>
-				<button id="pillHariRaya" class="mode-pill" type="button" role="tab" aria-selected="false" onclick="switchMode('hariraya')">Hari Raya</button>
+				<button id="pillBulanan" class="mode-pill active" type="button" role="tab" aria-selected="true" onclick="switchMode('bulanan')">Jadwal Misa Biasa</button>
+				<button id="pillHariRaya" class="mode-pill" type="button" role="tab" aria-selected="false" onclick="switchMode('hariraya')">Jadwal Misa Besar</button>
 			</div>
-			<span class="mode-note">Tanggal hari raya diblok dan diarahkan ke mode Hari Raya</span>
+			<span class="mode-note">Tanggal hari raya diblok pada mode Misa Biasa — beralih ke Misa Besar untuk detail petugas</span>
 		</div>
 
-		<!-- Legend -->
+		<!-- Legend — 2 item (bulat kuning dihapus) -->
 		<div class="schedule-legend" aria-label="Keterangan warna jadwal">
 			<span class="legend-chip"><span class="legend-dot dot-normal"></span> Jadwal Normal</span>
-			<span class="legend-chip"><span class="legend-dot dot-blocked"></span> Diblok karena Hari Raya</span>
-			<span class="legend-chip"><span class="legend-dot dot-raya"></span> Misa Hari Raya Khusus</span>
+			<span class="legend-chip"><span class="legend-dot dot-blocked"></span> Diblok / Misa Besar</span>
+		</div>
+
+		<!-- INFO BAR -->
+		<div class="info-bar">
+			<span class="info-bar-title" id="tableInfoTitle">Jadwal Misa Biasa</span>
+			<span class="info-bar-count" id="tableInfoCount"></span>
 		</div>
 
 		<!-- BULANAN TABLE -->
@@ -419,61 +292,18 @@
 			<table class="schedule-table" id="tblBulanan">
 				<thead>
 					<tr>
-						<th class="no-col" style="width:44px;">No</th>
+						<th style="width:44px;">No</th>
 						<th>Tanggal</th>
 						<th>Jam</th>
-						<th>Operator</th>
-						<th>Kameramen</th>
+						<th>PD</th>
+						<th>OP / vMix</th>
+						<th>Kamera</th>
 						<th>Supervisor</th>
+						<th>Fotografer</th>
 					</tr>
 				</thead>
 				<tbody id="schedBulananBody">
-					<tr class="normal-row">
-						<td>1</td>
-						<td>05 April 2026</td>
-						<td>18:00</td>
-						<td>Rikha</td>
-						<td>Jeni</td>
-						<td>Tyas</td>
-					</tr>
-					<tr class="normal-row">
-						<td>2</td>
-						<td>12 April 2026</td>
-						<td>18:00</td>
-						<td>Lisa</td>
-						<td>Evan</td>
-						<td>Jose</td>
-					</tr>
-					<tr class="blocked-row" style="border-left:3px solid #800000;">
-						<td>3</td>
-						<td>19 April 2026</td>
-						<td colspan="4">
-							<div class="blocked-inline">🚫 DIBLOK: Paskah Kebangkitan (Hari Raya) <span>— buka mode Hari Raya untuk detail petugas khusus.</span></div>
-						</td>
-					</tr>
-					<tr class="normal-row">
-						<td>4</td>
-						<td>26 April 2026</td>
-						<td>18:00</td>
-						<td>Rossa</td>
-						<td>Aurel</td>
-						<td>Asha</td>
-					</tr>
-					<tr class="normal-row">
-						<td>5</td>
-						<td>03 Mei 2026</td>
-						<td>18:00</td>
-						<td>Dewi</td>
-						<td>Bagas</td>
-						<td>Citra</td>
-					</tr>
-					<tr class="blocked-row" style="border-left:3px solid #800000;">
-						<td>6</td>
-						<td>31 Mei 2026</td>
-						<td colspan="4">
-							<div class="blocked-inline">🚫 DIBLOK: Hari Raya Pentakosta <span>— buka mode Hari Raya untuk detail petugas khusus.</span></div>
-						</td>
-					</tr>
+					<!-- Rendered by JS -->
 				</tbody>
 			</table>
 		</div>
@@ -481,81 +311,30 @@
 		<!-- HARI RAYA TABLE -->
 		<div id="tableHariRaya" style="display:none;">
 			<div class="hari-raya-banner">
-				<span class="hari-raya-badge">Mode Hari Raya</span>
-				<p>Jadwal khusus misa hari raya dengan formasi petugas lengkap.</p>
+				<span class="hari-raya-badge">Mode Misa Besar</span>
+				<p>Daftar misa-misa besar dengan formasi petugas lengkap sesuai registrasi tugas. Difilter berdasarkan bulan yang dipilih.</p>
 			</div>
 			<div class="schedule-card">
-				<table class="schedule-table">
+				<table class="schedule-table" id="tblHariRaya">
 					<thead>
 						<tr>
 							<th style="width:44px;">No</th>
-							<th>Tanggal &amp; Acara</th>
+							<th>Tanggal &amp; Nama Misa</th>
 							<th>Jam</th>
-							<th>Operator</th>
-							<th>Kameramen</th>
+							<th>PD</th>
+							<th>OP</th>
+							<th>vMix</th>
+							<th>Kamera</th>
 							<th>Supervisor</th>
+							<th>Fotografer</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="hariraya-row">
-							<td>1</td>
-							<td><strong>29 Maret 2026</strong><br><span class="hariraya-label">Misa Minggu Palma</span></td>
-							<td>08:00</td>
-							<td>Andi</td>
-							<td>Budi</td>
-							<td>Citra</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>2</td>
-							<td><strong>2 April 2026</strong><br><span class="hariraya-label">Misa Kamis Putih</span></td>
-							<td>18:00</td>
-							<td>Dewi</td>
-							<td>Fajar</td>
-							<td>Hanafi</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>3</td>
-							<td><strong>3 April 2026</strong><br><span class="hariraya-label">Ibadat Jumat Agung</span></td>
-							<td>15:00</td>
-							<td>Lisa</td>
-							<td>Evan</td>
-							<td>Jose</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>4</td>
-							<td><strong>4 April 2026</strong><br><span class="hariraya-label">Misa Malam Paskah</span></td>
-							<td>20:00</td>
-							<td>Rikha</td>
-							<td>Jeni</td>
-							<td>Tyas</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>5</td>
-							<td><strong>5 April 2026 (Paskah)</strong><br><span class="hariraya-label">Misa Paskah Kebangkitan</span></td>
-							<td>08:00</td>
-							<td>Rossa</td>
-							<td>Aurel</td>
-							<td>Asha</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>6</td>
-							<td><strong>31 Mei 2026</strong><br><span class="hariraya-label">Misa Pentakosta</span></td>
-							<td>08:00</td>
-							<td>Bagas</td>
-							<td>Citra</td>
-							<td>Dewi</td>
-						</tr>
+					<tbody id="schedHariRayaBody">
+						<!-- Rendered by JS -->
 					</tbody>
 				</table>
 			</div>
 		</div>
-
-		<!-- Pagination -->
-		<nav class="pagination-wrap" aria-label="Halaman jadwal" id="paginationWrap">
-			<button class="active" type="button">1</button>
-			<button type="button">2</button>
-			<button type="button">3</button>
-		</nav>
 	</main>
 
 	<footer class="footer">
@@ -595,116 +374,274 @@
 	</footer>
 
 	<script>
-		const topHeader = document.getElementById("topHeader");
-		const searchForm = document.getElementById("searchForm");
-		const searchInput = document.getElementById("searchInput");
+	// ─── STORAGE KEYS (same as registrasi-tugas-misa-besar.html) ───────────────
+	const SCHEDULE_KEY = "crembo-misa-besar-schedule";
+	const MEMBER_KEY   = "crembo-members";
 
-		function syncStickyOffset() {
-			const h = topHeader ? topHeader.offsetHeight : 104;
-			document.documentElement.style.setProperty("--header-h", h + "px");
+	// ─── SEED DUMMY DATA ─────────────────────────────────────────────────────────
+	(function seedDummyData() {
+		const existing = localStorage.getItem(SCHEDULE_KEY);
+		if (existing) { try { if (JSON.parse(existing).length > 0) return; } catch(e){} }
+
+		const dummySchedule = [
+			// MISA BIASA — April 2026
+			{ id:"s1", type:"biasa", date:"2026-04-05", time:"18:00", namaLocation:"Gereja Utama", keterangan:"Misa Minggu Biasa", roles:{ PD:"Rikha", OP:"Jeni", vMix:"", Kamera:"Tyas", Supervisor:"Jose", Fotografer:"Aurel" }, status:"Published" },
+			{ id:"s2", type:"biasa", date:"2026-04-12", time:"18:00", namaLocation:"Gereja Utama", keterangan:"Misa Minggu Biasa", roles:{ PD:"Lisa", OP:"Evan", vMix:"", Kamera:"Jose", Supervisor:"Tyas", Fotografer:"Rikha" }, status:"Published" },
+			{ id:"s3", type:"biasa", date:"2026-04-26", time:"18:00", namaLocation:"Gereja Utama", keterangan:"Misa Minggu Biasa", roles:{ PD:"Rossa", OP:"Aurel", vMix:"", Kamera:"Asha", Supervisor:"Dewi", Fotografer:"Fajar" }, status:"Published" },
+			// MISA BESAR — April 2026 (Pekan Suci)
+			{ id:"s4", type:"raya", namaMisa:"Misa Minggu Palma", date:"2026-03-29", time:"08:00", namaLocation:"Gereja Utama", keterangan:"Koordinasi liturgi dan dokumentasi", roles:{ PD:"Andi", OP:"Budi", vMix:"Citra", Kamera:"Dewi", Supervisor:"Fajar", Fotografer:"Hanafi" }, status:"Published" },
+			{ id:"s5", type:"raya", namaMisa:"Misa Kamis Putih",  date:"2026-04-02", time:"18:00", namaLocation:"Gereja Utama", keterangan:"Pastikan semua role terisi", roles:{ PD:"Dewi", OP:"Fajar", vMix:"Hanafi", Kamera:"Lisa", Supervisor:"Evan", Fotografer:"Jose" }, status:"Published" },
+			{ id:"s6", type:"raya", namaMisa:"Ibadat Jumat Agung", date:"2026-04-03", time:"15:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Lisa", OP:"Evan", vMix:"", Kamera:"Jose", Supervisor:"Rikha", Fotografer:"Jeni" }, status:"Published" },
+			{ id:"s7", type:"raya", namaMisa:"Misa Malam Paskah",  date:"2026-04-04", time:"20:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rikha", OP:"Jeni", vMix:"Tyas", Kamera:"Rossa", Supervisor:"Aurel", Fotografer:"Asha" }, status:"Published" },
+			{ id:"s8", type:"raya", namaMisa:"Misa Paskah Kebangkitan", date:"2026-04-05", time:"08:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rossa", OP:"Aurel", vMix:"Asha", Kamera:"Dewi", Supervisor:"Bagas", Fotografer:"Citra" }, status:"Published" },
+			// MISA BIASA — Mei 2026
+			{ id:"s9",  type:"biasa", date:"2026-05-03", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Dewi", OP:"Bagas", vMix:"", Kamera:"Citra", Supervisor:"Asha", Fotografer:"Evan" }, status:"Published" },
+			{ id:"s10", type:"biasa", date:"2026-05-10", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rikha", OP:"Jeni", vMix:"", Kamera:"Tyas", Supervisor:"Jose", Fotografer:"Aurel" }, status:"Published" },
+			{ id:"s11", type:"biasa", date:"2026-05-17", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Lisa", OP:"Evan", vMix:"", Kamera:"Jose", Supervisor:"Tyas", Fotografer:"Rikha" }, status:"Published" },
+			{ id:"s12", type:"biasa", date:"2026-05-24", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rossa", OP:"Aurel", vMix:"", Kamera:"Asha", Supervisor:"Dewi", Fotografer:"Fajar" }, status:"Published" },
+			// MISA BESAR — Mei 2026
+			{ id:"s13", type:"raya", namaMisa:"Misa Hari Raya Kenaikan Yesus", date:"2026-05-14", time:"08:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Andi", OP:"Budi", vMix:"Citra", Kamera:"Dewi", Supervisor:"Fajar", Fotografer:"Hanafi" }, status:"Published" },
+			{ id:"s14", type:"raya", namaMisa:"Misa Pentakosta", date:"2026-05-24", time:"08:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Bagas", OP:"Citra", vMix:"Dewi", Kamera:"Rikha", Supervisor:"Jeni", Fotografer:"Tyas" }, status:"Published" },
+			// MISA BESAR — Juni 2026
+			{ id:"s15", type:"raya", namaMisa:"Misa Hari Raya Tubuh dan Darah Kristus", date:"2026-06-04", time:"08:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Lisa", OP:"Evan", vMix:"Jose", Kamera:"Rossa", Supervisor:"Aurel", Fotografer:"Asha" }, status:"Published" },
+			// MISA BIASA — Juni 2026
+			{ id:"s16", type:"biasa", date:"2026-06-07", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rikha", OP:"Jeni", vMix:"", Kamera:"Tyas", Supervisor:"Jose", Fotografer:"Aurel" }, status:"Published" },
+			{ id:"s17", type:"biasa", date:"2026-06-14", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Lisa", OP:"Evan", vMix:"", Kamera:"Jose", Supervisor:"Tyas", Fotografer:"Rikha" }, status:"Published" },
+			{ id:"s18", type:"biasa", date:"2026-06-21", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rossa", OP:"Aurel", vMix:"", Kamera:"Asha", Supervisor:"Dewi", Fotografer:"Fajar" }, status:"Published" },
+		];
+		localStorage.setItem(SCHEDULE_KEY, JSON.stringify(dummySchedule));
+	})();
+
+	// ─── UTILS ───────────────────────────────────────────────────────────────────
+	const MONTHS = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+	const DAYS   = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
+	function safeParse(raw) { try { return JSON.parse(raw); } catch(e) { return null; } }
+	function loadSchedule() {
+		const raw = localStorage.getItem(SCHEDULE_KEY);
+		const data = raw ? safeParse(raw) : null;
+		return Array.isArray(data) ? data.filter(s => s.status === "Published") : [];
+	}
+	function formatDate(val) {
+		const d = new Date(val + "T00:00:00");
+		if (isNaN(d)) return val;
+		return DAYS[d.getDay()] + ", " + String(d.getDate()).padStart(2,"0") + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+	}
+	function getMonth(dateStr) {
+		const d = new Date(dateStr + "T00:00:00");
+		return isNaN(d) ? 0 : d.getMonth() + 1;
+	}
+	function esc(str) { return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+	function roleCell(val) {
+		if (!val) return '<td><span style="color:var(--muted);font-style:italic;font-size:0.8rem;">—</span></td>';
+		return '<td>' + esc(val) + '</td>';
+	}
+
+	// ─── DOM REFS ─────────────────────────────────────────────────────────────────
+	const topHeader         = document.getElementById("topHeader");
+	const searchForm        = document.getElementById("searchForm");
+	const searchInput       = document.getElementById("searchInput");
+	const filterBulan       = document.getElementById("filterBulan");
+	const pillBulanan       = document.getElementById("pillBulanan");
+	const pillHariRaya      = document.getElementById("pillHariRaya");
+	const tableBulanan      = document.getElementById("tableBulanan");
+	const tableHariRaya     = document.getElementById("tableHariRaya");
+	const schedBulananBody  = document.getElementById("schedBulananBody");
+	const schedHariRayaBody = document.getElementById("schedHariRayaBody");
+	const tableInfoTitle    = document.getElementById("tableInfoTitle");
+	const tableInfoCount    = document.getElementById("tableInfoCount");
+	const filterInfoText    = document.getElementById("filterInfoText");
+	let currentMode = "bulanan";
+
+	// ─── SET DEFAULT MONTH ────────────────────────────────────────────────────────
+	(function() {
+		const now = new Date();
+		filterBulan.value = String(now.getMonth() + 1);
+	})();
+
+	// ─── RENDER FUNCTIONS ─────────────────────────────────────────────────────────
+	function renderBulanan(month) {
+		const all = loadSchedule();
+		// Get blocked dates (misa besar) for this month
+		const blockedDates = new Set(
+			all.filter(s => s.type === "raya" && getMonth(s.date) === month).map(s => s.date)
+		);
+		const normal = all.filter(s => s.type === "biasa" && getMonth(s.date) === month);
+
+		// Merge: normal rows + blocked rows for raya dates
+		const rayaInMonth = all.filter(s => s.type === "raya" && getMonth(s.date) === month);
+		// Get all unique dates in month
+		const allDates = [...new Set([
+			...normal.map(s => s.date),
+			...rayaInMonth.map(s => s.date)
+		])].sort();
+
+		let html = "";
+		let no = 0;
+
+		if (allDates.length === 0) {
+			schedBulananBody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>Tidak ada jadwal untuk bulan ini.</p></div></td></tr>';
+			tableInfoCount.textContent = "0 jadwal";
+			return;
 		}
-		syncStickyOffset();
-		window.addEventListener("resize", syncStickyOffset);
 
-		searchForm.addEventListener("submit", function(e) {
-			e.preventDefault();
-			const q = searchInput.value.trim();
-			window.location.href = "search.html?q=" + encodeURIComponent(q);
+		allDates.forEach(date => {
+			const normalRow = normal.find(s => s.date === date);
+			const isBlocked  = blockedDates.has(date);
+
+			if (isBlocked) {
+				// Show blocked row with misa besar names
+				const rayaNames = rayaInMonth.filter(s => s.date === date).map(s => s.namaMisa || "Misa Besar").join(", ");
+				no++;
+				html += `<tr class="blocked-row">
+					<td>${no}</td>
+					<td>${esc(formatDate(date))}</td>
+					<td colspan="6"><div class="blocked-inline">🚫 DIBLOK — ${esc(rayaNames)} <span>— beralih ke tab Misa Besar untuk detail petugas.</span></div></td>
+				</tr>`;
+			} else if (normalRow) {
+				no++;
+				const r = normalRow.roles || {};
+				html += `<tr class="normal-row">
+					<td>${no}</td>
+					<td>${esc(formatDate(date))}</td>
+					<td>${esc(normalRow.time || "")}</td>
+					${roleCell(r.PD)}
+					${roleCell((r.OP || "") + (r.vMix ? " / " + r.vMix : ""))}
+					${roleCell(r.Kamera)}
+					${roleCell(r.Supervisor)}
+					${roleCell(r.Fotografer)}
+				</tr>`;
+			}
 		});
 
-		function switchMode(mode) {
-			const pillBulanan = document.getElementById("pillBulanan");
-			const pillHariRaya = document.getElementById("pillHariRaya");
-			const tableBulanan = document.getElementById("tableBulanan");
-			const tableHariRaya = document.getElementById("tableHariRaya");
-			const paginationWrap = document.getElementById("paginationWrap");
+		schedBulananBody.innerHTML = html;
+		const monthName = MONTHS[(month - 1)] + " 2026";
+		tableInfoCount.textContent = no + " jadwal — " + monthName;
+		filterInfoText.textContent = monthName;
+	}
 
-			if (mode === "bulanan") {
-				tableBulanan.style.display = "";
-				tableHariRaya.style.display = "none";
-				pillBulanan.classList.add("active");
-				pillBulanan.classList.remove("active-gold");
-				pillHariRaya.classList.remove("active", "active-gold");
-				pillBulanan.setAttribute("aria-selected", "true");
-				pillHariRaya.setAttribute("aria-selected", "false");
-				if (paginationWrap) paginationWrap.style.display = "flex";
-			} else {
-				tableBulanan.style.display = "none";
-				tableHariRaya.style.display = "";
-				pillHariRaya.classList.add("active-gold");
-				pillHariRaya.classList.remove("active");
-				pillBulanan.classList.remove("active", "active-gold");
-				pillHariRaya.setAttribute("aria-selected", "true");
-				pillBulanan.setAttribute("aria-selected", "false");
-				if (paginationWrap) paginationWrap.style.display = "none";
-			}
+	function renderHariRaya(month) {
+		const all = loadSchedule();
+		let data = all.filter(s => s.type === "raya");
+		// If month selected (not "all"), filter
+		if (month) data = data.filter(s => getMonth(s.date) === month);
+		data.sort((a,b) => a.date.localeCompare(b.date));
+
+		if (!data.length) {
+			schedHariRayaBody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><p>Tidak ada misa besar pada bulan ini.</p></div></td></tr>';
+			tableInfoCount.textContent = "0 misa besar";
+			return;
 		}
 
-		// Pagination buttons
-		document.querySelectorAll(".pagination-wrap button").forEach(function(btn) {
-			btn.addEventListener("click", function() {
-				document.querySelectorAll(".pagination-wrap button").forEach(function(b) { b.classList.remove("active"); });
-				btn.classList.add("active");
-			});
+		let html = "";
+		data.forEach((s, i) => {
+			const r = s.roles || {};
+			html += `<tr class="hariraya-row">
+				<td>${i + 1}</td>
+				<td><span class="misa-name-cell">${esc(s.namaMisa || "Misa Besar")}</span><br><small style="color:var(--muted);font-size:0.78rem;">${esc(formatDate(s.date))}</small></td>
+				<td>${esc(s.time || "")}</td>
+				${roleCell(r.PD)}
+				${roleCell(r.OP)}
+				${roleCell(r.vMix)}
+				${roleCell(r.Kamera)}
+				${roleCell(r.Supervisor)}
+				${roleCell(r.Fotografer)}
+			</tr>`;
 		});
 
-		// Profile dropdown
-		(function() {
-			const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
-			const DEFAULT_PROFILE_MENU = [
-				{ id: "sejarah", label: "Sejarah" },
-				{ id: "tentang-crembo", label: "Tentang Crembo" },
-				{ id: "struktur", label: "Struktur" },
-				{ id: "visi-misi", label: "Visi & Misi" }
-			];
+		schedHariRayaBody.innerHTML = html;
+		tableInfoCount.textContent = data.length + " misa besar";
+	}
 
-			function readProfileMenuItems() {
-				try {
-					const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
-					if (!raw) return DEFAULT_PROFILE_MENU;
-					const parsed = JSON.parse(raw);
-					if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_PROFILE_MENU;
-					return parsed.map(function(item) {
-						if (typeof item === "string") return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
-						return { id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"), label: item && item.label ? String(item.label) : "Profil" };
-					});
-				} catch (err) { return DEFAULT_PROFILE_MENU; }
-			}
+	function render() {
+		const month = parseInt(filterBulan.value, 10);
+		if (currentMode === "bulanan") {
+			renderBulanan(month);
+		} else {
+			renderHariRaya(month);
+		}
+	}
 
-			function enhanceProfileHoverMenu() {
-				const navList = document.querySelector(".nav-row nav ul");
-				if (!navList) return;
-				const profileAnchor = navList.querySelector('a[href="profil.html"]');
-				if (!profileAnchor) return;
-				const profileItem = profileAnchor.closest("li");
-				if (!profileItem) return;
+	// ─── SWITCH MODE ──────────────────────────────────────────────────────────────
+	function switchMode(mode) {
+		currentMode = mode;
+		if (mode === "bulanan") {
+			tableBulanan.style.display = "";
+			tableHariRaya.style.display = "none";
+			pillBulanan.classList.add("active"); pillBulanan.classList.remove("active-gold");
+			pillHariRaya.classList.remove("active", "active-gold");
+			pillBulanan.setAttribute("aria-selected","true");
+			pillHariRaya.setAttribute("aria-selected","false");
+			tableInfoTitle.textContent = "Jadwal Misa Biasa";
+			tableInfoTitle.style.color = "var(--primary)";
+		} else {
+			tableBulanan.style.display = "none";
+			tableHariRaya.style.display = "";
+			pillHariRaya.classList.add("active"); pillHariRaya.classList.remove("active-gold");
+			pillBulanan.classList.remove("active","active-gold");
+			pillHariRaya.setAttribute("aria-selected","true");
+			pillBulanan.setAttribute("aria-selected","false");
+			tableInfoTitle.textContent = "Jadwal Misa Besar / Hari Raya";
+			tableInfoTitle.style.color = "var(--primary)";
+		}
+		render();
+	}
 
-				const menuItems = readProfileMenuItems();
-				profileItem.style.position = "relative";
+	// ─── EVENTS ───────────────────────────────────────────────────────────────────
+	filterBulan.addEventListener("change", render);
 
-				const dropdown = document.createElement("div");
-				Object.assign(dropdown.style, { position: "absolute", top: "calc(100% + 4px)", left: "0", minWidth: "200px", border: "1px solid rgba(128,0,0,0.15)", background: "#fff", boxShadow: "0 10px 30px rgba(128,0,0,0.12)", padding: "6px", display: "none", zIndex: "1300", borderRadius: "12px" });
+	searchForm.addEventListener("submit", function(e) {
+		e.preventDefault();
+		const q = searchInput.value.trim();
+		window.location.href = "search.html?q=" + encodeURIComponent(q);
+	});
 
-				dropdown.innerHTML = menuItems.map(function(item) {
-					return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:8px 12px;font-size:0.87rem;margin-bottom:2px;border-radius:8px;color:#4a4a4a;transition:all 0.2s;">' + item.label + '</a>';
-				}).join("");
+	function syncStickyOffset() {
+		const h = topHeader ? topHeader.offsetHeight : 104;
+		document.documentElement.style.setProperty("--header-h", h + "px");
+	}
+	syncStickyOffset();
+	window.addEventListener("resize", syncStickyOffset);
 
-				dropdown.addEventListener("mouseover", function(e) {
-					const link = e.target.closest("a");
-					if (link) { link.style.background = "rgba(128,0,0,0.06)"; link.style.color = "#800000"; }
+	// ─── PROFILE DROPDOWN ────────────────────────────────────────────────────────
+	(function() {
+		const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
+		const DEFAULT_PROFILE_MENU = [{ id:"sejarah", label:"Sejarah" },{ id:"tentang-crembo", label:"Tentang Crembo" },{ id:"struktur", label:"Struktur" },{ id:"visi-misi", label:"Visi & Misi" }];
+		function readProfileMenuItems() {
+			try {
+				const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
+				if (!raw) return DEFAULT_PROFILE_MENU;
+				const parsed = JSON.parse(raw);
+				if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_PROFILE_MENU;
+				return parsed.map(function(item) {
+					if (typeof item === "string") return { id: item.toLowerCase().replace(/\s+/g,"-"), label: item };
+					return { id: item&&item.id ? String(item.id) : String((item&&item.label)||"profil").toLowerCase().replace(/\s+/g,"-"), label: item&&item.label ? String(item.label) : "Profil" };
 				});
-				dropdown.addEventListener("mouseout", function(e) {
-					const link = e.target.closest("a");
-					if (link) { link.style.background = "transparent"; link.style.color = "#4a4a4a"; }
-				});
+			} catch(err) { return DEFAULT_PROFILE_MENU; }
+		}
+		function enhanceProfileHoverMenu() {
+			const navList = document.querySelector(".nav-row nav ul");
+			if (!navList) return;
+			const profileAnchor = navList.querySelector('a[href="profil.html"]');
+			if (!profileAnchor) return;
+			const profileItem = profileAnchor.closest("li");
+			if (!profileItem) return;
+			const menuItems = readProfileMenuItems();
+			profileItem.style.position = "relative";
+			const dropdown = document.createElement("div");
+			Object.assign(dropdown.style, { position:"absolute", top:"calc(100% + 4px)", left:"0", minWidth:"200px", border:"1px solid rgba(128,0,0,0.15)", background:"#fff", boxShadow:"0 10px 30px rgba(128,0,0,0.12)", padding:"6px", display:"none", zIndex:"1300", borderRadius:"12px" });
+			dropdown.innerHTML = menuItems.map(function(item) { return '<a href="profil.html?profil='+encodeURIComponent(item.id)+'" style="display:block;padding:8px 12px;font-size:0.87rem;border-radius:8px;color:#4a4a4a;margin-bottom:2px;transition:all 0.2s;">'+item.label+'</a>'; }).join("");
+			dropdown.addEventListener("mouseover",function(e){ const l=e.target.closest("a"); if(l){l.style.background="rgba(128,0,0,0.06)";l.style.color="#800000";} });
+			dropdown.addEventListener("mouseout",function(e){ const l=e.target.closest("a"); if(l){l.style.background="transparent";l.style.color="#4a4a4a";} });
+			profileItem.appendChild(dropdown);
+			profileItem.addEventListener("mouseenter",function(){ dropdown.style.display="block"; });
+			profileItem.addEventListener("mouseleave",function(){ dropdown.style.display="none"; });
+		}
+		enhanceProfileHoverMenu();
+	})();
 
-				profileItem.appendChild(dropdown);
-				profileItem.addEventListener("mouseenter", function() { dropdown.style.display = "block"; });
-				profileItem.addEventListener("mouseleave", function() { dropdown.style.display = "none"; });
-			}
-
-			enhanceProfileHoverMenu();
-		})();
+	// ─── INIT ─────────────────────────────────────────────────────────────────────
+	render();
 	</script>
 </body>
 </html>

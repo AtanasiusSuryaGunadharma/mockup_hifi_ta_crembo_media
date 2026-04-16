@@ -1,989 +1,225 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - Crembo Media</title>
-  <style>
-    :root {
-      --brand: #1f1f1f;
-      --brand-dark: #0f0f0f;
-      --ink: #111111;
-      --muted: #666666;
-      --line: #b8b8b8;
-      --surface: #ffffff;
-      --glass: rgba(33, 33, 33, 0.68);
-      --overlay: rgba(0, 0, 0, 0.52);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--ink);
-      background: #0d1b3b;
-      display: flex;
-      flex-direction: column;
-    }
-
-    a { text-decoration: none; color: inherit; }
-
-    .video-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      overflow: hidden;
-      background: #0b0b0b;
-    }
-
-    .video-bg video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(100%) contrast(108%);
-    }
-
-    .video-bg::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.36) 0%, rgba(0, 0, 0, 0.62) 100%);
-      pointer-events: none;
-    }
-
-    .top-bar {
-      border-bottom: 2px solid #1f1f1f;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
-    }
-
-    .nav-wrap {
-      border-bottom: 2px solid #1f1f1f;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
-    }
-
-    .nav-row {
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .menu-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .menu-list a {
-      display: inline-block;
-      border: 1px solid transparent;
-      padding: 8px 10px;
-      font-size: 0.9rem;
-    }
-
-    .menu-list a:hover,
-    .menu-list a:focus-visible {
-      border-color: #b8b8b8;
-      background: #efefef;
-      outline: none;
-    }
-
-    .container {
-      width: min(1120px, 94vw);
-      margin: 0 auto;
-    }
-
-    .top-row {
-      min-height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .top-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .top-logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      border-radius: 999px;
-      border: 1px solid #bdbdbd;
-      background: #fff;
-      padding: 4px;
-      filter: grayscale(100%);
-    }
-
-    .top-brand h1 {
-      margin: 0;
-      font-size: 1rem;
-      letter-spacing: 0.2px;
-      text-transform: uppercase;
-    }
-
-    .top-brand p {
-      margin: 2px 0 0;
-      font-size: 0.8rem;
-      color: #555555;
-    }
-
-    .back-link {
-      font-size: 0.88rem;
-      color: #1f1f1f;
-      border: 1px solid #b8b8b8;
-      background: #fff;
-      padding: 7px 10px;
-      border-radius: 8px;
-    }
-
-    .back-link:hover { background: #efefef; }
-
-    .main {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 38px 0;
-    }
-
-    .stack {
-      width: min(560px, 92vw);
-      display: grid;
-      gap: 14px;
-    }
-
-    .identity-card {
-      background: var(--glass);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      backdrop-filter: blur(4px);
-    }
-
-    .identity-logo {
-      width: 72px;
-      height: 72px;
-      object-fit: contain;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 6px;
-      background: rgba(255, 255, 255, 0.95);
-      filter: grayscale(100%);
-    }
-
-    .identity-card h2 {
-      margin: 10px 0 4px;
-      font-size: clamp(1.5rem, 3.2vw, 2rem);
-      text-transform: uppercase;
-    }
-
-    .identity-card p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: #e5e7eb;
-    }
-
-    .login-card {
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: #fff;
-    }
-
-    .login-head {
-      background: var(--brand);
-      color: #fff;
-      text-align: center;
-      padding: 16px 16px 12px;
-    }
-
-    .login-head h3 {
-      margin: 0;
-      font-size: 1.9rem;
-      letter-spacing: 0.4px;
-    }
-
-    .login-head p {
-      margin: 3px 0 0;
-      font-size: 0.88rem;
-      color: #d4d4d4;
-    }
-
-    .login-body {
-      background: #fff;
-      padding: 16px 18px 18px;
-    }
-
-    .field {
-      display: grid;
-      gap: 7px;
-      margin-bottom: 12px;
-    }
-
-    .field label {
-      font-size: 0.88rem;
-      color: #2f2f2f;
-      font-weight: 600;
-    }
-
-    .field input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      padding: 11px 12px;
-      font-size: 0.93rem;
-      color: #1f1f1f;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: #7f7f7f;
-      box-shadow: 0 0 0 3px rgba(20, 20, 20, 0.16);
-    }
-
-    .meta-row {
-      margin: 4px 0 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: #4a4a4a;
-      flex-wrap: wrap;
-    }
-
-    .remember {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .forgot-link {
-      color: #1f1f1f;
-      font-weight: 600;
-    }
-
-    .forgot-link:hover { text-decoration: underline; }
-
-    .btn-login {
-      width: 100%;
-      border: 0;
-      border-radius: 8px;
-      background: var(--brand);
-      color: #fff;
-      cursor: pointer;
-      padding: 11px 14px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
-
-    .btn-login:hover { background: var(--brand-dark); }
-
-    .login-note {
-      margin: 12px 0 0;
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .status {
-      margin-top: 10px;
-      padding: 9px 10px;
-      border-radius: 8px;
-      border: 1px solid #c4c4c4;
-      background: #f3f3f3;
-      color: #2f2f2f;
-      font-size: 0.85rem;
-      display: none;
-    }
-
-    .status.show { display: block; }
-
-    .status.success {
-      background: #ebf7ed;
-      border-color: #9bc4a0;
-      color: #24522d;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.52);
-      display: none;
-      place-items: center;
-      z-index: 1300;
-      padding: 14px;
-    }
-
-    .modal.show {
-      display: grid;
-    }
-
-    .modal-card {
-      width: min(440px, 95vw);
-      border: 2px solid #1f1f1f;
-      background: #fff;
-      padding: 16px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-    }
-
-    .modal-card h4 {
-      margin: 0;
-      font-size: 1.1rem;
-    }
-
-    .modal-card p {
-      margin: 6px 0 0;
-      font-size: 0.9rem;
-      color: #4f4f4f;
-    }
-
-    .role-grid {
-      margin-top: 12px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .role-btn,
-    .modal-cancel {
-      width: 100%;
-      border: 1px solid #1f1f1f;
-      background: #fff;
-      color: #111;
-      padding: 10px;
-      font-size: 0.92rem;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .role-btn:hover,
-    .modal-cancel:hover {
-      background: #efefef;
-    }
-
-    .role-btn strong {
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .role-btn span {
-      font-size: 0.82rem;
-      color: #575757;
-    }
-
-    .modal-actions {
-      margin-top: 10px;
-    }
-
-    .footer {
-      margin-top: auto;
-      border-top: 2px solid #1f1f1f;
-      border-bottom: 2px solid #1f1f1f;
-      background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
-      padding: 0;
-      color: #2e2e2e;
-    }
-
-    .footer-main {
-      padding: 22px 0 16px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr;
-      gap: 18px;
-    }
-
-    .footer-col {
-      border: 1px solid #bdbdbd;
-      background: #fff;
-      padding: 14px;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .footer-logo {
-      width: 54px;
-      height: 54px;
-      object-fit: contain;
-      filter: grayscale(100%);
-      border: 1px solid #222;
-      padding: 4px;
-      background: #fff;
-    }
-
-    .footer-title {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .footer-sub {
-      margin: 2px 0 0;
-      font-size: 0.85rem;
-      color: #666;
-    }
-
-    .contact-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 8px;
-      font-size: 0.9rem;
-    }
-
-    .contact-list strong {
-      display: inline-block;
-      min-width: 70px;
-    }
-
-    .social-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 8px;
-      font-size: 0.9rem;
-    }
-
-    .social-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .social-dot {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border: 1px solid #222;
-      background: #f4f4f4;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #bebebe;
-      padding: 10px 0 14px;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #5c5c5c;
-    }
-
-    @media (max-width: 760px) {
-      .top-row { min-height: 58px; }
-      .top-brand h1 { font-size: 0.88rem; }
-      .top-brand p { display: none; }
-      .nav-row { min-height: 44px; }
-      .identity-card { padding: 15px; }
-      .login-head h3 { font-size: 1.5rem; }
-      .menu-list { width: 100%; }
-      .menu-list li { flex: 1 1 calc(50% - 6px); }
-      .menu-list a { width: 100%; text-align: center; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login - Crembo Media</title>
+	<meta name="description" content="Login ke platform Crembo Media.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--primary:#800000;--primary-dark:#5c0000;--primary-deeper:#3a0000;--primary-light:#a52a2a;
+			--accent-gold:#d4a017;--accent-gold-light:#f0c040;
+			--bg:#faf8f6;--surface:#ffffff;--ink:#1a1a1a;--ink-secondary:#4a4a4a;--muted:#7a7a7a;
+			--line:rgba(128,0,0,0.15);--line-soft:rgba(128,0,0,0.08);--hover:rgba(128,0,0,0.04);
+			--shadow-lg:0 20px 60px rgba(128,0,0,0.18),0 8px 20px rgba(0,0,0,0.08);
+			--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+			--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+		}
+		*{box-sizing:border-box;}
+		body{margin:0;font-family:'Inter',-apple-system,sans-serif;background:linear-gradient(135deg,var(--primary-deeper) 0%,var(--primary) 45%,var(--primary-light) 100%);min-height:100vh;display:grid;place-items:center;padding:24px;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden;}
+		body::before{content:"";position:absolute;inset:0;background-image:url("IMG_1970.JPG");background-size:cover;background-position:center;opacity:0.08;pointer-events:none;}
+		body::after{content:"";position:absolute;inset:0;background:inherit;opacity:0;pointer-events:none;}
+
+		/* Decorative circles */
+		.deco-circle{position:absolute;border-radius:50%;pointer-events:none;}
+		.deco-1{width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.05),transparent);top:-120px;right:-80px;}
+		.deco-2{width:300px;height:300px;background:radial-gradient(circle,rgba(212,160,23,0.08),transparent);bottom:-80px;left:-60px;}
+
+		/* CARD */
+		.auth-card{width:100%;max-width:440px;background:rgba(255,255,255,0.97);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);padding:40px 40px 36px;animation:slideUp 0.6s cubic-bezier(0.22,1,0.36,1) both;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.5);position:relative;z-index:2;}
+
+		/* LOGO */
+		.auth-logo{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:28px;}
+		.auth-logo-img{width:72px;height:72px;background:linear-gradient(135deg,var(--primary-deeper),var(--primary));border-radius:var(--radius-md);display:grid;place-items:center;padding:8px;box-shadow:0 4px 16px rgba(128,0,0,0.3);}
+		.auth-logo-img img{max-width:100%;max-height:100%;object-fit:contain;}
+		.auth-logo h1{margin:0;font-size:1.15rem;font-weight:800;color:var(--ink);text-align:center;text-transform:uppercase;letter-spacing:0.5px;}
+		.auth-logo p{margin:4px 0 0;font-size:0.8rem;color:var(--muted);text-align:center;}
+
+		/* DIVIDER */
+		.divider{height:1px;background:var(--line-soft);margin:0 0 28px;}
+
+		/* FORM */
+		.auth-title{margin:0 0 6px;font-size:1.35rem;font-weight:800;color:var(--ink);}
+		.auth-sub{margin:0 0 28px;font-size:0.88rem;color:var(--muted);}
+
+		.field{display:grid;gap:6px;margin-bottom:18px;}
+		.field label{font-size:0.82rem;font-weight:700;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:0.4px;}
+		.field-wrap{position:relative;}
+		.field input{width:100%;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:12px 16px;font-size:0.9rem;font-family:inherit;border-radius:var(--radius-sm);outline:none;transition:var(--transition);}
+		.field input:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(128,0,0,0.1);}
+		.field input.error{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,0.1);}
+		.toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:0.78rem;font-weight:700;color:var(--muted);font-family:inherit;transition:var(--transition);padding:4px;}
+		.toggle-pw:hover{color:var(--primary);}
+
+		.field-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+		.forgot-link{font-size:0.82rem;color:var(--primary);font-weight:600;transition:var(--transition);}
+		.forgot-link:hover{color:var(--primary-dark);text-decoration:underline;}
+
+		.role-tabs{display:flex;gap:6px;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:4px;background:var(--bg);margin-bottom:20px;}
+		.role-tab{flex:1;text-align:center;padding:8px 12px;font-size:0.82rem;font-weight:600;border-radius:calc(var(--radius-sm) - 2px);cursor:pointer;border:none;background:transparent;font-family:inherit;color:var(--muted);transition:var(--transition);}
+		.role-tab.active{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px rgba(128,0,0,0.2);}
+
+		.btn-submit{display:block;width:100%;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px;font-size:0.96rem;font-weight:700;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;transition:var(--transition);box-shadow:0 4px 12px rgba(128,0,0,0.25);letter-spacing:0.3px;margin-top:6px;}
+		.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(128,0,0,0.35);}
+		.btn-submit:active{transform:translateY(0);}
+
+		.auth-footer{margin-top:24px;text-align:center;font-size:0.84rem;color:var(--muted);}
+		.auth-footer a{color:var(--primary);font-weight:600;transition:var(--transition);}
+		.auth-footer a:hover{color:var(--primary-dark);text-decoration:underline;}
+
+		/* BACK LINK */
+		.back-home{position:absolute;top:24px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:600;font-family:'Inter',sans-serif;text-decoration:none;transition:var(--transition);}
+		.back-home:hover{color:#fff;}
+
+		/* ALERT */
+		.alert{padding:12px 14px;border-radius:var(--radius-sm);font-size:0.85rem;margin-bottom:18px;display:none;}
+		.alert.alert-error{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);color:#991b1b;}
+		.alert.alert-success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:#166534;}
+		.alert.show{display:block;}
+
+		@keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+		@media(max-width:480px){.auth-card{padding:28px 24px 24px;}}
+	</style>
 </head>
 <body>
-  <div class="video-bg" aria-hidden="true">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="bg_video_login.mp4" type="video/mp4">
-    </video>
-  </div>
+	<div class="deco-circle deco-1"></div>
+	<div class="deco-circle deco-2"></div>
 
-  <header class="top-bar">
-    <div class="container top-row">
-      <div class="top-brand">
-        <img class="top-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-        <div>
-          <h1>Crew Multimedia Baciro</h1>
-          <p>Sistem Informasi Internal Komunitas</p>
-        </div>
-      </div>
-      <a class="back-link" href="home.html">&larr; Kembali ke Beranda</a>
-    </div>
-  </header>
+	<a class="back-home" href="home.html">← Kembali ke Beranda</a>
 
-  <div class="nav-wrap">
-    <div class="container nav-row">
-      <ul class="menu-list" aria-label="Navigasi cepat">
-        <li><a href="home.html">Home</a></li>
-        <li><a href="profil.html">Profil</a></li>
-        <li><a href="jadwal-streaming.html">Jadwal Streaming</a></li>
-        <li><a href="agenda.html">Agenda</a></li>
-        <li><a href="pengumuman.html">Pengumuman</a></li>
-        <li><a href="form-pendaftaran.html">Form Pendaftaran</a></li>
-      </ul>
-    </div>
-  </div>
+	<section class="auth-card" aria-label="Form Login">
+		<div class="auth-logo">
+			<div class="auth-logo-img">
+				<img src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+			</div>
+			<h1>Crew Multimedia Baciro</h1>
+			<p>Jl. Melati Wetan 47, Baciro, Yogyakarta</p>
+		</div>
 
-  <main class="main">
-    <div class="stack">
-      <section class="identity-card" aria-label="Identitas sistem">
-        <img class="identity-logo" src="logo crembo hitam.png" alt="Logo sistem Crembo">
-        <h2>CREMBO</h2>
-        <p>Sistem Informasi Crew Multimedia Baciro</p>
-      </section>
+		<div class="divider"></div>
 
-      <section class="login-card" aria-label="Form login">
-        <div class="login-head">
-          <h3>Masuk Sistem</h3>
-          <p>Silakan masuk dengan akun Anda</p>
-        </div>
-        <div class="login-body">
-          <form id="loginForm">
-            <div class="field">
-              <label for="identifier">Username / No HP / Email</label>
-              <input id="identifier" name="identifier" type="text" placeholder="Masukkan username, no HP, atau email" autocomplete="username" required>
-            </div>
-            <div class="field">
-              <label for="password">Kata Sandi</label>
-              <input id="password" name="password" type="password" placeholder="Masukkan kata sandi" autocomplete="current-password" required>
-            </div>
+		<h2 class="auth-title">Selamat Datang</h2>
+		<p class="auth-sub">Masuk ke akun Crembo Media Anda</p>
 
-            <div class="meta-row">
-              <label class="remember"><input id="rememberMe" type="checkbox"> Ingat saya</label>
-              <a class="forgot-link" href="forgot-password.html">Lupa kata sandi?</a>
-            </div>
+		<!-- Role Tabs -->
+		<div class="role-tabs" role="tablist" aria-label="Pilih role login">
+			<button class="role-tab active" type="button" id="tabAnggota" onclick="setRole('anggota')">Anggota</button>
+			<button class="role-tab" type="button" id="tabAdmin" onclick="setRole('admin')">Admin</button>
+			<button class="role-tab" type="button" id="tabSuperAdmin" onclick="setRole('super_admin')">Super Admin</button>
+		</div>
 
-            <button class="btn-login" type="submit">Masuk</button>
-            <p class="login-note">Dashboard admin, anggota, super admin, dan halaman lupa sandi akan dibuat di tahap berikutnya.</p>
-            <div id="status" class="status" aria-live="polite"></div>
-          </form>
-        </div>
-      </section>
-    </div>
-  </main>
+		<div id="alert" class="alert alert-error" role="alert"></div>
 
-  <div id="roleModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="roleModalTitle">
-    <div class="modal-card">
-      <h4 id="roleModalTitle">Pilih Jenis Login</h4>
-      <p>Prototipe: pilih role akun untuk melanjutkan ke dashboard sementara.</p>
-      <div class="role-grid">
-        <button class="role-btn" type="button" data-role="super_admin">
-          <strong>Login sebagai Super Admin</strong>
-          <span>Akses penuh sistem</span>
-        </button>
-        <button class="role-btn" type="button" data-role="admin">
-          <strong>Login sebagai Admin</strong>
-          <span>Akses pengelolaan modul utama</span>
-        </button>
-        <button class="role-btn" type="button" data-role="anggota">
-          <strong>Login sebagai Anggota</strong>
-          <span>Akses pengguna anggota tim</span>
-        </button>
-      </div>
-      <div class="modal-actions">
-        <button id="modalCancelBtn" class="modal-cancel" type="button">Batal</button>
-      </div>
-    </div>
-  </div>
+		<form id="loginForm" novalidate>
+			<div class="field">
+				<label for="loginIdentifier">Email / No. HP</label>
+				<input id="loginIdentifier" type="text" placeholder="Email atau nomor HP aktif Anda" autocomplete="username" required>
+			</div>
+			<div class="field">
+				<div class="field-row">
+					<label for="loginPassword">Password</label>
+					<a class="forgot-link" href="forgot-password.html">Lupa sandi?</a>
+				</div>
+				<div class="field-wrap">
+					<input id="loginPassword" type="password" placeholder="Masukkan password Anda" autocomplete="current-password" required>
+					<button class="toggle-pw" type="button" id="togglePw" aria-label="Tampilkan/sembunyikan password">Tampil</button>
+				</div>
+			</div>
 
-  <footer class="footer">
-    <div class="footer-main">
-      <div class="container footer-grid">
-        <section class="footer-col" aria-label="Identitas Crembo">
-          <div class="footer-brand">
-            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-            <div>
-              <h4 class="footer-title">Crew Multimedia Baciro</h4>
-              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
-            </div>
-          </div>
-          <p class="footer-sub">Platform informasi, jadwal streaming, agenda, dan pengumuman internal komunitas.</p>
-        </section>
-        <section class="footer-col" aria-label="Kontak">
-          <h4 class="footer-title">Kontak</h4>
-          <ul class="contact-list">
-            <li><strong>Email</strong> : crembomedia@example.com</li>
-            <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
-            <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
-          </ul>
-        </section>
-        <section class="footer-col" aria-label="Media sosial">
-          <h4 class="footer-title">Media Sosial</h4>
-          <ul class="social-list">
-            <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
-            <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
-            <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
-          </ul>
-        </section>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">&copy; 2026 Crew Multimedia Baciro - Login Wireframe</div>
-    </div>
-  </footer>
+			<button class="btn-submit" type="submit" id="loginBtn">Masuk</button>
+		</form>
 
-  <script>
-    const loginForm = document.getElementById("loginForm");
-    const identifierInput = document.getElementById("identifier");
-    const passwordInput = document.getElementById("password");
-    const rememberMeInput = document.getElementById("rememberMe");
-    const statusBox = document.getElementById("status");
-    const roleModal = document.getElementById("roleModal");
-    const modalCancelBtn = document.getElementById("modalCancelBtn");
-    const roleButtons = Array.from(document.querySelectorAll(".role-btn"));
+		<div class="auth-footer">
+			Belum punya akun? <a href="form-pendaftaran.html">Daftar sekarang</a>
+		</div>
+	</section>
 
-    let pendingLoginData = null;
+	<script>
+	const SESSION_KEY = "crembo-login-session";
+	const MEMBER_KEY  = "crembo-members";
 
-    function detectIdentifierType(value) {
-      if (value.includes("@")) {
-        return "email";
-      }
-      if (/^[0-9+\-\s]+$/.test(value)) {
-        return "no_hp";
-      }
-      return "username";
-    }
+	// ─── Seed dummy members ──────────────────────────────────────────────────────
+	(function seedMembers() {
+		const ex = localStorage.getItem(MEMBER_KEY);
+		if (ex) { try { if (JSON.parse(ex).length) return; } catch(e){} }
+		const members = [
+			{ id:"m1", name:"Rikha Putri",  email:"rikha@crembo.id",  phone:"081234567801", role:"anggota", status:"Aktif", password:"Crembo2026!" },
+			{ id:"m2", name:"Lisa Andriani", email:"lisa@crembo.id",   phone:"081234567802", role:"anggota", status:"Aktif", password:"Crembo2026!" },
+			{ id:"m3", name:"Evan Budi",     email:"evan@crembo.id",   phone:"081234567803", role:"anggota", status:"Aktif", password:"Crembo2026!" },
+			{ id:"m4", name:"Admin Tyas",    email:"admin@crembo.id",  phone:"081234567890", role:"admin",   status:"Aktif", password:"AdminCrembo1!" },
+			{ id:"m5", name:"Super Admin",   email:"superadmin@crembo.id", phone:"081234567999", role:"super_admin", status:"Aktif", password:"Super@dmin1!" },
+		];
+		localStorage.setItem(MEMBER_KEY, JSON.stringify(members));
+	})();
 
-    function safeParse(raw) {
-      try {
-        return JSON.parse(raw);
-      } catch (error) {
-        return null;
-      }
-    }
+	let selectedRole = "anggota";
+	const alertEl = document.getElementById("alert");
+	const loginForm = document.getElementById("loginForm");
+	const loginIdentifier = document.getElementById("loginIdentifier");
+	const loginPassword   = document.getElementById("loginPassword");
+	const togglePw        = document.getElementById("togglePw");
 
-    function normalizeDigits(value) {
-      return String(value || "").replace(/\D+/g, "");
-    }
+	function setRole(role) {
+		selectedRole = role;
+		document.querySelectorAll(".role-tab").forEach(t => t.classList.remove("active"));
+		document.getElementById("tab" + (role === "anggota" ? "Anggota" : role === "admin" ? "Admin" : "SuperAdmin")).classList.add("active");
+		hideAlert();
+	}
 
-    function readMembers() {
-      const raw = localStorage.getItem("crembo-members");
-      const parsed = raw ? safeParse(raw) : null;
-      return Array.isArray(parsed) ? parsed : [];
-    }
+	function showAlert(msg, type) {
+		alertEl.textContent = msg;
+		alertEl.className = "alert alert-" + (type||"error") + " show";
+	}
+	function hideAlert() { alertEl.className = "alert alert-error"; }
 
-    function defaultAdminProfiles() {
-      return [
-        {
-          id: "adm-1",
-          fullName: "Admin Andi",
-          email: "admin.andi@example.com",
-          loginIdentifier: "admin_andi",
-          role: "admin",
-          status: "Aktif",
-          permissions: {
-            streaming: true,
-            inventaris: true,
-            publikasi: false,
-            konten: false,
-            keanggotaan: false
-          }
-        },
-        {
-          id: "adm-2",
-          fullName: "Admin Maria",
-          email: "admin.maria@example.com",
-          loginIdentifier: "admin_maria",
-          role: "admin",
-          status: "Aktif",
-          permissions: {
-            streaming: false,
-            inventaris: false,
-            publikasi: true,
-            konten: true,
-            keanggotaan: true
-          }
-        }
-      ];
-    }
+	togglePw.addEventListener("click", function() {
+		const isText = loginPassword.type === "text";
+		loginPassword.type = isText ? "password" : "text";
+		togglePw.textContent = isText ? "Tampil" : "Sembunyikan";
+	});
 
-    function readAdminProfiles() {
-      const key = "crembo-admin-users";
-      const raw = localStorage.getItem(key);
-      const parsed = raw ? safeParse(raw) : null;
-      if (Array.isArray(parsed) && parsed.length) {
-        return parsed;
-      }
-      const seed = defaultAdminProfiles();
-      localStorage.setItem(key, JSON.stringify(seed));
-      return seed;
-    }
+	loginForm.addEventListener("submit", function(e) {
+		e.preventDefault();
+		hideAlert();
+		const identifier = loginIdentifier.value.trim().toLowerCase();
+		const password   = loginPassword.value;
 
-    function fullPermissions() {
-      return {
-        streaming: true,
-        inventaris: true,
-        publikasi: true,
-        konten: true,
-        keanggotaan: true
-      };
-    }
+		if (!identifier || !password) { showAlert("Mohon isi semua kolom."); return; }
 
-    function findAdminByIdentifier(identifier) {
-      const source = readAdminProfiles();
-      const key = String(identifier || "").trim().toLowerCase();
+		let members = [];
+		try { members = JSON.parse(localStorage.getItem(MEMBER_KEY) || "[]"); } catch(e){}
 
-      return source.find(function (admin) {
-        const name = String(admin && admin.fullName ? admin.fullName : "").trim().toLowerCase();
-        const email = String(admin && admin.email ? admin.email : "").trim().toLowerCase();
-        const loginId = String(admin && admin.loginIdentifier ? admin.loginIdentifier : "").trim().toLowerCase();
-        const status = String(admin && admin.status ? admin.status : "Aktif");
-        return status === "Aktif" && (name === key || email === key || loginId === key);
-      }) || null;
-    }
+		const member = members.find(m => {
+			const emailMatch = (m.email||"").toLowerCase() === identifier;
+			const phoneMatch = (m.phone||"") === identifier.replace(/[-\s]/g,"");
+			return (emailMatch || phoneMatch) && m.role === selectedRole;
+		});
 
-    function findMemberByIdentifier(identifier, type) {
-      const source = readMembers();
-      if (!source.length) {
-        return null;
-      }
+		if (!member || member.status !== "Aktif") { showAlert("Akun tidak ditemukan atau tidak aktif."); return; }
+		if (member.password !== password) { showAlert("Password salah."); return; }
 
-      const key = String(identifier || "").trim().toLowerCase();
-      const phone = normalizeDigits(identifier);
+		const session = {
+			memberId: member.id,
+			name: member.name,
+			identifier: member.email || member.phone,
+			identifierType: member.email ? "email" : "no_hp",
+			role: member.role,
+			loginAt: new Date().toISOString()
+		};
+		localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
-      return source.find(function (member) {
-        const memberName = String(member && (member.name || member.fullName) ? (member.name || member.fullName) : "").trim().toLowerCase();
-        const memberEmail = String(member && member.email ? member.email : "").trim().toLowerCase();
-        const memberPhone = normalizeDigits(member && member.phone ? member.phone : "");
-
-        if (type === "email") {
-          return memberEmail && memberEmail === key;
-        }
-        if (type === "no_hp") {
-          return memberPhone && memberPhone === phone;
-        }
-        return (memberName && memberName === key) || (memberEmail && memberEmail === key);
-      }) || null;
-    }
-
-    loginForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const identifier = identifierInput.value.trim();
-      const password = passwordInput.value;
-
-      if (!identifier || !password) {
-        return;
-      }
-
-      const type = detectIdentifierType(identifier);
-      pendingLoginData = {
-        identifier: identifier,
-        identifierType: type,
-        rememberMe: rememberMeInput.checked,
-        loginAt: new Date().toISOString()
-      };
-
-      roleModal.classList.add("show");
-    });
-
-    roleButtons.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        if (!pendingLoginData) {
-          return;
-        }
-
-        const role = btn.dataset.role;
-        const sessionPayload = {
-          identifier: pendingLoginData.identifier,
-          identifierType: pendingLoginData.identifierType,
-          rememberMe: pendingLoginData.rememberMe,
-          loginAt: pendingLoginData.loginAt,
-          role: role
-        };
-
-        if (role === "anggota") {
-          const matchedMember = findMemberByIdentifier(pendingLoginData.identifier, pendingLoginData.identifierType);
-          if (matchedMember) {
-            sessionPayload.memberId = matchedMember.id || "";
-            sessionPayload.fullName = matchedMember.name || matchedMember.fullName || pendingLoginData.identifier;
-            sessionPayload.registeredAt = matchedMember.registeredAt || matchedMember.createdAt || "";
-          } else {
-            sessionPayload.fullName = pendingLoginData.identifier;
-          }
-        } else if (role === "admin") {
-          const matchedAdmin = findAdminByIdentifier(pendingLoginData.identifier);
-          if (matchedAdmin) {
-            sessionPayload.adminId = matchedAdmin.id || "";
-            sessionPayload.fullName = matchedAdmin.fullName || pendingLoginData.identifier;
-            sessionPayload.adminPermissions = Object.assign({}, fullPermissions(), matchedAdmin.permissions || {});
-          } else {
-            sessionPayload.fullName = pendingLoginData.identifier;
-            sessionPayload.adminPermissions = fullPermissions();
-          }
-          sessionPayload.canManageAdminData = false;
-        } else if (role === "super_admin") {
-          sessionPayload.fullName = pendingLoginData.identifier;
-          sessionPayload.adminPermissions = fullPermissions();
-          sessionPayload.canManageAdminData = true;
-        }
-
-        localStorage.setItem("crembo-login-session", JSON.stringify(sessionPayload));
-        if (role === "anggota") {
-          window.location.href = "dashboard-anggota.html?role=" + encodeURIComponent(role);
-        } else {
-          window.location.href = "dashboard.html?role=" + encodeURIComponent(role);
-        }
-      });
-    });
-
-    modalCancelBtn.addEventListener("click", function () {
-      roleModal.classList.remove("show");
-    });
-
-    roleModal.addEventListener("click", function (event) {
-      if (event.target === roleModal) {
-        roleModal.classList.remove("show");
-      }
-    });
-
-    window.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        roleModal.classList.remove("show");
-      }
-    });
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("reset") === "success") {
-      statusBox.classList.add("show", "success");
-      statusBox.textContent = "Password berhasil direset. Silakan login dengan password baru.";
-    }
-
-  
-    (function () {
-      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
-      const DEFAULT_PROFILE_MENU = [
-        { id: "sejarah", label: "Sejarah" },
-        { id: "tentang-crembo", label: "Tentang Crembo" },
-        { id: "struktur", label: "Struktur" },
-        { id: "visi-misi", label: "Visi & Misi" }
-      ];
-
-      function readProfileMenuItems() {
-        try {
-          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
-          if (!raw) {
-            return DEFAULT_PROFILE_MENU;
-          }
-
-          const parsed = JSON.parse(raw);
-          if (!Array.isArray(parsed) || parsed.length === 0) {
-            return DEFAULT_PROFILE_MENU;
-          }
-
-          return parsed.map(function (item) {
-            if (typeof item === "string") {
-              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
-            }
-            return {
-              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
-              label: item && item.label ? String(item.label) : "Profil"
-            };
-          });
-        } catch (err) {
-          return DEFAULT_PROFILE_MENU;
-        }
-      }
-
-      function enhanceProfileHoverMenu() {
-        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
-        if (!navList) {
-          return;
-        }
-
-        const profileAnchor = navList.querySelector('a[href="profil.html"]');
-        if (!profileAnchor) {
-          return;
-        }
-
-        const profileItem = profileAnchor.closest("li");
-        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
-          return;
-        }
-
-        const menuItems = readProfileMenuItems();
-
-        profileItem.style.position = "relative";
-        profileItem.classList.add("nav-dropdown-enhanced");
-
-        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
-          profileAnchor.setAttribute("data-profile-menu-label", "true");
-          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
-        }
-
-        const dropdown = document.createElement("div");
-        dropdown.className = "profile-hover-menu";
-        dropdown.style.position = "absolute";
-        dropdown.style.top = "calc(100% + 4px)";
-        dropdown.style.left = "0";
-        dropdown.style.minWidth = "210px";
-        dropdown.style.border = "1px solid #bdbdbd";
-        dropdown.style.background = "#fff";
-        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
-        dropdown.style.padding = "6px";
-        dropdown.style.display = "none";
-        dropdown.style.zIndex = "1300";
-
-        dropdown.innerHTML = menuItems.map(function (item) {
-          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
-        }).join("");
-
-        dropdown.addEventListener("mouseover", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "#b9b9b9";
-            link.style.background = "#ececec";
-          }
-        });
-
-        dropdown.addEventListener("mouseout", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "transparent";
-            link.style.background = "transparent";
-          }
-        });
-
-        profileItem.appendChild(dropdown);
-
-        function showMenu() {
-          dropdown.style.display = "block";
-        }
-
-        function hideMenu() {
-          dropdown.style.display = "none";
-        }
-
-        profileItem.addEventListener("mouseenter", showMenu);
-        profileItem.addEventListener("mouseleave", hideMenu);
-        profileItem.addEventListener("focusin", showMenu);
-        profileItem.addEventListener("focusout", function () {
-          setTimeout(function () {
-            if (!profileItem.contains(document.activeElement)) {
-              hideMenu();
-            }
-          }, 0);
-        });
-      }
-
-      enhanceProfileHoverMenu();
-    })();
-  </script>
+		showAlert("Login berhasil! Mengalihkan...", "success");
+		setTimeout(() => {
+			if (member.role === "admin" || member.role === "super_admin") {
+				window.location.href = "dashboard.html?role=" + member.role;
+			} else {
+				window.location.href = "home.html?session=active";
+			}
+		}, 1200);
+	});
+	</script>
 </body>
 </html>

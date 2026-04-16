@@ -3,695 +3,211 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Form Evaluasi Streaming - Wireframe</title>
+  <title>Form Evaluasi Streaming - Crembo Media</title>
+  <meta name="description" content="Isi evaluasi per jadwal misa streaming Crembo Media.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f2f2f2;
-      --surface: #ffffff;
-      --ink: #141414;
-      --muted: #666666;
-      --line: #202020;
-      --line-soft: #c4c4c4;
-      --hover: #ececec;
-      --ok-bg: #eef8ef;
-      --ok-line: #93c79a;
-      --warn-bg: #fff8ea;
-      --warn-line: #d9b66d;
-      --header-h: 118px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.45;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .container { width: min(1140px, 94vw); margin: 0 auto; }
-
-    .top-header {
-      border-bottom: 2px solid var(--line);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 1200;
-    }
-
-    .top-header .container {
-      display: grid;
-      grid-template-columns: 92px 1fr;
-      gap: 14px;
-      align-items: center;
-      padding: 14px 0;
-    }
-
-    .logo-box {
-      width: 86px;
-      height: 86px;
-      border: 2px solid var(--line);
-      display: grid;
-      place-items: center;
-      background: #fff;
-      padding: 6px;
-    }
-
-    .logo-box img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: grayscale(100%);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(1.3rem, 2.7vw, 1.9rem);
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-    }
-
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .nav-wrap {
-      background: var(--surface);
-      border-bottom: 2px solid var(--line);
-      position: sticky;
-      top: var(--header-h);
-      z-index: 1150;
-    }
-
-    .nav-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 0;
-      flex-wrap: wrap;
-    }
-
-    nav ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      display: inline-block;
-      padding: 8px 10px;
-      border: 1px solid transparent;
-      font-size: 0.94rem;
-    }
-
-    nav a:hover,
-    nav a:focus-visible,
-    nav a.active {
-      border-color: var(--line-soft);
-      background: var(--hover);
-      outline: none;
-    }
-
-    .right-tools { display: flex; align-items: center; gap: 8px; }
-
-    .search { display: flex; border: 1px solid var(--line); background: #fff; }
-
-    .search input {
-      border: 0;
-      outline: none;
-      padding: 8px 10px;
-      width: clamp(130px, 17vw, 180px);
-      font-size: 0.9rem;
-      background: transparent;
-    }
-
-    .search button,
-    .btn-login,
-    .btn,
-    .btn-primary {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink);
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .search button:hover,
-    .btn-login:hover,
-    .btn:hover,
-    .btn-primary:hover {
-      background: var(--hover);
-    }
-
-    .btn-primary {
-      background: #121212;
-      color: #fff;
-      border-color: #121212;
-    }
-
-    .btn-primary:hover { background: #2c2c2c; }
-
-    .hero {
-      min-height: 235px;
-      position: relative;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 16px;
-      border-bottom: 2px solid var(--line);
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("IMG_1970.JPG");
-      background-size: cover;
-      background-position: center;
-      filter: grayscale(100%);
-      z-index: -2;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: -1;
-    }
-
-    .hero h2 {
-      margin: 0;
-      color: #fff;
-      font-size: clamp(1.9rem, 4.4vw, 3rem);
-      text-transform: uppercase;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.45);
-    }
-
-    .hero p {
-      margin: 8px 0 0;
-      color: #ececec;
-      font-size: 0.95rem;
-    }
-
-    .breadcrumb-wrap { border-bottom: 1px solid var(--line-soft); background: #fafafa; }
-
-    .breadcrumb {
-      margin: 0;
-      padding: 11px 0;
-      list-style: none;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 0.88rem;
-      color: #545454;
-    }
-
-    .breadcrumb li + li::before { content: "/"; margin-right: 10px; color: #8a8a8a; }
-
-    .content { padding: 24px 0 34px; }
-
-    .notice {
-      border: 1px dashed #8a8a8a;
-      background: #fafafa;
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      color: #4f4f4f;
-      margin-bottom: 12px;
-    }
-
-    .select-card,
-    .form-card,
-    .status-card {
-      border: 2px solid var(--line);
-      background: #fff;
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-
-    .select-head {
-      margin: 0 0 10px;
-      font-size: 1.15rem;
-    }
-
-    .select-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: end;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-
-    .field label { font-size: 0.86rem; color: #505050; }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid var(--line-soft);
-      background: #fff;
-      padding: 9px 10px;
-      font-size: 0.9rem;
-      font-family: inherit;
-    }
-
-    .field textarea { min-height: 96px; resize: vertical; }
-
-    .combo {
-      position: relative;
-    }
-
-    .combo-trigger {
-      width: 100%;
-      border: 1px solid var(--line-soft);
-      background: #fff;
-      padding: 9px 10px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      text-align: left;
-      cursor: pointer;
-      border-radius: 0;
-    }
-
-    .combo-trigger::after {
-      content: "▾";
-      float: right;
-      color: #545454;
-      font-size: 0.82rem;
-      margin-top: 2px;
-    }
-
-    .combo-panel {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      border: 1px solid #9f9f9f;
-      background: #fff;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-      z-index: 60;
-      display: none;
-    }
-
-    .combo-panel.show {
-      display: block;
-    }
-
-    .combo-search-box {
-      border-bottom: 1px solid #d2d2d2;
-      padding: 8px;
-      background: #f8f8f8;
-    }
-
-    .combo-search-input {
-      width: 100%;
-      border: 1px solid #b9b9b9;
-      padding: 7px 9px;
-      font-size: 0.86rem;
-      font-family: inherit;
-    }
-
-    .combo-options {
-      max-height: 210px;
-      overflow-y: auto;
-      background: #fff;
-    }
-
-    .combo-option {
-      width: 100%;
-      border: 0;
-      border-bottom: 1px solid #efefef;
-      background: #fff;
-      text-align: left;
-      padding: 8px 10px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border-radius: 0;
-    }
-
-    .combo-option:hover,
-    .combo-option.active {
-      background: #ededed;
-    }
-
-    .combo-empty {
-      margin: 0;
-      padding: 9px 10px;
-      font-size: 0.85rem;
-      color: #666;
-      font-style: italic;
-    }
-
-    .row-2,
-    .row-3 {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .row-2 { grid-template-columns: 1fr 1fr; }
-    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
-
-    .tag {
-      display: inline-block;
-      border: 1px solid #bcbcbc;
-      border-radius: 999px;
-      padding: 2px 9px;
-      font-size: 0.78rem;
-      background: #f5f5f5;
-    }
-
-    .tag.raya {
-      border-color: #bb9a62;
-      background: var(--warn-bg);
-    }
-
-    .session-list {
-      margin-top: 10px;
-      display: grid;
-      gap: 8px;
-      max-height: 220px;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .session-item {
-      border: 1px solid var(--line-soft);
-      padding: 8px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      background: #fbfbfb;
-    }
-
-    .session-item strong { font-size: 0.92rem; }
-
-    .session-item small { color: #5b5b5b; }
-
-    .status-card {
-      background: var(--ok-bg);
-      border-color: var(--ok-line);
-      color: #1e5a28;
-      font-size: 0.9rem;
-      display: none;
-    }
-
-    .status-card.show { display: block; }
-
-    .form-card { display: none; }
-    .form-card.show { display: block; }
-
-    .form-title {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
-    }
-
-    .form-sub {
-      margin: 0;
-      font-size: 0.86rem;
-      color: #555;
-    }
-
-    .roles-note {
-      border: 1px dashed #8f8f8f;
-      background: #fafafa;
-      padding: 9px;
-      font-size: 0.83rem;
-      margin-top: 10px;
-      color: #4c4c4c;
-    }
-
-    .check-wrap {
-      border: 1px solid var(--line-soft);
-      background: #fafafa;
-      padding: 9px;
-      display: grid;
-      gap: 7px;
-      font-size: 0.9rem;
-    }
-
-    .notice a {
-      color: #0f172a;
-      font-weight: 700;
-      text-decoration: underline;
-    }
-
-    .dynamic-question-list {
-      border: 1px solid var(--line-soft);
-      background: #fafafa;
-      padding: 10px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .dynamic-question-item {
-      border: 1px solid #cfcfcf;
-      background: #fff;
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .dynamic-question-item h4 {
-      margin: 0;
-      font-size: 0.9rem;
-    }
-
-    .dynamic-help {
-      margin: 0;
-      font-size: 0.82rem;
-      color: #616161;
-    }
-
-    .dynamic-options {
-      display: grid;
-      gap: 6px;
-    }
-
-    .dynamic-options label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.88rem;
-    }
-
-    .dynamic-empty {
-      margin: 0;
-      border: 1px dashed #b1b1b1;
-      background: #fff;
-      padding: 9px;
-      font-size: 0.84rem;
-      color: #5f5f5f;
-    }
-
-    .staff-eval-wrap {
-      border: 1px solid var(--line-soft);
-      background: #fafafa;
-      padding: 10px;
-      display: grid;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .staff-eval-head {
-      margin: 0;
-      font-size: 0.86rem;
-      color: #555;
-    }
-
-    .staff-eval-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    .staff-eval-item {
-      border: 1px solid #bdbdbd;
-      background: #fff;
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .staff-eval-item h4 {
-      margin: 0;
-      font-size: 0.9rem;
-    }
-
-    .staff-eval-empty {
-      margin: 0;
-      font-size: 0.84rem;
-      color: #646464;
-      border: 1px dashed #b3b3b3;
-      background: #fff;
-      padding: 8px;
-    }
-
-    .extra-staff-picker {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: start;
-    }
-
-    .extra-staff-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .extra-staff-empty {
-      margin: 8px 0 0;
-      font-size: 0.84rem;
-      color: #5e5e5e;
-    }
-
-    .extra-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid #bdbdbd;
-      background: #f7f7f7;
-      padding: 4px 8px;
-      font-size: 0.82rem;
-      border-radius: 999px;
-    }
-
-    .extra-chip button {
-      border: 1px solid #8f8f8f;
-      background: #fff;
-      width: 18px;
-      height: 18px;
-      padding: 0;
-      border-radius: 999px;
-      line-height: 1;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-
-    .action-row {
-      margin-top: 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .footer {
-      border-top: 2px solid var(--line);
-      border-bottom: 2px solid var(--line);
-      background: linear-gradient(180deg,#f7f7f7 0%,#ececec 100%);
-      margin-top: 10px;
-      color: #2e2e2e;
-    }
-
-    .footer-main { padding: 20px 0 14px; }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr;
-      gap: 16px;
-    }
-
-    .footer-col {
-      border: 1px solid #bdbdbd;
-      background: #fff;
-      padding: 13px;
-    }
-
-    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-
-    .footer-logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      filter: grayscale(100%);
-      border: 1px solid #222;
-      padding: 4px;
-      background: #fff;
-    }
-
-    .footer-title { margin: 0; font-size: 0.98rem; }
-    .footer-sub { margin: 2px 0 0; font-size: 0.84rem; color: #666; }
-
-    .contact-list,
-    .social-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 7px;
-      font-size: 0.9rem;
-    }
-
-    .contact-list strong { display: inline-block; min-width: 70px; }
-
-    .social-item { display: flex; gap: 9px; align-items: center; }
-
-    .social-dot {
-      width: 25px;
-      height: 25px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      border: 1px solid #222;
-      background: #f4f4f4;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #bebebe;
-      padding: 10px 0 14px;
-      text-align: center;
-      font-size: 0.84rem;
-      color: #5c5c5c;
-    }
-
-    @media (max-width: 980px) {
-      .row-3 { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 760px) {
-      .top-header .container { grid-template-columns: 1fr; text-align: center; }
-      .logo-box { margin: 0 auto; }
-      .right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
-      .search { flex: 1 1 230px; }
-      .search input { width: 100%; }
-      .select-grid,
-      .row-2,
-      .extra-staff-picker { grid-template-columns: 1fr; }
-    }
+      --primary:#800000;--primary-dark:#5c0000;--primary-deeper:#3a0000;--primary-light:#a52a2a;
+      --accent-gold:#d4a017;--accent-gold-light:#f0c040;
+      --bg:#faf8f6;--surface:#ffffff;--ink:#1a1a1a;--ink-secondary:#4a4a4a;--muted:#7a7a7a;
+      --line:rgba(128,0,0,0.15);--line-soft:rgba(128,0,0,0.08);--hover:rgba(128,0,0,0.04);
+      --ok-bg:rgba(34,197,94,0.07);--ok-line:rgba(34,197,94,0.3);
+      --warn-bg:rgba(212,160,23,0.09);--warn-line:rgba(212,160,23,0.35);
+      --shadow-sm:0 1px 3px rgba(128,0,0,0.06);--shadow-md:0 4px 14px rgba(128,0,0,0.08);--shadow-lg:0 10px 30px rgba(128,0,0,0.12);
+      --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+      --transition:0.3s cubic-bezier(0.4,0,0.2,1);--header-h:104px;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+    a{color:inherit;text-decoration:none;transition:var(--transition);}
+    .container{width:min(1200px,92vw);margin:0 auto;}
+
+    /* HEADER */
+    .top-header{background:linear-gradient(135deg,var(--primary-deeper),var(--primary) 40%,var(--primary-light));position:sticky;top:0;z-index:1200;box-shadow:0 4px 20px rgba(128,0,0,0.3);}
+    .top-header .container{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:16px 0;}
+    .logo-box{width:72px;height:72px;display:grid;place-items:center;padding:4px;background:rgba(255,255,255,0.1);border-radius:var(--radius-md);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);transition:var(--transition);}
+    .logo-box:hover{background:rgba(255,255,255,0.18);}
+    .logo-box img{max-width:100%;max-height:100%;object-fit:contain;}
+    .brand h1{margin:0;font-size:clamp(1.4rem,2.8vw,2rem);text-transform:uppercase;letter-spacing:.5px;color:#fff;font-weight:800;}
+    .brand p{margin:4px 0 0;color:rgba(255,255,255,0.75);font-size:.88rem;}
+    .nav-wrap{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:var(--header-h);z-index:1150;box-shadow:var(--shadow-sm);}
+    .nav-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;flex-wrap:wrap;}
+    nav ul{margin:0;padding:0;list-style:none;display:flex;gap:4px;flex-wrap:wrap;}
+    nav a{display:inline-block;padding:8px 14px;font-size:.9rem;font-weight:500;border-radius:var(--radius-sm);color:var(--ink-secondary);transition:var(--transition);position:relative;}
+    nav a:hover{color:var(--primary);background:var(--hover);}
+    nav a.active{color:var(--primary);font-weight:700;}
+    nav a.active::after{content:"";position:absolute;bottom:2px;left:14px;right:14px;height:2px;background:var(--primary);border-radius:999px;}
+    .right-tools{display:flex;align-items:center;gap:10px;}
+    .search{display:flex;border:1px solid var(--line);border-radius:999px;background:var(--bg);overflow:hidden;transition:var(--transition);}
+    .search:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(128,0,0,0.1);}
+    .search input{border:0;outline:none;padding:8px 16px;width:clamp(130px,16vw,180px);font-size:.88rem;background:transparent;font-family:inherit;}
+    .search button{border:0;background:var(--primary);color:#fff;padding:8px 16px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;transition:var(--transition);}
+    .search button:hover{background:var(--primary-dark);}
+    .btn-login{border:1.5px solid var(--primary);background:transparent;color:var(--primary);padding:8px 18px;font-size:.88rem;font-weight:600;border-radius:999px;cursor:pointer;font-family:inherit;transition:var(--transition);}
+    .btn-login:hover{background:var(--primary);color:#fff;}
+
+    /* HERO */
+    .hero{min-height:220px;display:grid;place-items:center;text-align:center;padding:60px 20px;position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,var(--primary-deeper) 0%,var(--primary) 50%,var(--primary-light) 100%);}
+    .hero::before{content:"";position:absolute;inset:0;background-image:url("IMG_1970.JPG");background-size:cover;background-position:center;opacity:.15;z-index:-1;}
+    .hero h2{margin:0;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;color:#fff;text-transform:uppercase;text-shadow:0 4px 16px rgba(0,0,0,.4);}
+    .hero p{margin:10px 0 0;color:rgba(255,255,255,.8);font-size:.95rem;}
+
+    /* BREADCRUMB */
+    .breadcrumb-wrap{background:var(--surface);border-bottom:1px solid var(--line-soft);}
+    .breadcrumb{margin:0;padding:12px 0;list-style:none;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted);}
+    .breadcrumb li+li::before{content:"/";margin-right:8px;color:var(--line);}
+    .breadcrumb a:hover{color:var(--primary);}
+    .breadcrumb [aria-current]{color:var(--primary);font-weight:600;}
+
+    /* PAGE */
+    .content{padding:32px 0 48px;}
+
+    /* NOTICE */
+    .notice-card{background:rgba(212,160,23,0.07);border:1px solid rgba(212,160,23,0.35);border-radius:var(--radius-md);padding:14px 18px;font-size:.87rem;color:#7c5c0a;margin-bottom:24px;line-height:1.65;}
+    .notice-card a{color:var(--primary);font-weight:700;}
+    .notice-card a:hover{text-decoration:underline;}
+
+    /* STATUS CARD */
+    .status-card{background:var(--ok-bg);border:1px solid var(--ok-line);color:#166534;font-size:.92rem;padding:14px 18px;border-radius:var(--radius-md);margin-bottom:20px;display:none;animation:fadeInUp .4s ease;}
+    .status-card.show{display:block;}
+
+    /* CARD PANEL */
+    .eval-card{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);margin-bottom:24px;overflow:hidden;position:relative;}
+    .eval-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent-gold),var(--primary-light));}
+    .eval-card-head{padding:18px 24px;border-bottom:1px solid var(--line-soft);background:var(--bg);}
+    .eval-card-head h2{margin:0;font-size:1.05rem;font-weight:700;color:var(--primary);}
+    .eval-card-head p{margin:4px 0 0;font-size:.84rem;color:var(--muted);}
+    .eval-card-body{padding:24px;}
+
+    /* SESSION LIST */
+    .session-list{margin-top:14px;display:grid;gap:10px;max-height:240px;overflow:auto;padding-right:4px;}
+    .session-item{background:var(--bg);border:1px solid var(--line-soft);border-radius:var(--radius-sm);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+    .session-item strong{font-size:.9rem;color:var(--ink);}
+    .session-item small{color:var(--muted);font-size:.8rem;}
+    .tag{display:inline-block;border-radius:999px;padding:3px 11px;font-size:.75rem;font-weight:600;}
+    .tag.raya{background:rgba(212,160,23,0.12);border:1px solid rgba(212,160,23,0.4);color:#7c5c0a;}
+    .tag.biasa{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#166534;}
+
+    /* SELECT GRID */
+    .select-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;}
+    .btn-primary{border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:11px 20px;font-size:.9rem;font-weight:700;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;transition:var(--transition);box-shadow:0 2px 8px rgba(128,0,0,0.2);}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(128,0,0,0.3);}
+    .btn-primary:disabled{background:#c0c0c0;cursor:not-allowed;box-shadow:none;transform:none;}
+    .btn{border:1.5px solid var(--line);background:transparent;color:var(--ink-secondary);padding:11px 18px;font-size:.88rem;font-weight:600;border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;transition:var(--transition);}
+    .btn:hover{border-color:var(--primary);color:var(--primary);background:var(--hover);}
+
+    /* FIELD */
+    .field{display:grid;gap:6px;}
+    .field label{font-size:.8rem;font-weight:700;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.4px;}
+    .field input[type=text],.field input[type=date],.field input[type=time],.field textarea,.field select,.field input[type=search]{width:100%;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 14px;font-size:.9rem;font-family:inherit;border-radius:var(--radius-sm);outline:none;transition:var(--transition);}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(128,0,0,0.08);}
+    .field textarea{min-height:90px;resize:vertical;}
+    .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23800000'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+
+    /* ROWS */
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+    .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:14px;}
+
+    /* COMBO */
+    .combo{position:relative;}
+    .combo-trigger{width:100%;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 14px;font-size:.9rem;font-family:inherit;text-align:left;cursor:pointer;border-radius:var(--radius-sm);outline:none;transition:var(--transition);}
+    .combo-trigger::after{content:"▾";float:right;color:var(--primary);font-size:.8rem;margin-top:2px;}
+    .combo-trigger:focus,.combo-trigger:hover{border-color:var(--primary);}
+    .combo-panel{position:absolute;top:calc(100% + 4px);left:0;right:0;border:1.5px solid var(--line);background:var(--surface);box-shadow:var(--shadow-lg);z-index:200;display:none;border-radius:var(--radius-sm);overflow:hidden;}
+    .combo-panel.show{display:block;}
+    .combo-search-box{border-bottom:1px solid var(--line-soft);padding:8px;}
+    .combo-search-input{width:100%;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:7px 10px;font-size:.88rem;font-family:inherit;border-radius:var(--radius-sm);outline:none;transition:var(--transition);}
+    .combo-search-input:focus{border-color:var(--primary);}
+    .combo-options{max-height:200px;overflow-y:auto;}
+    .combo-option{width:100%;border:0;border-bottom:1px solid var(--line-soft);background:var(--surface);text-align:left;padding:9px 14px;font-size:.88rem;cursor:pointer;font-family:inherit;color:var(--ink-secondary);transition:var(--transition);}
+    .combo-option:hover,.combo-option.active{background:var(--hover);color:var(--primary);}
+    .combo-empty{margin:0;padding:10px 14px;font-size:.84rem;color:var(--muted);font-style:italic;}
+
+    /* CHECK WRAP */
+    .check-wrap{border:1.5px solid var(--line-soft);background:var(--bg);padding:14px;display:grid;gap:10px;border-radius:var(--radius-sm);}
+    .check-wrap label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.9rem;color:var(--ink-secondary);padding:4px 0;}
+    .check-wrap input[type=checkbox]{accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;}
+
+    /* ROLES NOTE */
+    .roles-note{background:rgba(212,160,23,0.07);border:1px solid rgba(212,160,23,0.3);border-radius:var(--radius-sm);padding:10px 14px;font-size:.84rem;color:#7c5c0a;margin-top:14px;margin-bottom:14px;}
+
+    /* STAFF EVAL */
+    .staff-eval-wrap{border:1.5px solid var(--line-soft);background:var(--bg);padding:16px;border-radius:var(--radius-sm);margin-top:6px;}
+    .staff-eval-head{margin:0 0 12px;font-size:.84rem;color:var(--muted);}
+    .staff-eval-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+    .staff-eval-item{border:1.5px solid var(--line);background:var(--surface);padding:14px;border-radius:var(--radius-md);display:grid;gap:10px;transition:var(--transition);}
+    .staff-eval-item:hover{border-color:var(--primary);}
+    .staff-eval-item h4{margin:0;font-size:.88rem;font-weight:700;color:var(--primary);}
+    .staff-eval-empty{margin:0;font-size:.85rem;color:var(--muted);font-style:italic;}
+
+    /* EXTRA STAFF */
+    .extra-staff-picker{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;}
+    .extra-staff-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .extra-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);padding:5px 12px;font-size:.82rem;border-radius:999px;color:var(--ink-secondary);}
+    .extra-chip button{border:1px solid var(--line);background:#fff;width:18px;height:18px;padding:0;border-radius:50%;line-height:1;cursor:pointer;font-size:.78rem;color:var(--primary);transition:var(--transition);}
+    .extra-chip button:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .extra-staff-empty{margin:8px 0 0;font-size:.84rem;color:var(--muted);font-style:italic;}
+
+    /* DYNAMIC QUESTIONS */
+    .dynamic-question-list{border:1.5px solid var(--line-soft);background:var(--bg);padding:14px;display:grid;gap:14px;border-radius:var(--radius-sm);}
+    .dynamic-question-item{border:1.5px solid var(--line);background:var(--surface);padding:16px;border-radius:var(--radius-md);display:grid;gap:10px;}
+    .dynamic-question-item h4{margin:0;font-size:.9rem;font-weight:700;color:var(--ink);}
+    .dynamic-help{margin:0;font-size:.82rem;color:var(--muted);}
+    .dynamic-options{display:grid;gap:8px;}
+    .dynamic-options label{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--ink-secondary);cursor:pointer;}
+    .dynamic-options input[type=checkbox],.dynamic-options input[type=radio]{accent-color:var(--primary);width:15px;height:15px;}
+    .dynamic-empty{margin:0;border:1px dashed var(--line);border-radius:var(--radius-sm);padding:12px;font-size:.85rem;color:var(--muted);font-style:italic;background:var(--surface);}
+
+    /* ACTION ROW */
+    .action-row{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--line-soft);}
+
+    /* FORM CARD HIDDEN/SHOWN */
+    .form-card{display:none;}
+    .form-card.show{display:block;}
+
+    /* SECTION LABELS */
+    .form-section-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--primary);margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line-soft);}
+
+    /* FOOTER */
+    .footer{background:linear-gradient(135deg,var(--primary-deeper),var(--primary) 60%,var(--primary-dark));margin-top:48px;color:rgba(255,255,255,.85);position:relative;overflow:hidden;}
+    .footer::before{content:"";position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none;}
+    .footer-main{padding:40px 0 28px;position:relative;z-index:1;}
+    .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:30px;}
+    .footer-col{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);backdrop-filter:blur(10px);padding:24px;border-radius:var(--radius-md);transition:var(--transition);}
+    .footer-col:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
+    .footer-brand{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+    .footer-logo{width:56px;height:56px;object-fit:contain;border:1px solid rgba(255,255,255,.2);padding:6px;background:rgba(255,255,255,.08);border-radius:var(--radius-sm);}
+    .footer-title{margin:0;font-size:1.05rem;font-weight:700;color:#fff;}
+    .footer-sub{margin:3px 0 0;font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.6;}
+    .contact-list{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:.9rem;}
+    .contact-list li{color:rgba(255,255,255,.8);display:flex;gap:8px;}
+    .contact-list strong{display:inline-block;min-width:70px;color:var(--accent-gold-light);font-weight:600;}
+    .social-list{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:.9rem;}
+    .social-item{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.8);transition:var(--transition);padding:4px 0;}
+    .social-item:hover{color:#fff;}
+    .social-dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:700;border:1px solid rgba(212,160,23,.4);background:rgba(212,160,23,.15);color:var(--accent-gold-light);transition:var(--transition);}
+    .social-item:hover .social-dot{background:rgba(212,160,23,.3);transform:scale(1.1);}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding:16px 0 20px;text-align:center;font-size:.84rem;color:rgba(255,255,255,.5);position:relative;z-index:1;}
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+    @media(max-width:980px){.row-3{grid-template-columns:1fr 1fr;}.footer-grid{grid-template-columns:1fr;}}
+    @media(max-width:700px){.row-3,.row-2,.select-grid,.extra-staff-picker{grid-template-columns:1fr;}.staff-eval-grid{grid-template-columns:1fr;}}
+    @media(max-width:760px){.top-header .container{grid-template-columns:1fr;text-align:center;}.logo-box{margin:0 auto;}.right-tools{width:100%;justify-content:center;flex-wrap:wrap;}.search{flex:1 1 230px;}}
   </style>
 </head>
 <body>
   <header class="top-header" id="topHeader">
     <div class="container">
-      <div class="logo-box">
-        <img src="logo crembo hitam.png" alt="Logo Crembo Media">
-      </div>
+      <a href="home.html" class="logo-box" aria-label="Halaman utama Crembo Media">
+        <img src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+      </a>
       <div class="brand">
         <h1>Crew Multimedia Baciro</h1>
-        <p>Wireframe Low-Fidelity - Form Evaluasi Streaming</p>
+        <p>Jalan Melati Wetan 47 Baciro Gondokusuman Yogyakarta</p>
       </div>
     </div>
   </header>
@@ -711,7 +227,7 @@
       <div class="right-tools">
         <form class="search" id="searchForm">
           <input id="searchInput" type="search" placeholder="Cari informasi..." aria-label="Cari informasi">
-          <button type="submit">Search</button>
+          <button type="submit">Cari</button>
         </form>
         <a class="btn-login" href="login.html">Login</a>
       </div>
@@ -735,188 +251,196 @@
   </div>
 
   <main class="container content">
-    <p class="notice">Halaman ini sengaja tidak ditampilkan di menu utama. Akses melalui URL manual: form-evaluasi-streaming.html. Untuk mengatur pertanyaan fleksibel, buka <a href="setting-pertanyaan-evaluasi-streaming.html">Setting Pertanyaan Evaluasi</a>.</p>
+    <p class="notice-card">Halaman ini tidak ditampilkan di menu utama. Akses melalui URL manual: <strong>form-evaluasi-streaming.html</strong>. Untuk mengatur pertanyaan fleksibel, buka <a href="setting-pertanyaan-evaluasi-streaming.html">Setting Pertanyaan Evaluasi</a>.</p>
 
-    <section class="select-card" aria-label="Pilih jadwal untuk evaluasi">
-      <h3 class="select-head">1. Pilih Jadwal Yang Belum Diisi</h3>
-      <div class="select-grid">
-        <div class="field">
-          <label for="scheduleSelect">Tanggal - Jam Misa</label>
-          <select id="scheduleSelect"></select>
-        </div>
-        <button id="openFormBtn" class="btn-primary" type="button">Isi Evaluasi</button>
-      </div>
-      <div id="sessionList" class="session-list"></div>
-    </section>
-
+    <!-- STATUS -->
     <section id="statusCard" class="status-card" aria-live="polite"></section>
 
-    <section id="evaluationFormCard" class="form-card" aria-label="Form evaluasi streaming">
-      <h3 id="formTitle" class="form-title">2. Form Evaluasi</h3>
-      <p id="formSub" class="form-sub"></p>
+    <!-- STEP 1: PILIH JADWAL -->
+    <div class="eval-card">
+      <div class="eval-card-head">
+        <h2>1 — Pilih Jadwal Yang Belum Diisi</h2>
+        <p>Hanya jadwal yang belum dievaluasi yang ditampilkan.</p>
+      </div>
+      <div class="eval-card-body">
+        <div class="select-grid">
+          <div class="field">
+            <label for="scheduleSelect">Tanggal - Jam Misa</label>
+            <select id="scheduleSelect"></select>
+          </div>
+          <button id="openFormBtn" class="btn-primary" type="button">Isi Evaluasi</button>
+        </div>
+        <div id="sessionList" class="session-list"></div>
+      </div>
+    </div>
 
-      <form id="evaluationForm">
-        <div class="row-3">
-          <div class="field">
-            <label for="misaDate">Tanggal Misa</label>
-            <input id="misaDate" type="date" required>
+    <!-- STEP 2: FORM EVALUASI -->
+    <div id="evaluationFormCard" class="form-card eval-card">
+      <div class="eval-card-head">
+        <h2 id="formTitle">2 — Form Evaluasi</h2>
+        <p id="formSub"></p>
+      </div>
+      <div class="eval-card-body">
+        <form id="evaluationForm" novalidate>
+
+          <div class="form-section-label">Data Misa</div>
+          <div class="row-3">
+            <div class="field">
+              <label for="misaDate">Tanggal Misa</label>
+              <input id="misaDate" type="date" required>
+            </div>
+            <div class="field">
+              <label for="misaTime">Jam Misa</label>
+              <input id="misaTime" type="time" required>
+            </div>
+            <div class="field">
+              <label for="misaType">Jenis Misa</label>
+              <select id="misaType" required>
+                <option value="Biasa">Misa Biasa</option>
+                <option value="Hari Raya">Misa Hari Raya</option>
+              </select>
+            </div>
           </div>
-          <div class="field">
-            <label for="misaTime">Jam Misa</label>
-            <input id="misaTime" type="time" required>
+
+          <div class="roles-note">Daftar petugas diambil dari jadwal tugas dan tetap bisa diganti jika ada tukeran petugas.</div>
+
+          <div class="form-section-label">Petugas Bertugas</div>
+          <div class="row-3">
+            <div class="field">
+              <label>Operator Bertugas</label>
+              <div class="combo" data-combo="operator">
+                <button class="combo-trigger" type="button" data-combo-trigger="operator" aria-expanded="false">Pilih operator...</button>
+                <div class="combo-panel" data-combo-panel="operator">
+                  <div class="combo-search-box"><input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="operator"></div>
+                  <div class="combo-options" data-combo-options="operator"></div>
+                </div>
+              </div>
+              <input id="operatorName" type="hidden">
+            </div>
+            <div class="field">
+              <label>Kameramen Bertugas</label>
+              <div class="combo" data-combo="camera">
+                <button class="combo-trigger" type="button" data-combo-trigger="camera" aria-expanded="false">Pilih kameramen...</button>
+                <div class="combo-panel" data-combo-panel="camera">
+                  <div class="combo-search-box"><input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="camera"></div>
+                  <div class="combo-options" data-combo-options="camera"></div>
+                </div>
+              </div>
+              <input id="cameraName" type="hidden">
+            </div>
+            <div class="field">
+              <label>Supervisor Bertugas</label>
+              <div class="combo" data-combo="supervisor">
+                <button class="combo-trigger" type="button" data-combo-trigger="supervisor" aria-expanded="false">Pilih supervisor...</button>
+                <div class="combo-panel" data-combo-panel="supervisor">
+                  <div class="combo-search-box"><input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="supervisor"></div>
+                  <div class="combo-options" data-combo-options="supervisor"></div>
+                </div>
+              </div>
+              <input id="supervisorName" type="hidden">
+            </div>
           </div>
+
+          <div class="form-section-label">Pengisi Evaluasi</div>
+          <div class="row-2">
+            <div class="field">
+              <label>Nama Petugas Pengisi Evaluasi</label>
+              <div class="combo" data-combo="eval">
+                <button class="combo-trigger" type="button" data-combo-trigger="eval" aria-expanded="false">Pilih pengisi evaluasi...</button>
+                <div class="combo-panel" data-combo-panel="eval">
+                  <div class="combo-search-box"><input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="eval"></div>
+                  <div class="combo-options" data-combo-options="eval"></div>
+                </div>
+              </div>
+              <input id="evalName" type="hidden">
+            </div>
+            <div class="field">
+              <label for="evalRole">Role Pengisi Evaluasi</label>
+              <select id="evalRole" required>
+                <option value="Operator">Operator</option>
+                <option value="Kameramen">Kameramen</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Petugas Tambahan">Petugas Tambahan</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section-label">Petugas Tambahan</div>
           <div class="field">
-            <label for="misaType">Jenis Misa</label>
-            <select id="misaType" required>
-              <option value="Biasa">Misa Biasa</option>
-              <option value="Hari Raya">Misa Hari Raya</option>
+            <label for="extraStaffInput">Petugas Tambahan (jika ada)</label>
+            <div class="extra-staff-picker">
+              <div class="combo" data-combo="extra">
+                <button class="combo-trigger" type="button" data-combo-trigger="extra" aria-expanded="false">Pilih anggota tambahan...</button>
+                <div class="combo-panel" data-combo-panel="extra">
+                  <div class="combo-search-box"><input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="extra"></div>
+                  <div class="combo-options" data-combo-options="extra"></div>
+                </div>
+              </div>
+              <input id="extraStaffInput" type="hidden">
+              <button id="addExtraStaffBtn" class="btn" type="button">+ Tambah</button>
+            </div>
+            <input id="extraStaff" type="hidden">
+            <div id="extraStaffChips" class="extra-staff-chips" aria-live="polite"></div>
+            <p id="extraStaffEmpty" class="extra-staff-empty">Belum ada petugas tambahan dipilih.</p>
+          </div>
+
+          <div class="form-section-label">Evaluasi Per Petugas</div>
+          <div class="field">
+            <div class="staff-eval-wrap">
+              <p class="staff-eval-head">Evaluasi per petugas akan terisi otomatis sesuai nama petugas yang dipilih di atas.</p>
+              <div id="staffEvalGrid" class="staff-eval-grid"></div>
+            </div>
+          </div>
+
+          <div class="form-section-label">Penilaian Umum</div>
+          <div class="field">
+            <label for="generalStreamAssessment">Penilaian General Streaming (Keseluruhan Misa)</label>
+            <select id="generalStreamAssessment" required>
+              <option value="Aman">Aman</option>
+              <option value="Kendala Ringan">Kendala Ringan</option>
+              <option value="Kendala Serius (Urgent)">Kendala Serius (Urgent)</option>
             </select>
           </div>
-        </div>
 
-        <div class="roles-note">Daftar petugas diambil dari data jadwal tugas dan tetap bisa diganti jika ada tukeran petugas.</div>
-
-        <div class="row-3">
+          <div class="form-section-label">Catatan Kendala</div>
           <div class="field">
-            <label for="operatorName">Operator Bertugas</label>
-            <div class="combo" data-combo="operator">
-              <button class="combo-trigger" type="button" data-combo-trigger="operator" aria-expanded="false">Pilih operator...</button>
-              <div class="combo-panel" data-combo-panel="operator">
-                <div class="combo-search-box">
-                  <input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="operator">
-                </div>
-                <div class="combo-options" data-combo-options="operator"></div>
-              </div>
-            </div>
-            <input id="operatorName" type="hidden">
+            <label for="technicalIssue">Kendala Teknis Selama Streaming</label>
+            <textarea id="technicalIssue" placeholder="Tulis kendala teknis: audio, kamera, koneksi, software, dll."></textarea>
           </div>
+          <div class="field" style="margin-top:14px;">
+            <label for="liturgyIssue">Kendala Misa Non-Teknis (di luar teknis)</label>
+            <textarea id="liturgyIssue" placeholder="Tulis kendala non-teknis: alur misa, koordinasi, perubahan petugas mendadak, dll."></textarea>
+          </div>
+
+          <div class="form-section-label">Checklist Kondisi Pelayanan</div>
           <div class="field">
-            <label for="cameraName">Kameramen Bertugas</label>
-            <div class="combo" data-combo="camera">
-              <button class="combo-trigger" type="button" data-combo-trigger="camera" aria-expanded="false">Pilih kameramen...</button>
-              <div class="combo-panel" data-combo-panel="camera">
-                <div class="combo-search-box">
-                  <input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="camera">
-                </div>
-                <div class="combo-options" data-combo-options="camera"></div>
-              </div>
+            <div class="check-wrap">
+              <label><input type="checkbox" id="checkStream"> Siaran berjalan sampai akhir</label>
+              <label><input type="checkbox" id="checkCoord"> Koordinasi tim berjalan baik</label>
+              <label><input type="checkbox" id="checkArchive"> Rekaman tersimpan dengan benar</label>
             </div>
-            <input id="cameraName" type="hidden">
           </div>
+
+          <div class="form-section-label">Catatan Penutup</div>
           <div class="field">
-            <label for="supervisorName">Supervisor Bertugas</label>
-            <div class="combo" data-combo="supervisor">
-              <button class="combo-trigger" type="button" data-combo-trigger="supervisor" aria-expanded="false">Pilih supervisor...</button>
-              <div class="combo-panel" data-combo-panel="supervisor">
-                <div class="combo-search-box">
-                  <input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="supervisor">
-                </div>
-                <div class="combo-options" data-combo-options="supervisor"></div>
-              </div>
-            </div>
-            <input id="supervisorName" type="hidden">
+            <label for="finalNote">Catatan Penutup / Rekomendasi</label>
+            <textarea id="finalNote" placeholder="Catatan untuk perbaikan misa berikutnya"></textarea>
           </div>
-        </div>
 
-        <div class="row-2">
+          <div class="form-section-label">Pertanyaan Tambahan (Dinamis)</div>
           <div class="field">
-            <label for="evalName">Nama Petugas Pengisi Evaluasi</label>
-            <div class="combo" data-combo="eval">
-              <button class="combo-trigger" type="button" data-combo-trigger="eval" aria-expanded="false">Pilih pengisi evaluasi...</button>
-              <div class="combo-panel" data-combo-panel="eval">
-                <div class="combo-search-box">
-                  <input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="eval">
-                </div>
-                <div class="combo-options" data-combo-options="eval"></div>
-              </div>
-            </div>
-            <input id="evalName" type="hidden">
+            <div id="dynamicQuestionList" class="dynamic-question-list"></div>
+            <p id="dynamicQuestionEmpty" class="dynamic-empty" hidden>Belum ada pertanyaan tambahan. Silakan atur di halaman setting pertanyaan evaluasi.</p>
           </div>
-          <div class="field">
-            <label for="evalRole">Role Pengisi Evaluasi</label>
-            <select id="evalRole" required>
-              <option value="Operator">Operator</option>
-              <option value="Kameramen">Kameramen</option>
-              <option value="Supervisor">Supervisor</option>
-              <option value="Petugas Tambahan">Petugas Tambahan</option>
-              <option value="Lainnya">Lainnya</option>
-            </select>
+
+          <div class="action-row">
+            <button class="btn-primary" type="submit">Simpan Evaluasi</button>
+            <button id="cancelBtn" class="btn" type="button">Batal</button>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="extraStaffInput">Petugas Tambahan (jika ada)</label>
-          <div class="extra-staff-picker">
-            <div class="combo" data-combo="extra">
-              <button class="combo-trigger" type="button" data-combo-trigger="extra" aria-expanded="false">Pilih anggota tambahan...</button>
-              <div class="combo-panel" data-combo-panel="extra">
-                <div class="combo-search-box">
-                  <input class="combo-search-input" type="search" placeholder="Cari anggota..." data-combo-search="extra">
-                </div>
-                <div class="combo-options" data-combo-options="extra"></div>
-              </div>
-            </div>
-            <input id="extraStaffInput" type="hidden">
-            <button id="addExtraStaffBtn" class="btn" type="button">Tambah</button>
-          </div>
-          <input id="extraStaff" type="hidden">
-          <div id="extraStaffChips" class="extra-staff-chips" aria-live="polite"></div>
-          <p id="extraStaffEmpty" class="extra-staff-empty">Belum ada petugas tambahan dipilih.</p>
-        </div>
-
-        <div class="field">
-          <label>Evaluasi Per Petugas (otomatis sesuai jumlah petugas)</label>
-          <div class="staff-eval-wrap">
-            <p class="staff-eval-head">Jika petugas ada 3 orang, maka kolom evaluasi akan tampil 3 kolom. Ubah nama petugas bila tukeran, kolom evaluasi akan menyesuaikan.</p>
-            <div id="staffEvalGrid" class="staff-eval-grid"></div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="generalStreamAssessment">Penilaian General Streaming (Keseluruhan Misa)</label>
-          <select id="generalStreamAssessment" required>
-            <option value="Aman">Aman</option>
-            <option value="Kendala Ringan">Kendala Ringan</option>
-            <option value="Kendala Serius (Urgent)">Kendala Serius (Urgent)</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="technicalIssue">Kendala Teknis Selama Streaming</label>
-          <textarea id="technicalIssue" placeholder="Tulis kendala teknis: audio, kamera, koneksi, software, dll."></textarea>
-        </div>
-
-        <div class="field">
-          <label for="liturgyIssue">Kendala Misa Non-Teknis (di luar teknis)</label>
-          <textarea id="liturgyIssue" placeholder="Tulis kendala non-teknis: alur misa, koordinasi, perubahan petugas mendadak, dll."></textarea>
-        </div>
-
-        <div class="field">
-          <label>Checklist Kondisi Pelayanan</label>
-          <div class="check-wrap">
-            <label><input type="checkbox" id="checkStream"> Siaran berjalan sampai akhir</label>
-            <label><input type="checkbox" id="checkCoord"> Koordinasi tim berjalan baik</label>
-            <label><input type="checkbox" id="checkArchive"> Rekaman tersimpan dengan benar</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="finalNote">Catatan Penutup / Rekomendasi</label>
-          <textarea id="finalNote" placeholder="Catatan untuk perbaikan misa berikutnya"></textarea>
-        </div>
-
-        <div class="field">
-          <label>Pertanyaan Tambahan (Dinamis)</label>
-          <div id="dynamicQuestionList" class="dynamic-question-list"></div>
-          <p id="dynamicQuestionEmpty" class="dynamic-empty" hidden>Belum ada pertanyaan tambahan. Silakan atur di halaman setting pertanyaan evaluasi.</p>
-        </div>
-
-        <div class="action-row">
-          <button class="btn-primary" type="submit">Simpan Evaluasi</button>
-          <button id="cancelBtn" class="btn" type="button">Batal</button>
-        </div>
-      </form>
-    </section>
+        </form>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
@@ -924,17 +448,14 @@
       <div class="container footer-grid">
         <section class="footer-col" aria-label="Identitas Crembo">
           <div class="footer-brand">
-            <img class="footer-logo" src="logo crembo hitam.png" alt="Logo Crembo Media">
-            <div>
-              <h4 class="footer-title">Crew Multimedia Baciro</h4>
-              <p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p>
-            </div>
+            <img class="footer-logo" src="LOGO CREMBO PUTIH yg bagus.png" alt="Logo Crembo Media">
+            <div><h4 class="footer-title">Crew Multimedia Baciro</h4><p class="footer-sub">Paroki Kristus Raja Baciro - Yogyakarta</p></div>
           </div>
           <p class="footer-sub">Platform informasi, jadwal streaming, agenda, pengumuman, dan form pendaftaran komunitas.</p>
         </section>
         <section class="footer-col" aria-label="Kontak">
           <h4 class="footer-title">Kontak</h4>
-          <ul class="contact-list">
+          <ul class="contact-list" style="margin-top:14px;">
             <li><strong>Email</strong> : crembomedia@example.com</li>
             <li><strong>Telepon</strong> : 08xx-xxxx-xxxx</li>
             <li><strong>Alamat</strong> : Jl. Melati Wetan 47, Baciro, Yogyakarta</li>
@@ -942,7 +463,7 @@
         </section>
         <section class="footer-col" aria-label="Media sosial">
           <h4 class="footer-title">Media Sosial</h4>
-          <ul class="social-list">
+          <ul class="social-list" style="margin-top:14px;">
             <li class="social-item"><span class="social-dot">IG</span><span>@crembomedia</span></li>
             <li class="social-item"><span class="social-dot">YT</span><span>Crembo Media Official</span></li>
             <li class="social-item"><span class="social-dot">WA</span><span>Admin Pelayanan Multimedia</span></li>
@@ -950,125 +471,65 @@
         </section>
       </div>
     </div>
-    <div class="footer-bottom">
-      <div class="container">&copy; 2026 Crew Multimedia Baciro - Low Fidelity Wireframe</div>
-    </div>
+    <div class="footer-bottom"><div class="container">&copy; 2026 Crew Multimedia Baciro &mdash; Mockup High-Fidelity</div></div>
   </footer>
 
   <script>
+    // ─── ORIGINAL JS LOGIC (fully preserved) ─────────────────────────────────────
     const STORAGE_KEY = "crembo-evaluasi-streaming";
     const ACTIVE_MEMBER_STORAGE_KEY = "crembo-active-members";
     const QUESTION_CONFIG_KEY = "crembo-evaluasi-question-config";
     const NOTIFICATION_STORAGE_KEY = "crembo-admin-notifications";
     const DEFAULT_QUESTION_CONFIG = [
-      {
-        id: "kesan-pelayanan",
-        label: "Apa kesan umum pelayanan streaming pada misa ini?",
-        type: "single_choice",
-        required: true,
-        helpText: "Pilih satu penilaian umum.",
-        options: ["Sangat Baik", "Baik", "Cukup", "Perlu Pendampingan"]
-      },
-      {
-        id: "hal-terbaik",
-        label: "Bagian mana yang sudah paling baik?",
-        type: "long_text",
-        required: false,
-        helpText: "Contoh: alur kamera, audio, koordinasi.",
-        options: []
-      }
+      { id:"kesan-pelayanan", label:"Apa kesan umum pelayanan streaming pada misa ini?", type:"single_choice", required:true, helpText:"Pilih satu penilaian umum.", options:["Sangat Baik","Baik","Cukup","Perlu Pendampingan"] },
+      { id:"hal-terbaik", label:"Bagian mana yang sudah paling baik?", type:"long_text", required:false, helpText:"Contoh: alur kamera, audio, koordinasi.", options:[] }
     ];
 
     const schedules = [
-      {
-        id: "normal-2026-03-27-1800",
-        date: "2026-03-27",
-        time: "18:00",
-        type: "Biasa",
-        title: "Misa Jumat Biasa",
-        team: { operator: "Rikha", camera: "Jeni", supervisor: "Tyas" }
-      },
-      {
-        id: "normal-2026-03-28-1800",
-        date: "2026-03-28",
-        time: "18:00",
-        type: "Biasa",
-        title: "Misa Sabtu Sore",
-        team: { operator: "Lisa", camera: "Evan", supervisor: "Jose" }
-      },
-      {
-        id: "raya-2026-03-29-0800",
-        date: "2026-03-29",
-        time: "08:00",
-        type: "Hari Raya",
-        title: "Minggu Palma - Sesi Pagi",
-        team: { operator: "Rossa", camera: "Aurel", supervisor: "Asha" }
-      },
-      {
-        id: "raya-2026-03-29-1700",
-        date: "2026-03-29",
-        time: "17:00",
-        type: "Hari Raya",
-        title: "Minggu Palma - Sesi Sore",
-        team: { operator: "Rikha", camera: "Jeni", supervisor: "Tyas" }
-      },
-      {
-        id: "normal-2026-03-30-1800",
-        date: "2026-03-30",
-        time: "18:00",
-        type: "Biasa",
-        title: "Misa Senin Biasa",
-        team: { operator: "Lisa", camera: "Evan", supervisor: "Jose" }
-      }
+      { id:"normal-2026-03-27-1800", date:"2026-03-27", time:"18:00", type:"Biasa",    title:"Misa Jumat Biasa",           team:{ operator:"Rikha",  camera:"Jeni",  supervisor:"Tyas" } },
+      { id:"normal-2026-03-28-1800", date:"2026-03-28", time:"18:00", type:"Biasa",    title:"Misa Sabtu Sore",            team:{ operator:"Lisa",  camera:"Evan",  supervisor:"Jose" } },
+      { id:"raya-2026-03-29-0800",   date:"2026-03-29", time:"08:00", type:"Hari Raya",title:"Minggu Palma - Sesi Pagi",   team:{ operator:"Rossa", camera:"Aurel", supervisor:"Asha" } },
+      { id:"raya-2026-03-29-1700",   date:"2026-03-29", time:"17:00", type:"Hari Raya",title:"Minggu Palma - Sesi Sore",   team:{ operator:"Rikha",  camera:"Jeni",  supervisor:"Tyas" } },
+      { id:"normal-2026-03-30-1800", date:"2026-03-30", time:"18:00", type:"Biasa",    title:"Misa Senin Biasa",           team:{ operator:"Lisa",  camera:"Evan",  supervisor:"Jose" } }
     ];
 
-    const fallbackActiveMembers = [
-      "Rikha", "Jeni", "Tyas", "Lisa", "Evan", "Jose", "Rossa", "Aurel", "Asha",
-      "Andre", "Bima", "Chandra", "Dian", "Elin", "Ferry", "Gita", "Hana"
-    ];
+    const fallbackActiveMembers = ["Rikha","Jeni","Tyas","Lisa","Evan","Jose","Rossa","Aurel","Asha","Andre","Bima","Chandra","Dian","Elin","Ferry","Gita","Hana"];
 
-    const topHeader = document.getElementById("topHeader");
-    const searchForm = document.getElementById("searchForm");
-    const searchInput = document.getElementById("searchInput");
-
-    const scheduleSelect = document.getElementById("scheduleSelect");
-    const openFormBtn = document.getElementById("openFormBtn");
-    const sessionList = document.getElementById("sessionList");
-
-    const statusCard = document.getElementById("statusCard");
+    const topHeader        = document.getElementById("topHeader");
+    const searchForm       = document.getElementById("searchForm");
+    const searchInput      = document.getElementById("searchInput");
+    const scheduleSelect   = document.getElementById("scheduleSelect");
+    const openFormBtn      = document.getElementById("openFormBtn");
+    const sessionList      = document.getElementById("sessionList");
+    const statusCard       = document.getElementById("statusCard");
     const evaluationFormCard = document.getElementById("evaluationFormCard");
-    const formTitle = document.getElementById("formTitle");
-    const formSub = document.getElementById("formSub");
-    const evaluationForm = document.getElementById("evaluationForm");
-    const cancelBtn = document.getElementById("cancelBtn");
-
-    const misaDate = document.getElementById("misaDate");
-    const misaTime = document.getElementById("misaTime");
-    const misaType = document.getElementById("misaType");
-
-    const operatorName = document.getElementById("operatorName");
-    const cameraName = document.getElementById("cameraName");
-    const supervisorName = document.getElementById("supervisorName");
-
-    const evalName = document.getElementById("evalName");
-    const evalRole = document.getElementById("evalRole");
-    const extraStaffInput = document.getElementById("extraStaffInput");
+    const formTitle        = document.getElementById("formTitle");
+    const formSub          = document.getElementById("formSub");
+    const evaluationForm   = document.getElementById("evaluationForm");
+    const cancelBtn        = document.getElementById("cancelBtn");
+    const misaDate         = document.getElementById("misaDate");
+    const misaTime         = document.getElementById("misaTime");
+    const misaType         = document.getElementById("misaType");
+    const operatorName     = document.getElementById("operatorName");
+    const cameraName       = document.getElementById("cameraName");
+    const supervisorName   = document.getElementById("supervisorName");
+    const evalName         = document.getElementById("evalName");
+    const evalRole         = document.getElementById("evalRole");
+    const extraStaffInput  = document.getElementById("extraStaffInput");
     const addExtraStaffBtn = document.getElementById("addExtraStaffBtn");
-    const extraStaff = document.getElementById("extraStaff");
-    const extraStaffChips = document.getElementById("extraStaffChips");
-    const extraStaffEmpty = document.getElementById("extraStaffEmpty");
-    const staffEvalGrid = document.getElementById("staffEvalGrid");
-
-    const technicalIssue = document.getElementById("technicalIssue");
-    const liturgyIssue = document.getElementById("liturgyIssue");
+    const extraStaff       = document.getElementById("extraStaff");
+    const extraStaffChips  = document.getElementById("extraStaffChips");
+    const extraStaffEmpty  = document.getElementById("extraStaffEmpty");
+    const staffEvalGrid    = document.getElementById("staffEvalGrid");
+    const technicalIssue   = document.getElementById("technicalIssue");
+    const liturgyIssue     = document.getElementById("liturgyIssue");
     const generalStreamAssessment = document.getElementById("generalStreamAssessment");
-    const finalNote = document.getElementById("finalNote");
-    const dynamicQuestionList = document.getElementById("dynamicQuestionList");
+    const finalNote        = document.getElementById("finalNote");
+    const dynamicQuestionList  = document.getElementById("dynamicQuestionList");
     const dynamicQuestionEmpty = document.getElementById("dynamicQuestionEmpty");
-
-    const checkStream = document.getElementById("checkStream");
-    const checkCoord = document.getElementById("checkCoord");
-    const checkArchive = document.getElementById("checkArchive");
+    const checkStream      = document.getElementById("checkStream");
+    const checkCoord       = document.getElementById("checkCoord");
+    const checkArchive     = document.getElementById("checkArchive");
 
     let selectedScheduleId = "";
     let activeMembers = [];
@@ -1076,950 +537,113 @@
     let dynamicQuestions = [];
 
     const comboConfig = {
-      operator: { hiddenInput: operatorName, placeholder: "Pilih operator...", allowEmpty: false },
-      camera: { hiddenInput: cameraName, placeholder: "Pilih kameramen...", allowEmpty: false },
-      supervisor: { hiddenInput: supervisorName, placeholder: "Pilih supervisor...", allowEmpty: false },
-      eval: { hiddenInput: evalName, placeholder: "Pilih pengisi evaluasi...", allowEmpty: false },
-      extra: { hiddenInput: extraStaffInput, placeholder: "Pilih anggota tambahan...", allowEmpty: true }
+      operator:   { hiddenInput: operatorName,   placeholder:"Pilih operator...",          allowEmpty:false },
+      camera:     { hiddenInput: cameraName,      placeholder:"Pilih kameramen...",         allowEmpty:false },
+      supervisor: { hiddenInput: supervisorName,  placeholder:"Pilih supervisor...",        allowEmpty:false },
+      eval:       { hiddenInput: evalName,        placeholder:"Pilih pengisi evaluasi...",  allowEmpty:false },
+      extra:      { hiddenInput: extraStaffInput, placeholder:"Pilih anggota tambahan...", allowEmpty:true }
     };
 
-    function syncStickyOffset() {
-      const headerHeight = topHeader ? topHeader.offsetHeight : 118;
-      document.documentElement.style.setProperty("--header-h", headerHeight + "px");
-    }
-
-    function readStoredEvaluations() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          return {};
-        }
-        return JSON.parse(raw);
-      } catch (err) {
-        return {};
-      }
-    }
-
-    function slugifyText(text) {
-      return String(text || "")
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .trim()
-        .replace(/\s+/g, "-")
-        .slice(0, 40);
-    }
-
-    function normalizeQuestionType(type) {
-      const allowed = ["short_text", "long_text", "single_choice", "multi_choice"];
-      return allowed.indexOf(type) !== -1 ? type : "short_text";
-    }
-
-    function normalizeOptions(options) {
-      if (!Array.isArray(options)) {
-        return [];
-      }
-      const uniq = [];
-      options.forEach(function (item) {
-        const clean = String(item || "").trim();
-        if (!clean) {
-          return;
-        }
-        if (uniq.indexOf(clean) === -1) {
-          uniq.push(clean);
-        }
-      });
-      return uniq;
-    }
-
-    function sanitizeQuestionConfig(items) {
-      if (!Array.isArray(items)) {
-        return [];
-      }
-      return items.map(function (item, index) {
-        const label = String(item && item.label ? item.label : "").trim();
-        const id = slugifyText(item && item.id ? item.id : label) || ("q-" + (index + 1));
-        const type = normalizeQuestionType(item && item.type);
-        const options = (type === "single_choice" || type === "multi_choice")
-          ? normalizeOptions(item && item.options)
-          : [];
-        return {
-          id: id,
-          label: label || ("Pertanyaan " + (index + 1)),
-          type: type,
-          required: !!(item && item.required),
-          helpText: String(item && item.helpText ? item.helpText : "").trim(),
-          options: options
-        };
-      }).filter(function (item) {
-        return !!item.label;
-      });
-    }
-
-    function readQuestionConfig() {
-      try {
-        const raw = localStorage.getItem(QUESTION_CONFIG_KEY);
-        if (!raw) {
-          return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-        }
-        const parsed = JSON.parse(raw);
-        const sanitized = sanitizeQuestionConfig(parsed);
-        return sanitized.length ? sanitized : sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-      } catch (err) {
-        return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-      }
-    }
+    function syncStickyOffset() { const h = topHeader ? topHeader.offsetHeight : 104; document.documentElement.style.setProperty("--header-h", h + "px"); }
+    function readStoredEvaluations() { try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : {}; } catch(e) { return {}; } }
+    function writeStoredEvaluations(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+    function slugifyText(t) { return String(t||"").toLowerCase().replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").slice(0,40); }
+    function normalizeQuestionType(t) { const a=["short_text","long_text","single_choice","multi_choice"]; return a.indexOf(t)!==-1?t:"short_text"; }
+    function normalizeOptions(o) { if(!Array.isArray(o)) return []; const u=[]; o.forEach(function(i){const c=String(i||"").trim(); if(c&&u.indexOf(c)===-1)u.push(c);}); return u; }
+    function sanitizeQuestionConfig(items) { if(!Array.isArray(items)) return []; return items.map(function(item,index){ const label=String(item&&item.label?item.label:"").trim(); const id=slugifyText(item&&item.id?item.id:label)||("q-"+(index+1)); const type=normalizeQuestionType(item&&item.type); const options=(type==="single_choice"||type==="multi_choice")?normalizeOptions(item&&item.options):[]; return {id:id,label:label||(("Pertanyaan "+(index+1))),type:type,required:!!(item&&item.required),helpText:String(item&&item.helpText?item.helpText:"").trim(),options:options}; }).filter(function(i){return!!i.label;}); }
+    function readQuestionConfig() { try { const r=localStorage.getItem(QUESTION_CONFIG_KEY); if(!r) return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG); const p=JSON.parse(r); const s=sanitizeQuestionConfig(p); return s.length?s:sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG); } catch(e) { return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG); } }
 
     function renderDynamicQuestions() {
       dynamicQuestionList.innerHTML = "";
-
-      if (!dynamicQuestions.length) {
-        dynamicQuestionEmpty.hidden = false;
-        return;
-      }
-
+      if (!dynamicQuestions.length) { dynamicQuestionEmpty.hidden=false; return; }
       dynamicQuestionEmpty.hidden = true;
-
-      dynamicQuestions.forEach(function (question, index) {
+      dynamicQuestions.forEach(function(question,index) {
         const block = document.createElement("article");
         block.className = "dynamic-question-item";
-
         const title = document.createElement("h4");
-        title.textContent = (index + 1) + ". " + question.label + (question.required ? " *" : "");
+        title.textContent = (index+1)+". "+question.label+(question.required?" *":"");
         block.appendChild(title);
-
-        if (question.helpText) {
-          const help = document.createElement("p");
-          help.className = "dynamic-help";
-          help.textContent = question.helpText;
-          block.appendChild(help);
+        if (question.helpText) { const h=document.createElement("p"); h.className="dynamic-help"; h.textContent=question.helpText; block.appendChild(h); }
+        const name = "dynamic-question-"+question.id;
+        if (question.type==="short_text"||question.type==="long_text") {
+          const input = question.type==="long_text"?document.createElement("textarea"):document.createElement("input");
+          if(question.type==="short_text") input.type="text";
+          input.name=name; input.dataset.questionId=question.id; input.dataset.questionType=question.type;
+          input.placeholder=question.type==="long_text"?"Tulis jawaban...":"Isi jawaban...";
+          input.required=!!question.required; block.appendChild(input);
         }
-
-        const name = "dynamic-question-" + question.id;
-        if (question.type === "short_text" || question.type === "long_text") {
-          const input = question.type === "long_text" ? document.createElement("textarea") : document.createElement("input");
-          if (question.type === "short_text") {
-            input.type = "text";
-          }
-          input.name = name;
-          input.dataset.questionId = question.id;
-          input.dataset.questionType = question.type;
-          input.placeholder = question.type === "long_text" ? "Tulis jawaban..." : "Isi jawaban...";
-          input.required = !!question.required;
-          block.appendChild(input);
+        if (question.type==="single_choice") {
+          const sel=document.createElement("select"); sel.name=name; sel.dataset.questionId=question.id; sel.dataset.questionType=question.type; sel.required=!!question.required;
+          const empty=document.createElement("option"); empty.value=""; empty.textContent="Pilih jawaban"; sel.appendChild(empty);
+          question.options.forEach(function(o){ const opt=document.createElement("option"); opt.value=o; opt.textContent=o; sel.appendChild(opt); });
+          block.appendChild(sel);
         }
-
-        if (question.type === "single_choice") {
-          const select = document.createElement("select");
-          select.name = name;
-          select.dataset.questionId = question.id;
-          select.dataset.questionType = question.type;
-          select.required = !!question.required;
-
-          const empty = document.createElement("option");
-          empty.value = "";
-          empty.textContent = "Pilih jawaban";
-          select.appendChild(empty);
-
-          question.options.forEach(function (optionText) {
-            const opt = document.createElement("option");
-            opt.value = optionText;
-            opt.textContent = optionText;
-            select.appendChild(opt);
-          });
-
-          block.appendChild(select);
-        }
-
-        if (question.type === "multi_choice") {
-          const wrap = document.createElement("div");
-          wrap.className = "dynamic-options";
-          question.options.forEach(function (optionText, optionIndex) {
-            const label = document.createElement("label");
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.name = name;
-            checkbox.value = optionText;
-            checkbox.dataset.questionId = question.id;
-            checkbox.dataset.questionType = question.type;
-            checkbox.dataset.required = question.required ? "1" : "0";
-            checkbox.id = name + "-" + optionIndex;
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(optionText));
-            wrap.appendChild(label);
-          });
+        if (question.type==="multi_choice") {
+          const wrap=document.createElement("div"); wrap.className="dynamic-options";
+          question.options.forEach(function(o,oi){ const lbl=document.createElement("label"); const cb=document.createElement("input"); cb.type="checkbox"; cb.name=name; cb.value=o; cb.dataset.questionId=question.id; cb.dataset.questionType=question.type; cb.dataset.required=question.required?"1":"0"; cb.id=name+"-"+oi; lbl.appendChild(cb); lbl.appendChild(document.createTextNode(o)); wrap.appendChild(lbl); });
           block.appendChild(wrap);
         }
-
         dynamicQuestionList.appendChild(block);
       });
     }
 
-    function collectDynamicAnswers() {
-      return dynamicQuestions.map(function (question) {
-        const name = "dynamic-question-" + question.id;
-        let answer = "";
-
-        if (question.type === "multi_choice") {
-          answer = Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(function (node) {
-            return node.value;
-          });
-        } else {
-          const input = document.querySelector('[name="' + name + '"]');
-          answer = input ? String(input.value || "").trim() : "";
-        }
-
-        return {
-          id: question.id,
-          label: question.label,
-          type: question.type,
-          required: !!question.required,
-          answer: answer,
-          options: question.options.slice()
-        };
-      });
-    }
-
-    function validateDynamicAnswers(answers) {
-      for (let i = 0; i < answers.length; i += 1) {
-        const item = answers[i];
-        if (!item.required) {
-          continue;
-        }
-        if (Array.isArray(item.answer) && item.answer.length === 0) {
-          return 'Pertanyaan wajib belum dijawab: "' + item.label + '".';
-        }
-        if (!Array.isArray(item.answer) && !String(item.answer || "").trim()) {
-          return 'Pertanyaan wajib belum dijawab: "' + item.label + '".';
-        }
-      }
-      return "";
-    }
-
-    function writeStoredEvaluations(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-
-    function readAdminNotifications() {
-      try {
-        const raw = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function saveAdminNotifications(items) {
-      localStorage.setItem(NOTIFICATION_STORAGE_KEY, JSON.stringify(items));
-    }
-
-    function pushAdminNotification(item) {
-      const notifications = readAdminNotifications();
-      const exists = notifications.some(function (entry) {
-        return String(entry && entry.id ? entry.id : "") === String(item.id || "");
-      });
-      if (exists) {
-        return;
-      }
-      notifications.unshift(item);
-      saveAdminNotifications(notifications);
-    }
-
-    function normalizeName(value) {
-      return String(value || "").trim();
-    }
-
-    function readActiveMembers() {
-      try {
-        const raw = localStorage.getItem(ACTIVE_MEMBER_STORAGE_KEY);
-        if (!raw) {
-          return [];
-        }
-
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) {
-          return [];
-        }
-
-        return parsed.map(function (item) {
-          if (typeof item === "string") {
-            return { name: item, isActive: true };
-          }
-
-          return {
-            name: item && item.name ? String(item.name) : "",
-            isActive: item && item.status ? String(item.status).toLowerCase() === "aktif" : item && item.isActive !== false
-          };
-        });
-      } catch (err) {
-        return [];
-      }
-    }
-
-    function initActiveMembers() {
-      const fromStorage = readActiveMembers()
-        .filter(function (item) { return item.isActive; })
-        .map(function (item) { return normalizeName(item.name); })
-        .filter(function (name) { return name.length > 0; });
-
-      const fromSchedules = [];
-      schedules.forEach(function (item) {
-        fromSchedules.push(item.team.operator, item.team.camera, item.team.supervisor);
-      });
-
-      const merged = fromStorage.concat(fromSchedules, fallbackActiveMembers).filter(function (name) {
-        return normalizeName(name).length > 0;
-      });
-
-      const unique = [];
-      merged.forEach(function (name) {
-        const clean = normalizeName(name);
-        const exists = unique.some(function (memberName) {
-          return memberName.toLowerCase() === clean.toLowerCase();
-        });
-
-        if (!exists) {
-          unique.push(clean);
-        }
-      });
-
-      unique.sort(function (a, b) {
-        return a.localeCompare(b, "id", { sensitivity: "base" });
-      });
-
-      activeMembers = unique;
-    }
-
-    function comboEl(part, key) {
-      return document.querySelector('[data-combo-' + part + '="' + key + '"]');
-    }
-
-    function setComboValue(key, value) {
-      const config = comboConfig[key];
-      const clean = normalizeName(value);
-      const trigger = comboEl("trigger", key);
-
-      config.hiddenInput.value = clean;
-      trigger.textContent = clean || config.placeholder;
-    }
-
-    function renderComboOptions(key, query) {
-      const config = comboConfig[key];
-      const optionsWrap = comboEl("options", key);
-      const cleanQuery = normalizeName(query).toLowerCase();
-      const selected = normalizeName(config.hiddenInput.value);
-
-      const filtered = activeMembers.filter(function (name) {
-        return !cleanQuery || name.toLowerCase().indexOf(cleanQuery) !== -1;
-      });
-
-      let html = "";
-      if (config.allowEmpty) {
-        html += '<button class="combo-option' + (selected ? '' : ' active') + '" type="button" data-combo-value="" data-combo-key="' + key + '">-- kosong --</button>';
-      }
-
-      filtered.forEach(function (name) {
-        const activeClass = name.toLowerCase() === selected.toLowerCase() ? " active" : "";
-        html += '<button class="combo-option' + activeClass + '" type="button" data-combo-value="' + escapeHtml(name) + '" data-combo-key="' + key + '">' + escapeHtml(name) + '</button>';
-      });
-
-      if (!filtered.length) {
-        html += '<p class="combo-empty">Nama anggota tidak ditemukan.</p>';
-      }
-
-      optionsWrap.innerHTML = html;
-    }
-
-    function closeCombo(key) {
-      const panel = comboEl("panel", key);
-      const trigger = comboEl("trigger", key);
-      panel.classList.remove("show");
-      trigger.setAttribute("aria-expanded", "false");
-    }
-
-    function closeAllCombos(exceptKey) {
-      Object.keys(comboConfig).forEach(function (key) {
-        if (exceptKey && key === exceptKey) {
-          return;
-        }
-        closeCombo(key);
-      });
-    }
-
-    function openCombo(key) {
-      closeAllCombos(key);
-      const panel = comboEl("panel", key);
-      const trigger = comboEl("trigger", key);
-      const searchInput = comboEl("search", key);
-
-      panel.classList.add("show");
-      trigger.setAttribute("aria-expanded", "true");
-      renderComboOptions(key, searchInput.value);
-      searchInput.focus();
-    }
-
-    function refreshComboSelections() {
-      Object.keys(comboConfig).forEach(function (key) {
-        setComboValue(key, comboConfig[key].hiddenInput.value);
-      });
-    }
-
-    function isActiveMemberName(name) {
-      const clean = normalizeName(name);
-      return activeMembers.some(function (memberName) {
-        return memberName.toLowerCase() === clean.toLowerCase();
-      });
-    }
-
-    function syncExtraStaffHiddenInput() {
-      extraStaff.value = selectedExtraStaff.join(", ");
-    }
-
-    function renderExtraStaffChips() {
-      extraStaffChips.innerHTML = "";
-
-      if (selectedExtraStaff.length === 0) {
-        extraStaffEmpty.style.display = "block";
-        syncExtraStaffHiddenInput();
-        return;
-      }
-
-      extraStaffEmpty.style.display = "none";
-
-      selectedExtraStaff.forEach(function (name) {
-        const chip = document.createElement("span");
-        chip.className = "extra-chip";
-        chip.innerHTML = '<span>' + escapeHtml(name) + '</span><button type="button" data-remove-name="' + escapeHtml(name) + '" aria-label="Hapus petugas tambahan ' + escapeHtml(name) + '">x</button>';
-        extraStaffChips.appendChild(chip);
-      });
-
-      syncExtraStaffHiddenInput();
-    }
-
-    function addExtraStaff() {
-      const pickedName = normalizeName(extraStaffInput.value);
-      if (!pickedName) {
-        setStatus("Pilih petugas tambahan dulu dari dropdown.", false);
-        return;
-      }
-
-      if (!isActiveMemberName(pickedName)) {
-        setStatus("Nama petugas tambahan harus dipilih dari daftar anggota aktif.", false);
-        return;
-      }
-
-      const exists = selectedExtraStaff.some(function (name) {
-        return name.toLowerCase() === pickedName.toLowerCase();
-      });
-
-      if (exists) {
-        setStatus("Petugas tambahan tersebut sudah dipilih.", false);
-        return;
-      }
-
-      selectedExtraStaff.push(pickedName);
-      setComboValue("extra", "");
-      comboEl("search", "extra").value = "";
-      renderComboOptions("extra", "");
-      renderExtraStaffChips();
-      renderStaffEvaluationFields();
-    }
-
-    function getAvailableSchedules() {
-      const saved = readStoredEvaluations();
-      return schedules.filter(function (item) {
-        return !saved[item.id];
-      });
-    }
-
-    function formatDate(dateStr) {
-      const date = new Date(dateStr + "T00:00:00");
-      return date.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-    }
-
-    function setStatus(text, success) {
-      statusCard.textContent = text;
-      statusCard.classList.add("show");
-      if (success) {
-        statusCard.style.background = "var(--ok-bg)";
-        statusCard.style.borderColor = "var(--ok-line)";
-        statusCard.style.color = "#1e5a28";
-      } else {
-        statusCard.style.background = "var(--warn-bg)";
-        statusCard.style.borderColor = "var(--warn-line)";
-        statusCard.style.color = "#6b4d18";
-      }
-    }
-
-    function resetFormState() {
-      evaluationForm.reset();
-      evaluationFormCard.classList.remove("show");
-      selectedScheduleId = "";
-      selectedExtraStaff = [];
-      staffEvalGrid.innerHTML = "";
-      renderExtraStaffChips();
-      renderDynamicQuestions();
-    }
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function getCurrentStaffList() {
-      const baseStaff = [
-        operatorName.value.trim(),
-        cameraName.value.trim(),
-        supervisorName.value.trim()
-      ];
-
-      const allStaff = baseStaff.concat(selectedExtraStaff);
-      const unique = [];
-
-      allStaff.forEach(function (name) {
-        if (!name) {
-          return;
-        }
-        if (unique.indexOf(name) === -1) {
-          unique.push(name);
-        }
-      });
-
-      return unique;
-    }
-
-    function renderStaffEvaluationFields() {
-      const staffList = getCurrentStaffList();
-      staffEvalGrid.innerHTML = "";
-
-      if (staffList.length === 0) {
-        staffEvalGrid.innerHTML = '<p class="staff-eval-empty">Belum ada nama petugas. Isi nama petugas untuk memunculkan kolom evaluasi.</p>';
-        return;
-      }
-
-      staffList.forEach(function (staffName, index) {
-        const card = document.createElement("article");
-        card.className = "staff-eval-item";
-        card.innerHTML =
-          '<h4>' + escapeHtml(staffName) + '</h4>' +
-          '<div class="field">' +
-            '<label for="staffRating-' + index + '">Penilaian Singkat</label>' +
-            '<select id="staffRating-' + index + '" class="staff-rating" data-staff-name="' + escapeHtml(staffName) + '" required>' +
-              '<option value="">Pilih penilaian</option>' +
-              '<option value="Sangat Baik">Sangat Baik</option>' +
-              '<option value="Baik">Baik</option>' +
-              '<option value="Cukup">Cukup</option>' +
-              '<option value="Perlu Pendampingan">Perlu Pendampingan</option>' +
-            '</select>' +
-          '</div>' +
-          '<div class="field">' +
-            '<label for="staffNote-' + index + '">Catatan Per Petugas</label>' +
-            '<textarea id="staffNote-' + index + '" class="staff-note" data-staff-name="' + escapeHtml(staffName) + '" placeholder="Catatan performa ' + escapeHtml(staffName) + '"></textarea>' +
-          '</div>';
-
-        staffEvalGrid.appendChild(card);
-      });
-    }
-
-    function collectStaffEvaluations() {
-      const ratings = Array.from(document.querySelectorAll(".staff-rating"));
-      const notes = Array.from(document.querySelectorAll(".staff-note"));
-
-      return ratings.map(function (ratingEl, index) {
-        const noteEl = notes[index];
-        return {
-          name: ratingEl.dataset.staffName || "",
-          rating: ratingEl.value,
-          note: noteEl ? noteEl.value : ""
-        };
-      });
-    }
-
-    function drawScheduleOptions() {
-      const available = getAvailableSchedules();
-
-      scheduleSelect.innerHTML = "";
-      sessionList.innerHTML = "";
-
-      if (available.length === 0) {
-        scheduleSelect.innerHTML = '<option value="">Semua jadwal sudah dievaluasi</option>';
-        openFormBtn.disabled = true;
-        openFormBtn.classList.remove("btn-primary");
-        openFormBtn.classList.add("btn");
-        sessionList.innerHTML = '<div class="session-item"><strong>Tidak ada jadwal tersisa</strong><small>Semua form evaluasi sudah diisi.</small></div>';
-        resetFormState();
-        return;
-      }
-
-      openFormBtn.disabled = false;
-      openFormBtn.classList.add("btn-primary");
-      openFormBtn.classList.remove("btn");
-
-      available.forEach(function (item, index) {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.textContent = formatDate(item.date) + " - " + item.time + " WIB - " + item.title;
-        scheduleSelect.appendChild(option);
-
-        const tagClass = item.type === "Hari Raya" ? "tag raya" : "tag";
-        const row = document.createElement("div");
-        row.className = "session-item";
-        row.innerHTML = "<div><strong>" + formatDate(item.date) + " - " + item.time + " WIB</strong><br><small>" + item.title + "</small></div><span class=\"" + tagClass + "\">" + item.type + "</span>";
-        sessionList.appendChild(row);
-
-        if (index === 0) {
-          selectedScheduleId = item.id;
-        }
-      });
-    }
-
-    function getScheduleById(id) {
-      return schedules.find(function (item) { return item.id === id; });
-    }
-
-    function openFormForSelected() {
-      const id = scheduleSelect.value;
-      const schedule = getScheduleById(id);
-
-      if (!schedule) {
-        setStatus("Pilih jadwal yang tersedia terlebih dahulu.", false);
-        return;
-      }
-
-      selectedScheduleId = id;
-      formTitle.textContent = "2. Form Evaluasi - " + schedule.title;
-      formSub.textContent = "Jadwal: " + formatDate(schedule.date) + " | " + schedule.time + " WIB | " + schedule.type;
-
-      misaDate.value = schedule.date;
-      misaTime.value = schedule.time;
-      misaType.value = schedule.type;
-
-      operatorName.value = schedule.team.operator;
-      cameraName.value = schedule.team.camera;
-      supervisorName.value = schedule.team.supervisor;
-
-      evalName.value = schedule.team.operator;
-      evalRole.value = "Operator";
-      selectedExtraStaff = [];
-      extraStaffInput.value = "";
-      comboEl("search", "operator").value = "";
-      comboEl("search", "camera").value = "";
-      comboEl("search", "supervisor").value = "";
-      comboEl("search", "eval").value = "";
-      comboEl("search", "extra").value = "";
-      technicalIssue.value = "";
-      liturgyIssue.value = "";
-      finalNote.value = "";
-      checkStream.checked = false;
-      checkCoord.checked = false;
-      checkArchive.checked = false;
-      generalStreamAssessment.value = "Aman";
-
-      refreshComboSelections();
-      renderComboOptions("extra", "");
-      renderExtraStaffChips();
-      renderStaffEvaluationFields();
-      dynamicQuestions = readQuestionConfig();
-      renderDynamicQuestions();
-
-      evaluationFormCard.classList.add("show");
-      setStatus("Silakan isi evaluasi untuk jadwal terpilih.", true);
-      window.scrollTo({ top: evaluationFormCard.offsetTop - 150, behavior: "smooth" });
-    }
-
-    function saveEvaluation(event) {
-      event.preventDefault();
-
-      if (!operatorName.value || !cameraName.value || !supervisorName.value || !evalName.value) {
-        setStatus("Lengkapi pilihan petugas (operator, kameramen, supervisor, dan pengisi evaluasi).", false);
-        return;
-      }
-
-      if (!selectedScheduleId) {
-        setStatus("Jadwal belum dipilih.", false);
-        return;
-      }
-
-      const schedule = getScheduleById(selectedScheduleId);
-      if (!schedule) {
-        setStatus("Jadwal tidak ditemukan.", false);
-        return;
-      }
-
-      const payload = {
-        scheduleId: selectedScheduleId,
-        date: misaDate.value,
-        time: misaTime.value,
-        misaType: misaType.value,
-        operator: operatorName.value,
-        camera: cameraName.value,
-        supervisor: supervisorName.value,
-        evaluatorName: evalName.value,
-        evaluatorRole: evalRole.value,
-        extraStaff: selectedExtraStaff.slice(),
-        technicalIssue: technicalIssue.value,
-        liturgyIssue: liturgyIssue.value,
-        generalAssessment: generalStreamAssessment.value,
-        checklist: {
-          stream: checkStream.checked,
-          coordination: checkCoord.checked,
-          archive: checkArchive.checked
-        },
-        staffEvaluations: collectStaffEvaluations(),
-        dynamicAnswers: collectDynamicAnswers(),
-        finalNote: finalNote.value,
-        submittedAt: new Date().toISOString()
-      };
-
-      const dynamicError = validateDynamicAnswers(payload.dynamicAnswers);
-      if (dynamicError) {
-        setStatus(dynamicError, false);
-        return;
-      }
-
-      const saved = readStoredEvaluations();
-      saved[selectedScheduleId] = payload;
-      writeStoredEvaluations(saved);
-
-      if (payload.generalAssessment === "Kendala Serius (Urgent)") {
-        pushAdminNotification({
-          id: "urgent-eval-" + selectedScheduleId,
-          type: "tugas",
-          title: "Urgent: Kendala Serius pada Evaluasi Streaming",
-          message: schedule.title + " (" + payload.date + " " + payload.time + " WIB) ditandai Kendala Serius (Urgent). Segera tindak lanjuti.",
-          date: new Date().toISOString().slice(0, 16).replace("T", " "),
-          status: "unread"
-        });
-      }
-
-      setStatus("Evaluasi untuk " + schedule.title + " berhasil disimpan. Jadwal tersebut tidak ditampilkan lagi.", true);
-
-      drawScheduleOptions();
-      resetFormState();
-    }
-
-    function cancelForm() {
-      resetFormState();
-      setStatus("Pengisian evaluasi dibatalkan.", false);
-    }
-
-    function handleSearchSubmit(event) {
-      event.preventDefault();
-      const keyword = searchInput.value.trim();
-      window.location.href = "search.html?q=" + encodeURIComponent(keyword);
-    }
-
-    syncStickyOffset();
-    window.addEventListener("resize", syncStickyOffset);
-
-    initActiveMembers();
-    dynamicQuestions = readQuestionConfig();
-    refreshComboSelections();
-    Object.keys(comboConfig).forEach(function (key) {
-      renderComboOptions(key, "");
+    function collectDynamicAnswers() { return dynamicQuestions.map(function(q){ const name="dynamic-question-"+q.id; let answer=""; if(q.type==="multi_choice"){answer=Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(function(n){return n.value;});}else{const i=document.querySelector('[name="'+name+'"]'); answer=i?String(i.value||"").trim():"";} return {id:q.id,label:q.label,type:q.type,required:!!q.required,answer:answer,options:q.options.slice()}; }); }
+    function validateDynamicAnswers(answers) { for(let i=0;i<answers.length;i++){const item=answers[i]; if(!item.required)continue; if(Array.isArray(item.answer)&&item.answer.length===0)return'Pertanyaan wajib belum dijawab: "'+item.label+'".'; if(!Array.isArray(item.answer)&&!String(item.answer||"").trim())return'Pertanyaan wajib belum dijawab: "'+item.label+'".';}return""; }
+    function readAdminNotifications() { try{const r=localStorage.getItem(NOTIFICATION_STORAGE_KEY); const p=r?JSON.parse(r):[]; return Array.isArray(p)?p:[];}catch(e){return[];} }
+    function saveAdminNotifications(i) { localStorage.setItem(NOTIFICATION_STORAGE_KEY,JSON.stringify(i)); }
+    function pushAdminNotification(item) { const n=readAdminNotifications(); if(n.some(function(e){return String(e&&e.id?e.id:"")=== String(item.id||"");})) return; n.unshift(item); saveAdminNotifications(n); }
+    function normalizeName(v) { return String(v||"").trim(); }
+    function readActiveMembers() { try{const r=localStorage.getItem(ACTIVE_MEMBER_STORAGE_KEY); if(!r)return []; const p=JSON.parse(r); if(!Array.isArray(p))return []; return p.map(function(i){if(typeof i==="string")return{name:i,isActive:true}; return{name:i&&i.name?String(i.name):"",isActive:i&&i.status?String(i.status).toLowerCase()==="aktif":i&&i.isActive!==false}; });}catch(e){return[];} }
+    function initActiveMembers() { const fromStorage=readActiveMembers().filter(function(i){return i.isActive;}).map(function(i){return normalizeName(i.name);}).filter(function(n){return n.length>0;}); const fromSchedules=[]; schedules.forEach(function(i){fromSchedules.push(i.team.operator,i.team.camera,i.team.supervisor);}); const merged=fromStorage.concat(fromSchedules,fallbackActiveMembers).filter(function(n){return normalizeName(n).length>0;}); const unique=[]; merged.forEach(function(n){const c=normalizeName(n); if(!unique.some(function(m){return m.toLowerCase()===c.toLowerCase();}))unique.push(c);}); unique.sort(function(a,b){return a.localeCompare(b,"id",{sensitivity:"base"});}); activeMembers=unique; }
+    function comboEl(part,key) { return document.querySelector('[data-combo-'+part+'="'+key+'"]'); }
+    function setComboValue(key,value) { const c=comboConfig[key]; const clean=normalizeName(value); const trigger=comboEl("trigger",key); c.hiddenInput.value=clean; trigger.textContent=clean||c.placeholder; }
+    function renderComboOptions(key,query) { const c=comboConfig[key]; const ow=comboEl("options",key); const cq=normalizeName(query).toLowerCase(); const sel=normalizeName(c.hiddenInput.value); const filtered=activeMembers.filter(function(n){return !cq||n.toLowerCase().indexOf(cq)!==-1;}); let html=""; if(c.allowEmpty){html+='<button class="combo-option'+(sel?"":"  active")+'" type="button" data-combo-value="" data-combo-key="'+key+'">-- kosong --</button>';} filtered.forEach(function(n){const ac=n.toLowerCase()===sel.toLowerCase()?" active":""; html+='<button class="combo-option'+ac+'" type="button" data-combo-value="'+escapeHtml(n)+'" data-combo-key="'+key+'">'+escapeHtml(n)+'</button>';}); if(!filtered.length){html+='<p class="combo-empty">Nama anggota tidak ditemukan.</p>';} ow.innerHTML=html; }
+    function closeCombo(key) { const p=comboEl("panel",key); const t=comboEl("trigger",key); p.classList.remove("show"); t.setAttribute("aria-expanded","false"); }
+    function closeAllCombos(exceptKey) { Object.keys(comboConfig).forEach(function(k){if(exceptKey&&k===exceptKey)return; closeCombo(k);}); }
+    function openCombo(key) { closeAllCombos(key); const p=comboEl("panel",key); const t=comboEl("trigger",key); const si=comboEl("search",key); p.classList.add("show"); t.setAttribute("aria-expanded","true"); renderComboOptions(key,si.value); si.focus(); }
+    function refreshComboSelections() { Object.keys(comboConfig).forEach(function(k){setComboValue(k,comboConfig[k].hiddenInput.value);}); }
+    function isActiveMemberName(n) { const c=normalizeName(n); return activeMembers.some(function(m){return m.toLowerCase()===c.toLowerCase();}); }
+    function syncExtraStaffHiddenInput() { extraStaff.value=selectedExtraStaff.join(", "); }
+    function renderExtraStaffChips() { extraStaffChips.innerHTML=""; if(selectedExtraStaff.length===0){extraStaffEmpty.style.display="block"; syncExtraStaffHiddenInput(); return;} extraStaffEmpty.style.display="none"; selectedExtraStaff.forEach(function(n){const chip=document.createElement("span"); chip.className="extra-chip"; chip.innerHTML='<span>'+escapeHtml(n)+'</span><button type="button" data-remove-name="'+escapeHtml(n)+'" aria-label="Hapus petugas tambahan '+escapeHtml(n)+'">×</button>'; extraStaffChips.appendChild(chip);}); syncExtraStaffHiddenInput(); }
+    function addExtraStaff() { const pn=normalizeName(extraStaffInput.value); if(!pn){setStatus("Pilih petugas tambahan dulu dari dropdown.",false);return;} if(!isActiveMemberName(pn)){setStatus("Nama petugas tambahan harus dipilih dari daftar anggota aktif.",false);return;} if(selectedExtraStaff.some(function(n){return n.toLowerCase()===pn.toLowerCase();})){setStatus("Petugas tambahan tersebut sudah dipilih.",false);return;} selectedExtraStaff.push(pn); setComboValue("extra",""); comboEl("search","extra").value=""; renderComboOptions("extra",""); renderExtraStaffChips(); renderStaffEvaluationFields(); }
+    function getAvailableSchedules() { const saved=readStoredEvaluations(); return schedules.filter(function(i){return !saved[i.id];}); }
+    function formatDate(d) { const dt=new Date(d+"T00:00:00"); return dt.toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}); }
+    function setStatus(text,success) { statusCard.textContent=text; statusCard.classList.add("show"); if(success){statusCard.style.background="var(--ok-bg)"; statusCard.style.borderColor="var(--ok-line)"; statusCard.style.color="#166534";}else{statusCard.style.background="var(--warn-bg)"; statusCard.style.borderColor="var(--warn-line)"; statusCard.style.color="#6b4d18";} }
+    function resetFormState() { evaluationForm.reset(); evaluationFormCard.classList.remove("show"); selectedScheduleId=""; selectedExtraStaff=[]; staffEvalGrid.innerHTML=""; renderExtraStaffChips(); renderDynamicQuestions(); }
+    function escapeHtml(t) { return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+    function getCurrentStaffList() { const base=[operatorName.value.trim(),cameraName.value.trim(),supervisorName.value.trim()]; const all=base.concat(selectedExtraStaff); const unique=[]; all.forEach(function(n){if(!n)return; if(unique.indexOf(n)===-1)unique.push(n);}); return unique; }
+    function renderStaffEvaluationFields() { const staffList=getCurrentStaffList(); staffEvalGrid.innerHTML=""; if(staffList.length===0){staffEvalGrid.innerHTML='<p class="staff-eval-empty">Belum ada nama petugas. Isi nama petugas untuk memunculkan kolom evaluasi.</p>'; return;} staffList.forEach(function(staffName,index){const card=document.createElement("article"); card.className="staff-eval-item"; card.innerHTML='<h4>'+escapeHtml(staffName)+'</h4><div class="field"><label for="staffRating-'+index+'">Penilaian Singkat</label><select id="staffRating-'+index+'" class="staff-rating" data-staff-name="'+escapeHtml(staffName)+'" required><option value="">Pilih penilaian</option><option value="Sangat Baik">Sangat Baik</option><option value="Baik">Baik</option><option value="Cukup">Cukup</option><option value="Perlu Pendampingan">Perlu Pendampingan</option></select></div><div class="field"><label for="staffNote-'+index+'">Catatan Per Petugas</label><textarea id="staffNote-'+index+'" class="staff-note" data-staff-name="'+escapeHtml(staffName)+'" placeholder="Catatan performa '+escapeHtml(staffName)+'"></textarea></div>'; staffEvalGrid.appendChild(card);}); }
+    function collectStaffEvaluations() { const ratings=Array.from(document.querySelectorAll(".staff-rating")); const notes=Array.from(document.querySelectorAll(".staff-note")); return ratings.map(function(r,i){const n=notes[i]; return {name:r.dataset.staffName||"",rating:r.value,note:n?n.value:""};}); }
+    function drawScheduleOptions() { const available=getAvailableSchedules(); scheduleSelect.innerHTML=""; sessionList.innerHTML=""; if(available.length===0){scheduleSelect.innerHTML='<option value="">Semua jadwal sudah dievaluasi</option>'; openFormBtn.disabled=true; sessionList.innerHTML='<div class="session-item"><strong>Tidak ada jadwal tersisa</strong><small>Semua form evaluasi sudah diisi.</small></div>'; resetFormState(); return;} openFormBtn.disabled=false; available.forEach(function(item,index){const option=document.createElement("option"); option.value=item.id; option.textContent=formatDate(item.date)+" - "+item.time+" WIB - "+item.title; scheduleSelect.appendChild(option); const tagClass=item.type==="Hari Raya"?"tag raya":"tag biasa"; const row=document.createElement("div"); row.className="session-item"; row.innerHTML="<div><strong>"+formatDate(item.date)+" - "+item.time+" WIB</strong><br><small>"+item.title+"</small></div><span class=\""+tagClass+"\">"+item.type+"</span>"; sessionList.appendChild(row); if(index===0)selectedScheduleId=item.id;}); }
+    function getScheduleById(id) { return schedules.find(function(i){return i.id===id;}); }
+    function openFormForSelected() { const id=scheduleSelect.value; const schedule=getScheduleById(id); if(!schedule){setStatus("Pilih jadwal yang tersedia terlebih dahulu.",false);return;} selectedScheduleId=id; formTitle.textContent="2 — Form Evaluasi: "+schedule.title; formSub.textContent="Jadwal: "+formatDate(schedule.date)+" | "+schedule.time+" WIB | "+schedule.type; misaDate.value=schedule.date; misaTime.value=schedule.time; misaType.value=schedule.type; operatorName.value=schedule.team.operator; cameraName.value=schedule.team.camera; supervisorName.value=schedule.team.supervisor; evalName.value=schedule.team.operator; evalRole.value="Operator"; selectedExtraStaff=[]; extraStaffInput.value=""; ["operator","camera","supervisor","eval","extra"].forEach(function(k){comboEl("search",k).value="";}); technicalIssue.value=""; liturgyIssue.value=""; finalNote.value=""; checkStream.checked=false; checkCoord.checked=false; checkArchive.checked=false; generalStreamAssessment.value="Aman"; refreshComboSelections(); renderComboOptions("extra",""); renderExtraStaffChips(); renderStaffEvaluationFields(); dynamicQuestions=readQuestionConfig(); renderDynamicQuestions(); evaluationFormCard.classList.add("show"); setStatus("Silakan isi evaluasi untuk jadwal terpilih.",true); window.scrollTo({top:evaluationFormCard.offsetTop-150,behavior:"smooth"}); }
+    function saveEvaluation(event) { event.preventDefault(); if(!operatorName.value||!cameraName.value||!supervisorName.value||!evalName.value){setStatus("Lengkapi pilihan petugas (operator, kameramen, supervisor, dan pengisi evaluasi).",false);return;} if(!selectedScheduleId){setStatus("Jadwal belum dipilih.",false);return;} const schedule=getScheduleById(selectedScheduleId); if(!schedule){setStatus("Jadwal tidak ditemukan.",false);return;} const payload={scheduleId:selectedScheduleId,date:misaDate.value,time:misaTime.value,misaType:misaType.value,operator:operatorName.value,camera:cameraName.value,supervisor:supervisorName.value,evaluatorName:evalName.value,evaluatorRole:evalRole.value,extraStaff:selectedExtraStaff.slice(),technicalIssue:technicalIssue.value,liturgyIssue:liturgyIssue.value,generalAssessment:generalStreamAssessment.value,checklist:{stream:checkStream.checked,coordination:checkCoord.checked,archive:checkArchive.checked},staffEvaluations:collectStaffEvaluations(),dynamicAnswers:collectDynamicAnswers(),finalNote:finalNote.value,submittedAt:new Date().toISOString()}; const de=validateDynamicAnswers(payload.dynamicAnswers); if(de){setStatus(de,false);return;} const saved=readStoredEvaluations(); saved[selectedScheduleId]=payload; writeStoredEvaluations(saved); if(payload.generalAssessment==="Kendala Serius (Urgent)"){pushAdminNotification({id:"urgent-eval-"+selectedScheduleId,type:"tugas",title:"Urgent: Kendala Serius pada Evaluasi Streaming",message:schedule.title+" ("+payload.date+" "+payload.time+" WIB) ditandai Kendala Serius (Urgent). Segera tindak lanjuti.",date:new Date().toISOString().slice(0,16).replace("T"," "),status:"unread"});} setStatus("Evaluasi untuk "+schedule.title+" berhasil disimpan.",true); drawScheduleOptions(); resetFormState(); }
+    function cancelForm() { resetFormState(); setStatus("Pengisian evaluasi dibatalkan.",false); }
+
+    syncStickyOffset(); window.addEventListener("resize",syncStickyOffset);
+    initActiveMembers(); dynamicQuestions=readQuestionConfig(); refreshComboSelections();
+    Object.keys(comboConfig).forEach(function(k){renderComboOptions(k,"");});
+    drawScheduleOptions(); renderDynamicQuestions();
+    scheduleSelect.addEventListener("change",function(){selectedScheduleId=scheduleSelect.value;});
+    openFormBtn.addEventListener("click",openFormForSelected);
+    cancelBtn.addEventListener("click",cancelForm);
+    evaluationForm.addEventListener("submit",saveEvaluation);
+    addExtraStaffBtn.addEventListener("click",addExtraStaff);
+    Object.keys(comboConfig).forEach(function(key){
+      const trigger=comboEl("trigger",key); const si=comboEl("search",key); const ow=comboEl("options",key);
+      trigger.addEventListener("click",function(){const p=comboEl("panel",key); if(p.classList.contains("show")){closeCombo(key);return;} openCombo(key);});
+      si.addEventListener("input",function(){renderComboOptions(key,si.value);});
+      ow.addEventListener("click",function(event){const option=event.target.closest(".combo-option"); if(!option)return; setComboValue(key,option.getAttribute("data-combo-value")||""); closeCombo(key); if(key==="operator"){if(evalRole.value==="Operator"||!evalName.value)setComboValue("eval",operatorName.value); renderStaffEvaluationFields();} if(key==="camera"||key==="supervisor"){renderStaffEvaluationFields();}});
     });
+    document.addEventListener("click",function(event){const cr=event.target.closest(".combo"); if(!cr)closeAllCombos();});
+    extraStaffChips.addEventListener("click",function(event){const t=event.target; if(!(t instanceof HTMLButtonElement))return; const rn=normalizeName(t.dataset.removeName||""); if(!rn)return; selectedExtraStaff=selectedExtraStaff.filter(function(n){return n.toLowerCase()!==rn.toLowerCase();}); renderExtraStaffChips(); renderStaffEvaluationFields();});
+    searchForm.addEventListener("submit",function(event){event.preventDefault(); const k=searchInput.value.trim(); window.location.href="search.html?q="+encodeURIComponent(k);});
 
-    drawScheduleOptions();
-    renderDynamicQuestions();
-
-    scheduleSelect.addEventListener("change", function () {
-      selectedScheduleId = scheduleSelect.value;
-    });
-
-    openFormBtn.addEventListener("click", openFormForSelected);
-    cancelBtn.addEventListener("click", cancelForm);
-    evaluationForm.addEventListener("submit", saveEvaluation);
-
-    addExtraStaffBtn.addEventListener("click", addExtraStaff);
-
-    Object.keys(comboConfig).forEach(function (key) {
-      const trigger = comboEl("trigger", key);
-      const searchInput = comboEl("search", key);
-      const optionsWrap = comboEl("options", key);
-
-      trigger.addEventListener("click", function () {
-        const panel = comboEl("panel", key);
-        if (panel.classList.contains("show")) {
-          closeCombo(key);
-          return;
-        }
-        openCombo(key);
-      });
-
-      searchInput.addEventListener("input", function () {
-        renderComboOptions(key, searchInput.value);
-      });
-
-      optionsWrap.addEventListener("click", function (event) {
-        const option = event.target.closest(".combo-option");
-        if (!option) {
-          return;
-        }
-
-        setComboValue(key, option.getAttribute("data-combo-value") || "");
-        closeCombo(key);
-
-        if (key === "operator") {
-          if (evalRole.value === "Operator" || !evalName.value) {
-            setComboValue("eval", operatorName.value);
-          }
-          renderStaffEvaluationFields();
-        }
-
-        if (key === "camera" || key === "supervisor") {
-          renderStaffEvaluationFields();
-        }
-      });
-    });
-
-    document.addEventListener("click", function (event) {
-      const comboRoot = event.target.closest(".combo");
-      if (!comboRoot) {
-        closeAllCombos();
-      }
-    });
-
-    extraStaffChips.addEventListener("click", function (event) {
-      const target = event.target;
-      if (!(target instanceof HTMLButtonElement)) {
-        return;
-      }
-
-      const removeName = normalizeName(target.dataset.removeName || "");
-      if (!removeName) {
-        return;
-      }
-
-      selectedExtraStaff = selectedExtraStaff.filter(function (name) {
-        return name.toLowerCase() !== removeName.toLowerCase();
-      });
-
-      renderExtraStaffChips();
-      renderStaffEvaluationFields();
-    });
-
-    searchForm.addEventListener("submit", handleSearchSubmit);
-  
-    (function () {
-      const PROFILE_MENU_STORAGE_KEY = "crembo-profile-menu";
-      const DEFAULT_PROFILE_MENU = [
-        { id: "sejarah", label: "Sejarah" },
-        { id: "tentang-crembo", label: "Tentang Crembo" },
-        { id: "struktur", label: "Struktur" },
-        { id: "visi-misi", label: "Visi & Misi" }
-      ];
-
-      function readProfileMenuItems() {
-        try {
-          const raw = localStorage.getItem(PROFILE_MENU_STORAGE_KEY);
-          if (!raw) {
-            return DEFAULT_PROFILE_MENU;
-          }
-
-          const parsed = JSON.parse(raw);
-          if (!Array.isArray(parsed) || parsed.length === 0) {
-            return DEFAULT_PROFILE_MENU;
-          }
-
-          return parsed.map(function (item) {
-            if (typeof item === "string") {
-              return { id: item.toLowerCase().replace(/\s+/g, "-"), label: item };
-            }
-            return {
-              id: item && item.id ? String(item.id) : String((item && item.label) || "profil").toLowerCase().replace(/\s+/g, "-"),
-              label: item && item.label ? String(item.label) : "Profil"
-            };
-          });
-        } catch (err) {
-          return DEFAULT_PROFILE_MENU;
-        }
-      }
-
-      function enhanceProfileHoverMenu() {
-        const navList = document.querySelector(".nav-row nav ul") || document.querySelector("nav ul");
-        if (!navList) {
-          return;
-        }
-
-        const profileAnchor = navList.querySelector('a[href="profil.html"]');
-        if (!profileAnchor) {
-          return;
-        }
-
-        const profileItem = profileAnchor.closest("li");
-        if (!profileItem || profileItem.querySelector(".profile-hover-menu, .nav-dropdown-menu")) {
-          return;
-        }
-
-        const menuItems = readProfileMenuItems();
-
-        profileItem.style.position = "relative";
-        profileItem.classList.add("nav-dropdown-enhanced");
-
-        if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
-          profileAnchor.setAttribute("data-profile-menu-label", "true");
-          profileAnchor.textContent = profileAnchor.textContent.trim() + " v";
-        }
-
-        const dropdown = document.createElement("div");
-        dropdown.className = "profile-hover-menu";
-        dropdown.style.position = "absolute";
-        dropdown.style.top = "calc(100% + 4px)";
-        dropdown.style.left = "0";
-        dropdown.style.minWidth = "210px";
-        dropdown.style.border = "1px solid #bdbdbd";
-        dropdown.style.background = "#fff";
-        dropdown.style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.12)";
-        dropdown.style.padding = "6px";
-        dropdown.style.display = "none";
-        dropdown.style.zIndex = "1300";
-
-        dropdown.innerHTML = menuItems.map(function (item) {
-          return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:7px 8px;border:1px solid transparent;font-size:0.87rem;margin-bottom:3px;">' + item.label + '</a>';
-        }).join("");
-
-        dropdown.addEventListener("mouseover", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "#b9b9b9";
-            link.style.background = "#ececec";
-          }
-        });
-
-        dropdown.addEventListener("mouseout", function (event) {
-          const link = event.target.closest("a");
-          if (link) {
-            link.style.borderColor = "transparent";
-            link.style.background = "transparent";
-          }
-        });
-
-        profileItem.appendChild(dropdown);
-
-        function showMenu() {
-          dropdown.style.display = "block";
-        }
-
-        function hideMenu() {
-          dropdown.style.display = "none";
-        }
-
-        profileItem.addEventListener("mouseenter", showMenu);
-        profileItem.addEventListener("mouseleave", hideMenu);
-        profileItem.addEventListener("focusin", showMenu);
-        profileItem.addEventListener("focusout", function () {
-          setTimeout(function () {
-            if (!profileItem.contains(document.activeElement)) {
-              hideMenu();
-            }
-          }, 0);
-        });
-      }
-
+    // Profile dropdown
+    (function(){
+      const DEFAULT_MENU=[{id:"sejarah",label:"Sejarah"},{id:"tentang-crembo",label:"Tentang Crembo"},{id:"struktur",label:"Struktur"},{id:"visi-misi",label:"Visi & Misi"}];
+      function getMenu(){try{const r=localStorage.getItem("crembo-profile-menu");if(!r)return DEFAULT_MENU;const p=JSON.parse(r);return Array.isArray(p)&&p.length?p.map(function(i){return typeof i==="string"?{id:i.toLowerCase().replace(/\s+/g,"-"),label:i}:i;}):DEFAULT_MENU;}catch(e){return DEFAULT_MENU;}}
+      function enhanceProfileHoverMenu(){const navList=document.querySelector(".nav-row nav ul");if(!navList)return;const anchor=navList.querySelector('a[href="profil.html"]');if(!anchor)return;const li=anchor.closest("li");li.style.position="relative";const dd=document.createElement("div");Object.assign(dd.style,{position:"absolute",top:"calc(100% + 4px)",left:"0",minWidth:"200px",border:"1px solid rgba(128,0,0,0.15)",background:"#fff",boxShadow:"0 10px 30px rgba(128,0,0,0.12)",padding:"6px",display:"none",zIndex:"1300",borderRadius:"12px"});dd.innerHTML=getMenu().map(function(i){return'<a href="profil.html?profil='+encodeURIComponent(i.id)+'" style="display:block;padding:8px 12px;font-size:0.87rem;border-radius:8px;color:#4a4a4a;margin-bottom:2px;transition:all 0.2s;">'+i.label+'</a>';}).join("");dd.addEventListener("mouseover",function(e){const l=e.target.closest("a");if(l){l.style.background="rgba(128,0,0,0.06)";l.style.color="#800000";}});dd.addEventListener("mouseout",function(e){const l=e.target.closest("a");if(l){l.style.background="transparent";l.style.color="#4a4a4a";}});li.appendChild(dd);li.addEventListener("mouseenter",function(){dd.style.display="block";});li.addEventListener("mouseleave",function(){dd.style.display="none";});}
       enhanceProfileHoverMenu();
     })();
   </script>
