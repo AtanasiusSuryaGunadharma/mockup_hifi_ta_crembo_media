@@ -33,6 +33,8 @@
 		.brand p { margin: 4px 0 0; color: rgba(255,255,255,0.75); font-size: 0.88rem; }
 		.nav-wrap { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: var(--header-h); z-index: 1150; box-shadow: var(--shadow-sm); }
 		.nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; flex-wrap: wrap; }
+		.menu-toggle { display: none; border: 1px solid var(--line); background: var(--surface); padding: 10px 16px; font-size: 0.9rem; cursor: pointer; border-radius: var(--radius-sm); font-family: inherit; font-weight: 500; color: var(--primary); transition: var(--transition); }
+		.menu-toggle:hover { background: var(--hover); }
 		nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; flex-wrap: wrap; }
 		nav a { display: inline-block; padding: 8px 14px; font-size: 0.9rem; font-weight: 500; border-radius: var(--radius-sm); color: var(--ink-secondary); transition: var(--transition); position: relative; }
 		nav a:hover { color: var(--primary); background: var(--hover); }
@@ -170,7 +172,36 @@
 		@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 		@media (max-width: 980px) { .attachment-grid { grid-template-columns: 1fr 1fr; } .footer-grid { grid-template-columns: 1fr; } }
-		@media (max-width: 760px) { .top-header .container { grid-template-columns: 1fr; text-align: center; } .logo-box { margin: 0 auto; } .right-tools { width: 100%; justify-content: center; flex-wrap: wrap; } .search { flex: 1 1 230px; } .attachment-grid { grid-template-columns: 1fr; } .pdf-preview-grid { grid-template-columns: 1fr; } }
+		@media (max-width: 760px) {
+			.top-header .container {
+				grid-template-columns: auto 1fr;
+				align-items: center;
+				gap: 10px;
+				padding: 10px 0;
+				text-align: left;
+			}
+			.menu-toggle { display: inline-block; }
+			nav { width: 100%; display: none; }
+			nav.open { display: block; animation: fadeSlideDown 0.3s ease; }
+			@keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+			nav ul { flex-direction: column; align-items: stretch; }
+			nav a { display: block; border: 1px solid var(--line); border-bottom-width: 3px; border-radius: var(--radius-sm); text-align: center; }
+			.logo-box { width: 52px; height: 52px; padding: 3px; margin: 0; }
+			.brand h1 { font-size: clamp(1.02rem, 5vw, 1.35rem); line-height: 1.2; letter-spacing: 0.4px; }
+			.brand p { margin-top: 3px; font-size: 0.76rem; line-height: 1.35; }
+			.nav-row { align-items: stretch; }
+			.right-tools { width: 100%; justify-content: stretch; flex-wrap: wrap; }
+			.search { flex: 1 1 230px; }
+			.btn-login { flex: 1 1 auto; justify-content: center; }
+			.attachment-grid { grid-template-columns: 1fr; }
+			.pdf-preview-grid { grid-template-columns: 1fr; }
+		}
+		@media (max-width: 520px) {
+			.top-header .container { padding: 8px 0; }
+			.logo-box { width: 46px; height: 46px; }
+			.brand h1 { font-size: 0.96rem; }
+			.brand p { font-size: 0.72rem; }
+		}
 	</style>
 </head>
 <body>
@@ -188,7 +219,8 @@
 
 	<div class="nav-wrap">
 		<div class="container nav-row">
-			<nav aria-label="Navigasi utama">
+			<button id="menuToggle" class="menu-toggle" type="button" aria-controls="mainNav" aria-expanded="false">☰ Menu</button>
+			<nav id="mainNav" aria-label="Navigasi utama">
 				<ul>
 					<li><a href="home.html">Home</a></li>
 					<li><a href="profil.html">Profil</a></li>
@@ -293,6 +325,8 @@
 
 	<script>
 		const topHeader = document.getElementById("topHeader");
+		const menuToggle = document.getElementById("menuToggle");
+		const mainNav = document.getElementById("mainNav");
 		const searchForm = document.getElementById("searchForm");
 		const searchInput = document.getElementById("searchInput");
 		const heroBadge = document.getElementById("heroBadge");
@@ -407,6 +441,23 @@
 		syncStickyOffset();
 		window.addEventListener("resize", syncStickyOffset);
 
+		menuToggle.addEventListener("click", function () {
+			const isOpen = mainNav.classList.toggle("open");
+			menuToggle.setAttribute("aria-expanded", String(isOpen));
+		});
+
+		mainNav.querySelectorAll("a").forEach(function (link) {
+			link.addEventListener("click", function () {
+				if (link.classList.contains("profile-parent-link") && window.matchMedia("(max-width: 760px)").matches) {
+					return;
+				}
+				if (mainNav.classList.contains("open")) {
+					mainNav.classList.remove("open");
+					menuToggle.setAttribute("aria-expanded", "false");
+				}
+			});
+		});
+
 		searchForm.addEventListener("submit", function(e) {
 			e.preventDefault();
 			const q = searchInput.value.trim();
@@ -438,15 +489,49 @@
 				const profileItem = profileAnchor.closest("li");
 				if (!profileItem) return;
 				const menuItems = readProfileMenuItems();
-				profileItem.style.position = "relative";
+				const mobileQuery = window.matchMedia("(max-width: 760px)");
+				profileItem.classList.add("nav-dropdown-enhanced");
+				if (!profileAnchor.hasAttribute("data-profile-menu-label")) {
+					profileAnchor.setAttribute("data-profile-menu-label", "true");
+					profileAnchor.textContent = profileAnchor.textContent.trim() + " ▾";
+				}
+				profileAnchor.classList.add("profile-parent-link");
+				profileAnchor.setAttribute("aria-expanded", "false");
 				const dropdown = document.createElement("div");
-				Object.assign(dropdown.style, { position: "absolute", top: "calc(100% + 4px)", left: "0", minWidth: "200px", border: "1px solid rgba(128,0,0,0.15)", background: "#fff", boxShadow: "0 10px 30px rgba(128,0,0,0.12)", padding: "6px", display: "none", zIndex: "1300", borderRadius: "12px" });
+				function applyDesktopDropdownStyle() {
+					profileItem.style.position = "relative";
+					Object.assign(dropdown.style, { position: "absolute", top: "calc(100% + 4px)", left: "0", minWidth: "200px", width: "auto", border: "1px solid rgba(128,0,0,0.15)", background: "#fff", boxShadow: "0 10px 30px rgba(128,0,0,0.12)", padding: "6px", display: "none", zIndex: "1300", borderRadius: "12px", marginTop: "0" });
+				}
+				function applyMobileDropdownStyle() {
+					profileItem.style.position = "static";
+					Object.assign(dropdown.style, { position: "static", top: "auto", left: "auto", minWidth: "0", width: "100%", border: "1px solid rgba(128,0,0,0.15)", background: "var(--bg)", boxShadow: "none", padding: "6px", display: "none", zIndex: "1300", borderRadius: "8px", marginTop: "6px" });
+				}
+				function syncDropdownMode() {
+					if (mobileQuery.matches) applyMobileDropdownStyle();
+					else applyDesktopDropdownStyle();
+					profileAnchor.setAttribute("aria-expanded", "false");
+				}
 				dropdown.innerHTML = menuItems.map(function(item) { return '<a href="profil.html?profil=' + encodeURIComponent(item.id) + '" style="display:block;padding:8px 12px;font-size:0.87rem;border-radius:8px;color:#4a4a4a;margin-bottom:2px;transition:all 0.2s;">' + item.label + '</a>'; }).join("");
 				dropdown.addEventListener("mouseover", function(e) { const link = e.target.closest("a"); if (link) { link.style.background = "rgba(128,0,0,0.06)"; link.style.color = "#800000"; } });
 				dropdown.addEventListener("mouseout", function(e) { const link = e.target.closest("a"); if (link) { link.style.background = "transparent"; link.style.color = "#4a4a4a"; } });
 				profileItem.appendChild(dropdown);
-				profileItem.addEventListener("mouseenter", function() { dropdown.style.display = "block"; });
-				profileItem.addEventListener("mouseleave", function() { dropdown.style.display = "none"; });
+				profileAnchor.addEventListener("click", function(event) {
+					if (!mobileQuery.matches) return;
+					event.preventDefault();
+					const isOpen = dropdown.style.display !== "block";
+					dropdown.style.display = isOpen ? "block" : "none";
+					profileAnchor.setAttribute("aria-expanded", String(isOpen));
+				});
+				dropdown.querySelectorAll("a").forEach(function(link) {
+					link.addEventListener("click", function() {
+						dropdown.style.display = "none";
+						profileAnchor.setAttribute("aria-expanded", "false");
+					});
+				});
+				profileItem.addEventListener("mouseenter", function() { if (!mobileQuery.matches) dropdown.style.display = "block"; });
+				profileItem.addEventListener("mouseleave", function() { if (!mobileQuery.matches) dropdown.style.display = "none"; });
+				window.addEventListener("resize", syncDropdownMode);
+				syncDropdownMode();
 			}
 			enhanceProfileHoverMenu();
 		})();
