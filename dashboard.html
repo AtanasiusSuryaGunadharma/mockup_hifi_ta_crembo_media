@@ -200,8 +200,8 @@
         </div>
       </div>
 
-      <div class="menu-group open" id="streamingMenuGroup">
-        <button class="group-toggle" type="button">Tugas Streaming <span>-</span></button>
+      <div class="menu-group" id="streamingMenuGroup">
+        <button class="group-toggle" type="button">Tugas Streaming <span>+</span></button>
         <div class="group-items">
           <a class="menu-link" href="jadwal-tugas-streaming-admin.html">Jadwal Streaming</a>
           <a class="menu-link" href="registrasi-tugas-misa-besar.html">Registrasi Tugas Misa Besar</a>
@@ -232,13 +232,13 @@
         </div>
       </div>
 
-      <div class="menu-group open" id="kontenMenuGroup">
-        <button class="group-toggle" type="button">Konten Utama Website <span>-</span></button>
+      <div class="menu-group" id="kontenMenuGroup">
+        <button class="group-toggle" type="button">Konten Utama Website <span>+</span></button>
         <div class="group-items" id="contentMenu"></div>
       </div>
 
-      <div class="menu-group open" id="keanggotaanMenuGroup">
-        <button class="group-toggle" type="button">Keanggotaan <span>-</span></button>
+      <div class="menu-group" id="keanggotaanMenuGroup">
+        <button class="group-toggle" type="button">Keanggotaan <span>+</span></button>
         <div class="group-items" id="anggotaMenu"></div>
       </div>
 
@@ -544,10 +544,12 @@
       const list = currentRole === "super_admin"
         ? baseItems.concat(extraSuperAdmin)
         : baseItems;
+      const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
       anggotaMenu.innerHTML = list
         .map(function (item, index) {
-          const activeClass = index === 0 ? " active" : "";
+          const itemPage = String(item.href || "").split("/").pop().toLowerCase();
+          const activeClass = itemPage && itemPage === currentPage ? " active" : "";
           return '<a class="menu-link' + activeClass + '" href="' + item.href + '">' + item.label + "</a>";
         })
         .join("");
@@ -794,10 +796,12 @@
       const list = currentRole === "super_admin"
         ? baseItems
         : baseItems;
+      const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
       contentMenu.innerHTML = list
         .map(function (item, index) {
-          const activeClass = index === 0 ? " active" : "";
+          const itemPage = String(item.href || "").split("/").pop().toLowerCase();
+          const activeClass = itemPage && itemPage === currentPage ? " active" : "";
           return '<a class="menu-link' + activeClass + '" href="' + item.href + '">' + item.label + "</a>";
         })
         .join("");
