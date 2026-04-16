@@ -141,6 +141,61 @@
       font-weight: 600;
     }
 
+    .world-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .world-link:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .world-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .meta-header {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-title {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .meta-sub {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 0.86rem;
+    }
+
+    .meta-header .chip {
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
     .chip {
       border: 1px solid #1f1f1f;
       background: #fafafa;
@@ -401,11 +456,26 @@
 
     <main class="main">
       <header class="dashboard-headline-bar">
-        <h1>Hasil Input Form Kerusakan Barang</h1>
+        <h1>Hasil Form Kerusakan Barang</h1>
         <div class="head-meta">
           <span id="liveDateTime">-</span>
-          <span id="activeFilterChip" class="chip">Filter: Semua</span>
+          <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </a>
         </div>
+      </header>
+
+      <header class="meta-header">
+        <div>
+          <h2 class="meta-title">Hasil Form Kerusakan Barang</h2>
+          <p class="meta-sub">Pantau laporan kerusakan, ubah status tindak lanjut, dan unduh rekap laporan.</p>
+        </div>
+        <span id="activeFilterChip" class="chip">Filter: Semua</span>
       </header>
 
       <section class="toolbar" aria-label="Filter hasil form kerusakan barang">
@@ -850,7 +920,7 @@
     downloadExcelBtn.addEventListener("click", exportExcel);
     downloadPdfBtn.addEventListener("click", exportPdf);
 
-      if (guardAdmin()) {
+    if (guardAdmin()) {
       renderTable();
       updateLiveDateTime();
       setInterval(updateLiveDateTime, 1000);

@@ -46,7 +46,101 @@
     .side-actions a { text-decoration: none; border: 1px solid #8d8d8d; color: #ebebeb; text-align: center; padding: 9px 10px; border-radius: 10px; font-size: .82rem; }
 
     .main { padding: 16px; }
-    .headline, .toolbar, .panel {
+    .dashboard-headline-bar {
+      border: 1px solid #cfcfcf;
+      background: #f3f3f3;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-headline-bar h1 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.2vw, 2.1rem);
+      font-weight: 700;
+      color: #1c1f27;
+      letter-spacing: 0.01em;
+    }
+
+    .head-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #374151;
+      font-size: clamp(0.85rem, 1.8vw, 1.02rem);
+      font-weight: 600;
+    }
+
+    .world-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .world-link:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .world-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .meta-header {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-title {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .meta-sub {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 0.86rem;
+    }
+
+    .meta-header .chip {
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .chip {
+      border: 1px solid #1f1f1f;
+      background: #fafafa;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .toolbar, .panel {
       border: 2px solid var(--line);
       border-radius: var(--radius);
       background: var(--panel);
@@ -54,12 +148,6 @@
       padding: 12px;
       margin-bottom: 12px;
     }
-    .headline {
-      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
-    }
-
-    .headline h1 { margin: 0; font-size: clamp(1.2rem, 2.2vw, 2rem); color: #fff; }
-    .headline p { margin: 4px 0 0; color: rgba(255, 255, 255, 0.82); font-size: .9rem; }
 
     .toolbar-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr auto; gap: 8px; align-items: end; }
     .field { display: grid; gap: 6px; }
@@ -142,10 +230,28 @@
     </aside>
 
     <main class="main">
-      <section class="headline">
-        <h1>Riwayat Peminjaman dan Pengembalian</h1>
-        <p>Riwayat lengkap untuk monitoring admin/super admin, termasuk bukti pengambilan dan pengembalian.</p>
-      </section>
+      <header class="dashboard-headline-bar" aria-label="Header dashboard waktu berjalan">
+        <h1>Riwayat Peminjaman</h1>
+        <div class="head-meta">
+          <span id="liveDateTime">-</span>
+          <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <header class="meta-header">
+        <div>
+          <h2 class="meta-title">Riwayat Peminjaman dan Pengembalian</h2>
+          <p class="meta-sub">Riwayat lengkap untuk monitoring admin/super admin, termasuk bukti pengambilan dan pengembalian.</p>
+        </div>
+        <span class="chip">Filter: Semua</span>
+      </header>
 
       <section class="toolbar">
         <div class="toolbar-grid">
@@ -226,6 +332,7 @@
     const emptyState = document.getElementById("emptyState");
     const downloadExcelBtn = document.getElementById("downloadExcelBtn");
     const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+    const liveDateTime = document.getElementById("liveDateTime");
 
     function escapeHtml(text) {
       return String(text || "")
@@ -505,6 +612,19 @@
       popup.print();
     }
 
+    function updateLiveDateTime() {
+      const now = new Date();
+      liveDateTime.textContent = now.toLocaleString("id-ID", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      }) + " WIB";
+    }
+
     searchInput.addEventListener('input', renderTable);
     statusFilter.addEventListener('change', renderTable);
     fromDate.addEventListener('change', renderTable);
@@ -513,6 +633,8 @@
     downloadPdfBtn.addEventListener('click', downloadPdf);
 
     renderTable();
+    updateLiveDateTime();
+    setInterval(updateLiveDateTime, 1000);
   </script>
 <script src="_sidebar-fix.js"></script>
 </body>
