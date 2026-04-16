@@ -352,7 +352,7 @@
       padding: 12px;
       border-bottom: 1px solid var(--line);
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr;
+      grid-template-columns: 1.6fr 0.7fr 0.7fr;
       gap: 8px;
     }
 
@@ -568,6 +568,10 @@
       .content-layout { grid-template-columns: 1fr; }
       .page { padding: 12px; }
     }
+
+    @media (max-width: 1000px) {
+      .filters { grid-template-columns: 1fr; }
+    }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_admin-theme.css">
@@ -642,6 +646,12 @@
                 <option value="all">Semua Target</option>
                 <option value="public">Umum</option>
                 <option value="internal">Internal</option>
+              </select>
+              <select id="sortFilter">
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+                <option value="newest">Terbaru</option>
+                <option value="oldest">Terlama</option>
               </select>
             </div>
 
@@ -720,6 +730,7 @@
     const authAction = document.getElementById("authAction");
     const searchInput = document.getElementById("searchInput");
     const targetFilter = document.getElementById("targetFilter");
+    const sortFilter = document.getElementById("sortFilter");
     const formCount = document.getElementById("formCount");
     const cards = document.getElementById("cards");
     const rightTitle = document.getElementById("rightTitle");
@@ -927,9 +938,10 @@
     function getFilteredForms() {
       const keyword = searchInput.value.trim().toLowerCase();
       const selectedTarget = targetFilter.value;
+      const sortBy = sortFilter.value;
       const viewer = getViewerContext();
 
-      return applyAccessRules(forms)
+      const filtered = applyAccessRules(forms)
         .filter(function (form) {
           if (selectedTarget !== "all" && form.target !== selectedTarget) {
             return false;
@@ -939,13 +951,27 @@
           }
           const text = (form.title + " " + form.description).toLowerCase();
           return text.indexOf(keyword) !== -1;
-        })
-        .sort(function (a, b) {
-          if (viewer.isLoggedIn && a.target !== b.target) {
-            return a.target === "internal" ? -1 : 1;
-          }
-          return a.title.localeCompare(b.title);
         });
+
+      return filtered.sort(function (a, b) {
+        if (sortBy === "a-z") {
+          return a.title.localeCompare(b.title);
+        }
+        if (sortBy === "z-a") {
+          return b.title.localeCompare(a.title);
+        }
+        if (sortBy === "newest") {
+          const dateA = a.openDate ? new Date(a.openDate) : new Date(0);
+          const dateB = b.openDate ? new Date(b.openDate) : new Date(0);
+          return dateB.getTime() - dateA.getTime();
+        }
+        if (sortBy === "oldest") {
+          const dateA = a.openDate ? new Date(a.openDate) : new Date(0);
+          const dateB = b.openDate ? new Date(b.openDate) : new Date(0);
+          return dateA.getTime() - dateB.getTime();
+        }
+        return 0;
+      });
     }
 
     function updateAccessHeader() {
@@ -1240,6 +1266,11 @@
     });
 
     targetFilter.addEventListener("change", function () {
+      renderCards();
+      renderRightPanel();
+    });
+
+    sortFilter.addEventListener("change", function () {
       renderCards();
       renderRightPanel();
     });
