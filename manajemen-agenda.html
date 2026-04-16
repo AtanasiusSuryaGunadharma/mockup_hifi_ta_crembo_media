@@ -412,6 +412,10 @@
       </header>
 
       <section class="toolbar" aria-label="Filter agenda">
+     <div class="toolbar-top">
+       <strong>Daftar Agenda Tersedia</strong>
+       <a class="btn primary" href="form-agenda.html">+ Tambah Agenda</a>
+     </div>
         <div class="filters">
           <input id="searchInput" type="search" placeholder="Cari judul agenda atau lokasi...">
           <select id="statusFilter">
@@ -464,6 +468,23 @@
       }, 2200);
     }
 
+         <header class="headline">
+           <div>
+             <h2>Manajemen Agenda</h2>
+             <p style="margin: 6px 0 0; color: #4b5563; font-size: 0.88rem;">Kelola acara dan kegiatan sekolah.</p>
+           </div>
+           <div class="meta-badges">
+             <span id="liveDateTime" class="chip">-</span>
+             <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                 <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+                 <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+                 <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+               </svg>
+             </a>
+           </div>
+         </header>
     function safeParse(raw) {
       try {
         return JSON.parse(raw);
