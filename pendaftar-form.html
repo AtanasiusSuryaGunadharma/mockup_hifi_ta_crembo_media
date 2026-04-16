@@ -249,7 +249,7 @@
       justify-content: flex-end;
     }
 
-    input {
+    input, select {
       width: 100%;
       border: 1px solid #bdbdbd;
       border-radius: 10px;
@@ -372,10 +372,14 @@
       table { min-width: 0; }
     }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
-    <aside class="sidebar" aria-label="Sidebar dashboard">
+    <aside id="sidebar" class="sidebar" aria-label="Sidebar dashboard">
       <div class="brand">
         <h1>Crembo Media Panel</h1>
         <p>Kelola data pendaftar form</p>
@@ -413,48 +417,48 @@
         </div>
       </header>
 
-              <h2 id="pageTitle">Data Pendaftar Form</h2>
-              <p id="pageDesc">Daftar data diri pendaftar dan jawaban form.</p>
+      <section class="headline">
+        <div>
           <h2 id="pageTitle">Data Pendaftar Form</h2>
           <p id="pageDesc">Daftar data diri pendaftar dan jawaban form.</p>
         </div>
         <a class="btn ghost" href="manajemen-form-pendaftaran.html">Kembali</a>
-      </header>
+      </section>
 
-              <input id="searchInput" type="search" placeholder="Cari identitas pendaftar atau jawaban...">
-              <select id="roleFilter">
-                <option value="all">Semua Role</option>
-                <option value="public">Public</option>
-                <option value="internal">Internal</option>
-              </select>
-              <select id="sortFilter">
-                <option value="newest">Terbaru</option>
-                <option value="oldest">Terlama</option>
-                <option value="identity-asc">Identitas A-Z</option>
-                <option value="identity-desc">Identitas Z-A</option>
-              </select>
-              <div class="toolbar-actions">
-                <button id="downloadExcelBtn" class="btn primary" type="button">Download Excel</button>
-                <button id="downloadPdfBtn" class="btn" type="button">Download PDF</button>
-              </div>
-          <button id="downloadExcelBtn" class="btn primary" type="button">Download Excel</button>
-          <button id="downloadPdfBtn" class="btn" type="button">Download PDF</button>
-
-          <section class="summary-grid" aria-label="Ringkasan pendaftar">
-            <article class="summary-card">
-              <span>Total Submit</span>
-              <strong id="summaryTotal">0</strong>
-            </article>
-            <article class="summary-card">
-              <span>Public</span>
-              <strong id="summaryPublic">0</strong>
-            </article>
-            <article class="summary-card">
-              <span>Internal</span>
-              <strong id="summaryInternal">0</strong>
-            </article>
-          </section>
+      <section class="toolbar" aria-label="Filter dan aksi data pendaftar">
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Cari identitas pendaftar atau jawaban...">
+          <select id="roleFilter">
+            <option value="all">Semua Role</option>
+            <option value="public">Public</option>
+            <option value="internal">Internal</option>
+          </select>
+          <select id="sortFilter">
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="identity-asc">Identitas A-Z</option>
+            <option value="identity-desc">Identitas Z-A</option>
+          </select>
+          <div class="toolbar-actions">
+            <button id="downloadExcelBtn" class="btn primary" type="button">Download Excel</button>
+            <button id="downloadPdfBtn" class="btn" type="button">Download PDF</button>
+          </div>
         </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Ringkasan pendaftar">
+        <article class="summary-card">
+          <span>Total Submit</span>
+          <strong id="summaryTotal">0</strong>
+        </article>
+        <article class="summary-card">
+          <span>Public</span>
+          <strong id="summaryPublic">0</strong>
+        </article>
+        <article class="summary-card">
+          <span>Internal</span>
+          <strong id="summaryInternal">0</strong>
+        </article>
       </section>
 
       <section class="table-wrap" aria-label="Tabel data pendaftar">
@@ -719,5 +723,6 @@
     updateLiveDateTime();
     setInterval(updateLiveDateTime, 1000);
   </script>
+  <script src="_sidebar-fix.js"></script>
 </body>
 </html>

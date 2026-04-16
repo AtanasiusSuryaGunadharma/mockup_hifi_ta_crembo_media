@@ -119,7 +119,7 @@
 
     .main { padding: 16px; }
 
-    .meta-header {
+    .form-headline {
       border: 1px solid transparent;
       background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
       border-radius: 12px;
@@ -133,19 +133,30 @@
       box-shadow: var(--shadow);
     }
 
-    .meta-title {
+    .form-headline-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .form-headline h1 {
       margin: 0;
-      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
       font-weight: 800;
       color: #fff;
     }
 
-    .meta-badges {
+    .form-headline p {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.84rem;
+    }
+
+    .form-headline-actions {
       display: inline-flex;
+      align-items: center;
       gap: 8px;
       flex-wrap: wrap;
-      align-items: center;
-      color: rgba(255, 255, 255, 0.92);
+      justify-content: flex-end;
     }
 
     .chip {
@@ -180,26 +191,6 @@
       display: grid;
       gap: 12px;
     }
-
-    .headline {
-      border: 1px solid #d6d8de;
-      border-radius: 12px;
-      background: #fff;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      box-shadow: var(--shadow);
-    }
-
-    .headline h1 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 1.9rem); }
-    .headline p { margin: 6px 0 0; color: #4b5563; }
-
-    .headline > div:first-child { min-width: 0; flex: 1; }
-
-    .headline .btn.ghost { margin-left: auto; }
 
     .panel {
       border: 1px solid #d1d5db;
@@ -457,9 +448,13 @@
     </aside>
 
     <main class="main">
-      <header class="meta-header" aria-label="Header dashboard waktu berjalan">
-        <h1 class="meta-title">Builder Form Pendaftaran</h1>
-        <div class="meta-badges">
+      <header class="form-headline" aria-label="Header halaman builder form pendaftaran">
+        <div class="form-headline-copy">
+          <h1 id="pageTitle">Buat Form Pendaftaran</h1>
+          <p id="pageDesc">Atur target pendaftar, visibilitas, kuota, periode, dan field pertanyaan.</p>
+        </div>
+        <div class="form-headline-actions">
+          <a class="btn ghost" href="manajemen-form-pendaftaran.html">Kembali</a>
           <span id="liveDateTime" class="chip">-</span>
           <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -473,13 +468,6 @@
       </header>
 
       <section class="container">
-        <header class="headline">
-          <div>
-            <h1 id="pageTitle">Buat Form Pendaftaran</h1>
-            <p id="pageDesc">Atur target pendaftar, visibilitas, kuota, periode, dan field pertanyaan.</p>
-          </div>
-          <a class="btn ghost" href="manajemen-form-pendaftaran.html">Kembali</a>
-        </header>
 
         <article class="panel">
           <h2>Informasi Form</h2>
