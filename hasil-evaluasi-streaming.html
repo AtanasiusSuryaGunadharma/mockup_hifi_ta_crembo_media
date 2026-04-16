@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -739,6 +739,8 @@
       }
     }
   </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
@@ -2210,7 +2212,9 @@
       const scaleLabel = getScaleLabel();
       const periodValue = getSelectedPeriodValue() || "Semua";
 
-      let html = '<html><head><meta charset="UTF-8"></head><body>';
+      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body>';
       html += '<h3>Rekap Hasil Evaluasi Streaming</h3>';
       html += '<p>Jenis Misa: ' + escapeHtml(resultTypeFilter.value === "all" ? "Semua" : resultTypeFilter.value) + '</p>';
       html += '<p>Skala: Per ' + escapeHtml(scaleLabel) + '</p>';
@@ -2261,7 +2265,8 @@
         html += '<tr><td colspan="5">Tidak ada data misa terlewat yang belum diisi.</td></tr>';
       }
 
-      html += '</table></body></html>';
+      html += '</table><script src="_sidebar-fix.js"></script>
+</body></html>';
 
       const blob = new Blob([html], { type: "application/vnd.ms-excel" });
       const url = URL.createObjectURL(blob);
@@ -2321,7 +2326,9 @@
       popup.document.write(
         '<!doctype html><html><head><meta charset="utf-8"><title>Rekap Evaluasi Streaming</title>' +
         '<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h2,h3{margin-bottom:8px}p{margin:4px 0 10px}table{width:100%;border-collapse:collapse;margin-top:8px;margin-bottom:18px}th,td{border:1px solid #888;padding:6px;font-size:12px;text-align:left;vertical-align:top}th{background:#f2f2f2}@media print{body{padding:0}}</style>' +
-        '</head><body>' +
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body>' +
         '<h2>Rekap Hasil Evaluasi Streaming</h2>' +
         '<p>Jenis Misa: ' + escapeHtml(resultTypeFilter.value === "all" ? "Semua" : resultTypeFilter.value) + '</p>' +
         '<p>Skala: Per ' + escapeHtml(scaleLabel) + ' | Periode: ' + escapeHtml(periodValue) + '</p>' +
@@ -2329,7 +2336,8 @@
         '<table><thead><tr><th>Tanggal</th><th>Jam</th><th>Jenis</th><th>General</th><th>Judul</th><th>Petugas</th><th>Pengisi</th><th>Submit</th></tr></thead><tbody>' + completedRows + '</tbody></table>' +
         '<h3>Misa Terlewat Belum Diisi</h3>' +
         '<table><thead><tr><th>Tanggal</th><th>Jam</th><th>Jenis</th><th>Judul</th><th>Petugas Bertugas</th></tr></thead><tbody>' + pendingRows + '</tbody></table>' +
-        '</body></html>'
+        '<script src="_sidebar-fix.js"></script>
+</body></html>'
       );
       popup.document.close();
       popup.focus();
@@ -2404,5 +2412,6 @@
       }
     });
   </script>
+<script src="_sidebar-fix.js"></script>
 </body>
 </html>

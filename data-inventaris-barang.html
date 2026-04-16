@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -604,6 +604,8 @@
       }
     }
   </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
@@ -1716,7 +1718,9 @@
 
     function exportInventoryExcel() {
       const rows = filterAndSortItems(readInventory());
-      let html = '<html><head><meta charset="UTF-8"></head><body>';
+      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body>';
       html += '<h3>Laporan Data Inventaris Barang</h3>';
       html += '<table border="1" cellspacing="0" cellpadding="6">';
       html += '<tr><th>Kode</th><th>Nama Barang</th><th>Kategori</th><th>Tanggal Beli</th><th>Harga Beli</th><th>Total Unit</th><th>Tersedia</th><th>Dipinjam</th><th>Bisa Dipinjam</th><th>Kondisi</th><th>Status</th><th>Lokasi</th><th>Update Terakhir</th><th>Foto</th><th>Keterangan</th></tr>';
@@ -1745,7 +1749,8 @@
         html += '<tr><td colspan="15">Tidak ada data inventaris sesuai filter.</td></tr>';
       }
 
-      html += '</table></body></html>';
+      html += '</table><script src="_sidebar-fix.js"></script>
+</body></html>';
 
       const blob = new Blob([html], { type: "application/vnd.ms-excel" });
       const url = URL.createObjectURL(blob);
@@ -1789,11 +1794,14 @@
       popup.document.write(
         '<!doctype html><html><head><meta charset="utf-8"><title>Laporan Inventaris Barang</title>' +
         '<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h2{margin:0 0 8px}p{margin:4px 0 12px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #888;padding:6px;font-size:12px;text-align:left;vertical-align:top}th{background:#f2f2f2}@media print{body{padding:0}}</style>' +
-        '</head><body>' +
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body>' +
         '<h2>Laporan Data Inventaris Barang</h2>' +
         '<p>Filter: ' + escapeHtml(activeFilterChip.textContent || 'Semua') + '</p>' +
         '<table><thead><tr><th>Kode</th><th>Nama Barang</th><th>Kategori</th><th>Tanggal Beli</th><th>Harga Beli</th><th>Total</th><th>Tersedia</th><th>Dipinjam</th><th>Bisa Dipinjam</th><th>Kondisi</th><th>Status</th><th>Lokasi</th><th>Foto</th><th>Keterangan</th></tr></thead><tbody>' + bodyRows + '</tbody></table>' +
-        '</body></html>'
+        '<script src="_sidebar-fix.js"></script>
+</body></html>'
       );
       popup.document.close();
       popup.focus();
@@ -1912,5 +1920,6 @@
     updatePageDateTime();
     setInterval(updatePageDateTime, 1000);
   </script>
+<script src="_sidebar-fix.js"></script>
 </body>
 </html>

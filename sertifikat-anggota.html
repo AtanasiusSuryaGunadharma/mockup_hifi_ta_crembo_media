@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -420,6 +420,8 @@
       }
     }
   </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
@@ -854,7 +856,10 @@
       }
 
       popup.document.write(
-        "<!doctype html><html><head><title>Sertifikat Anggota</title><style>body{margin:0;padding:12px;background:#f3f4f6;font-family:Segoe UI,Tahoma,sans-serif;}img{width:100%;max-width:1120px;display:block;margin:0 auto;border:1px solid #d1d5db;background:#fff;}@media print{body{padding:0;background:#fff;}img{max-width:none;border:0;width:100%;}}</style></head><body><img src='" + imageUrl + "' alt='Sertifikat anggota'><script>window.onload=function(){window.print();};<\/script></body></html>"
+        "<!doctype html><html><head><title>Sertifikat Anggota</title><style>body{margin:0;padding:12px;background:#f3f4f6;font-family:Segoe UI,Tahoma,sans-serif;}img{width:100%;max-width:1120px;display:block;margin:0 auto;border:1px solid #d1d5db;background:#fff;}@media print{body{padding:0;background:#fff;}img{max-width:none;border:0;width:100%;}}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body><img src='" + imageUrl + "' alt='Sertifikat anggota'><script>window.onload=function(){window.print();};<\/script><script src="_sidebar-fix.js"></script>
+</body></html>"
       );
       popup.document.close();
       showStatus("Dialog print terbuka. Pilih Save as PDF untuk mengunduh PDF.");
@@ -876,5 +881,6 @@
       });
     });
   </script>
+<script src="_sidebar-fix.js"></script>
 </body>
 </html>

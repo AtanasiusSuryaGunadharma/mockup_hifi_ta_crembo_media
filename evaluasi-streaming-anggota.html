@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -90,6 +90,8 @@
     }
     @media (max-width: 720px) { .toolbar { grid-template-columns: 1fr; } .stat-row { grid-template-columns: 1fr; } }
   </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
@@ -189,5 +191,6 @@
     cardList.addEventListener("click", function (event) { const button = event.target.closest("button[data-open-session]"); if (!button) return; selectedSessionId = button.getAttribute("data-open-session") || ""; renderList(); renderDetail(); });
     readEvaluations(); readQuestionConfig(); selectedSessionId = Object.keys(evaluations)[0] || SESSIONS[0].id; memberName.textContent = "Atanasius Surya Guna"; renderList(); renderDetail(); updateLiveDateTime(); setInterval(updateLiveDateTime, 1000);
   </script>
+<script src="_sidebar-fix.js"></script>
 </body>
 </html>

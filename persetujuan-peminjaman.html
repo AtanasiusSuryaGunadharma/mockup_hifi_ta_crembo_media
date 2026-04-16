@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -119,6 +119,8 @@
       .toolbar-grid, .summary-grid { grid-template-columns: 1fr; }
     }
   </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
 </head>
 <body>
   <div class="layout">
@@ -843,7 +845,9 @@
 
     function downloadExcel() {
       const list = filteredRequests();
-      let html = '<html><head><meta charset="UTF-8"></head><body>';
+      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body>';
       html += '<h3>Laporan Persetujuan Peminjaman Barang</h3>';
       html += '<table border="1" cellspacing="0" cellpadding="6">';
       html += '<tr><th>Kode</th><th>Peminjam</th><th>Barang</th><th>Jumlah</th><th>Tanggal Pinjam</th><th>Target Kembali</th><th>Keperluan</th><th>Status</th><th>Diproses Oleh</th><th>Diproses Pada</th><th>Catatan</th></tr>';
@@ -866,7 +870,8 @@
           '</tr>';
         });
       }
-      html += '</table></body></html>';
+      html += '</table><script src="_sidebar-fix.js"></script>
+</body></html>';
 
       const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
       const url = URL.createObjectURL(blob);
@@ -904,9 +909,12 @@
       popup.document.write(
         '<!doctype html><html><head><meta charset="utf-8"><title>Laporan Persetujuan Peminjaman</title>' +
         '<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h2{margin:0 0 8px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #888;padding:6px;font-size:12px;text-align:left;vertical-align:top}th{background:#f2f2f2}</style>' +
-        '</head><body><h2>Laporan Persetujuan Peminjaman Barang</h2>' +
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_admin-theme.css">
+</head><body><h2>Laporan Persetujuan Peminjaman Barang</h2>' +
         '<table><thead><tr><th>Kode</th><th>Peminjam</th><th>Barang</th><th>Qty</th><th>Tgl Pinjam</th><th>Tgl Kembali</th><th>Status</th><th>Catatan</th></tr></thead><tbody>' + bodyRows + '</tbody></table>' +
-        '</body></html>'
+        '<script src="_sidebar-fix.js"></script>
+</body></html>'
       );
       popup.document.close();
       popup.focus();
@@ -948,5 +956,6 @@
 
     renderTable();
   </script>
+<script src="_sidebar-fix.js"></script>
 </body>
 </html>
