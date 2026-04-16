@@ -128,7 +128,8 @@
     }
     .panel-head h2{margin:0;font-size:0.95rem;font-weight:700;color:var(--ink);}
     .panel-body{padding:14px;}
-    table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+    .activity-table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    table{width:100%;border-collapse:collapse;font-size:0.82rem;min-width:620px;}
     th,td{border:1px solid var(--line-soft);padding:9px 10px;text-align:left;vertical-align:top;}
     th{background:rgba(128,0,0,0.04);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.03em;color:var(--primary);font-weight:700;}
     .status{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:0.71rem;background:rgba(128,0,0,0.06);color:var(--primary);font-weight:600;white-space:nowrap;}
@@ -178,8 +179,36 @@
     .mini-btn.ghost:hover{border-color:var(--primary);background:rgba(128,0,0,0.04);}
     .notification-empty{border:1px dashed var(--line);border-radius:var(--radius-sm);padding:14px;font-size:0.84rem;color:var(--muted);background:#fff;text-align:center;}
 
+    .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(12,18,32,0.36);backdrop-filter:blur(1px);z-index:25;}
+    .sidebar-backdrop.show{display:block;}
+
     @media(max-width:1080px){.cards{grid-template-columns:repeat(2,minmax(150px,1fr));}.content-grid{grid-template-columns:1fr;}.chart-row{grid-template-columns:1fr;}.notification-tools{grid-template-columns:1fr;}}
-    @media(max-width:860px){.layout{grid-template-columns:1fr;}.sidebar{display:none;position:static;height:auto;}.sidebar.show{display:block;}.mobile-toggle{display:inline-block;}.topbar{flex-direction:column;align-items:flex-start;}.dashboard-headline-bar{flex-direction:column;align-items:flex-start;}.quick-filter{justify-content:flex-start;}}
+    @media(max-width:860px){
+      .layout{grid-template-columns:1fr;}
+      .sidebar{
+        display:block;
+        position:fixed;
+        top:0;left:0;
+        width:min(290px,86vw);
+        height:100vh;
+        z-index:30;
+        transform:translateX(-102%);
+        transition:transform 220ms ease;
+      }
+      .sidebar.show{transform:translateX(0);}
+      .mobile-toggle{display:inline-block;}
+      .topbar{flex-direction:column;align-items:flex-start;}
+      .dashboard-headline-bar{flex-direction:column;align-items:flex-start;}
+      .quick-filter{justify-content:flex-start;}
+      .activity-table-wrap{overflow:visible;}
+      .activity-table-wrap table{min-width:0;}
+      .activity-table-wrap thead{display:none;}
+      .activity-table-wrap tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border:1px solid var(--line-soft);border-radius:12px;padding:10px;margin-bottom:10px;background:#fff;}
+      .activity-table-wrap tbody td{display:flex;justify-content:space-between;gap:8px;border:0;padding:4px 0;min-width:0;}
+      .activity-table-wrap tbody td::before{content:attr(data-label);font-size:0.68rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.03em;flex:0 0 42%;}
+      .activity-table-wrap tbody td:last-child{grid-column:1 / -1;}
+      .activity-table-wrap tbody td:last-child::before{flex-basis:34%;}
+    }
     @media(max-width:520px){.cards{grid-template-columns:1fr;}}
   </style>
 </head>
@@ -254,6 +283,7 @@
         <a href="login.html">Keluar Dashboard</a>
       </div>
     </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
     <main class="main">
       <header class="dashboard-headline-bar" aria-label="Header dashboard waktu berjalan">
@@ -356,6 +386,7 @@
             <span class="status" id="logRuleStatus">Aturan log</span>
           </header>
           <div class="panel-body">
+            <div class="activity-table-wrap">
             <table>
               <thead>
                 <tr>
@@ -367,31 +398,32 @@
               </thead>
               <tbody id="logRows">
                 <tr>
-                  <td>08:10</td>
-                  <td>admin_andi</td>
-                  <td>Peminjaman</td>
-                  <td>Menyetujui permintaan mixer audio</td>
+                  <td data-label="Waktu">08:10</td>
+                  <td data-label="Pengguna">admin_andi</td>
+                  <td data-label="Modul">Peminjaman</td>
+                  <td data-label="Aktivitas">Menyetujui permintaan mixer audio</td>
                 </tr>
                 <tr>
-                  <td>09:25</td>
-                  <td>anggota_sinta</td>
-                  <td>Streaming</td>
-                  <td>Request tukar jadwal operator</td>
+                  <td data-label="Waktu">09:25</td>
+                  <td data-label="Pengguna">anggota_sinta</td>
+                  <td data-label="Modul">Streaming</td>
+                  <td data-label="Aktivitas">Request tukar jadwal operator</td>
                 </tr>
                 <tr>
-                  <td>11:02</td>
-                  <td>admin_andi</td>
-                  <td>Pengumuman</td>
-                  <td>Publish pengumuman jadwal latihan</td>
+                  <td data-label="Waktu">11:02</td>
+                  <td data-label="Pengguna">admin_andi</td>
+                  <td data-label="Modul">Pengumuman</td>
+                  <td data-label="Aktivitas">Publish pengumuman jadwal latihan</td>
                 </tr>
                 <tr>
-                  <td>13:44</td>
-                  <td>anggota_rafa</td>
-                  <td>Status Anggota</td>
-                  <td>Ajukan perubahan status nonaktif</td>
+                  <td data-label="Waktu">13:44</td>
+                  <td data-label="Pengguna">anggota_rafa</td>
+                  <td data-label="Modul">Status Anggota</td>
+                  <td data-label="Aktivitas">Ajukan perubahan status nonaktif</td>
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </article>
 
@@ -831,11 +863,11 @@
       }
 
       const extra = document.createElement("tr");
-      extra.innerHTML = "<td>15:05</td><td>admin_maria</td><td>Anggota</td><td>Mengubah status anggota menjadi aktif</td>";
+      extra.innerHTML = "<td data-label='Waktu'>15:05</td><td data-label='Pengguna'>admin_maria</td><td data-label='Modul'>Anggota</td><td data-label='Aktivitas'>Mengubah status anggota menjadi aktif</td>";
       logRows.appendChild(extra);
 
       const extra2 = document.createElement("tr");
-      extra2.innerHTML = "<td>16:40</td><td>super_admin_lia</td><td>Log Sistem</td><td>Mengekspor audit aktivitas bulanan</td>";
+      extra2.innerHTML = "<td data-label='Waktu'>16:40</td><td data-label='Pengguna'>super_admin_lia</td><td data-label='Modul'>Log Sistem</td><td data-label='Aktivitas'>Mengekspor audit aktivitas bulanan</td>";
       logRows.appendChild(extra2);
     }
 
@@ -1121,8 +1153,17 @@
 
     const mobileSidebarBtn = document.getElementById("mobileSidebarBtn");
     const sidebar = document.getElementById("sidebar");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
     mobileSidebarBtn.addEventListener("click", function () {
-      sidebar.classList.toggle("show");
+      const isOpen = sidebar.classList.toggle("show");
+      sidebarBackdrop.classList.toggle("show", isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+
+    sidebarBackdrop.addEventListener("click", function () {
+      sidebar.classList.remove("show");
+      sidebarBackdrop.classList.remove("show");
+      document.body.style.overflow = "";
     });
   </script>
 </body>
