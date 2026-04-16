@@ -150,6 +150,26 @@
     .headline h2 { margin: 0; font-size: clamp(1.2rem, 2.1vw, 1.9rem); }
     .headline p { margin: 4px 0 0; color: #4b5563; font-size: 0.86rem; }
 
+    .head-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .world-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid #6b7280;
+      background: #fff;
+      color: #374151;
+      text-decoration: none;
+    }
+
     .mobile-toggle {
       display: none;
       border: 1px solid var(--line);
@@ -345,14 +365,6 @@
         </div>
       </div>
 
-      <div class="menu-group">
-        <button class="group-toggle" type="button">Akun & Otorisasi <span>-</span></button>
-        <div class="group-items">
-          <a class="menu-link active" href="profil-admin.html">Profil Admin</a>
-          <a id="manageAdminLink" class="menu-link" href="kelola-data-admin.html">Kelola Data Admin</a>
-        </div>
-      </div>
-
       <div class="side-actions">
         <a href="dashboard.html">Kembali ke Dashboard</a>
         <a href="home.html">Kembali ke Beranda</a>
@@ -366,7 +378,17 @@
           <h2>Profil Saya</h2>
           <p>Pengaturan profil akun admin/super admin dan ringkasan wewenang akses modul.</p>
         </div>
-        <span id="liveDateTime" class="chip">-</span>
+        <div class="head-meta">
+          <span id="liveDateTime" class="chip">-</span>
+          <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+              <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+          </a>
+        </div>
       </header>
 
       <section class="content-grid">
@@ -482,8 +504,6 @@
     const roleBadge = document.getElementById("roleBadge");
     const sidebar = document.getElementById("sidebar");
     const mobileSidebarBtn = document.getElementById("mobileSidebarBtn");
-    const manageAdminLink = document.getElementById("manageAdminLink");
-
     const profileForm = document.getElementById("profileForm");
     const fullNameInput = document.getElementById("fullNameInput");
     const emailInput = document.getElementById("emailInput");
@@ -643,10 +663,6 @@
     function renderProfile() {
       roleBadge.textContent = "Role: " + formatRole(role);
       roleInput.value = formatRole(role);
-
-      if (role !== "super_admin") {
-        manageAdminLink.style.display = "none";
-      }
 
       if (role === "super_admin") {
         const profile = readSuperAdminProfile();
