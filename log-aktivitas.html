@@ -91,20 +91,21 @@
     .main { min-width: 0; padding: 0; }
 
     .head {
-      height: 64px;
-      border-bottom: 1px solid #d2d2d2;
-      background: #f7f7f7;
+      min-height: 64px;
+      border-bottom: 1px solid #7f1d1d;
+      background: linear-gradient(135deg, #991b1b 0%, #b91c1c 55%, #7f1d1d 100%);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 14px;
+      padding: 10px 14px;
       position: sticky;
       top: 0;
       z-index: 5;
       gap: 8px;
+      border-radius: 0 0 12px 12px;
     }
 
-    .head h1 { margin: 0; font-size: 1.02rem; }
+    .head h1 { margin: 0; font-size: 1.02rem; color: #ffffff; }
 
     .head-right {
       display: flex;
@@ -112,22 +113,23 @@
       gap: 8px;
       flex-wrap: wrap;
       font-size: 0.8rem;
-      color: #374151;
+      color: #ffffff;
       font-weight: 600;
     }
 
     .chip {
-      border: 1px solid #a8a8a8;
+      border: 1px solid rgba(255, 255, 255, 0.55);
       border-radius: 999px;
       padding: 4px 10px;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
       font-size: 0.74rem;
       white-space: nowrap;
     }
 
     .back {
       text-decoration: none;
-      border: 1px solid #1f2937;
+      border: 1px solid #ffffff;
       border-radius: 8px;
       padding: 6px 10px;
       color: #111827;
@@ -408,10 +410,10 @@
         <h1>Log Aktivitas Pengguna</h1>
         <div class="head-right">
           <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+          <a id="backLink" class="back" href="dashboard.html">Kembali</a>
           <span id="roleChip" class="chip">Role: -</span>
           <span id="userChip" class="chip">Pengguna: -</span>
           <span id="liveDateTime" class="chip">-</span>
-          <a id="backLink" class="back" href="dashboard.html">Kembali</a>
         </div>
       </header>
 
@@ -853,8 +855,6 @@
 
       return "<!doctype html><html><head><meta charset='utf-8'><title>Laporan Log Aktivitas</title>"
         + "<style>body{font-family:Arial,sans-serif;padding:18px;color:#111}h1{margin:0 0 6px}p{margin:3px 0 10px;font-size:12px;color:#444}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:6px;vertical-align:top;text-align:left}th{background:#f1f1f1} .muted{font-size:11px;color:#666}</style>"
-        + '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">'
-        + '<link rel="stylesheet" href="_admin-theme.css">'
         + '</head><body>'
         + "<h1>Laporan Log Aktivitas</h1>"
         + "<p>Role: " + escapeHtml(formatRoleLabel(currentRole)) + " | User: " + escapeHtml(currentUserId) + "</p>"
@@ -862,8 +862,7 @@
         + "<p class='muted'>Total data: " + rows.length + " log</p>"
         + "<table><thead><tr><th>Waktu</th><th>Pengguna</th><th>Role</th><th>Aksi</th><th>Modul</th><th>Deskripsi</th><th>Route</th><th>IP</th></tr></thead><tbody>"
         + (bodyRows || "<tr><td colspan='8'>Tidak ada data.</td></tr>")
-        + "</tbody></table>"
-        + '<script src="_sidebar-fix.js"></script></body></html>';
+        + "</tbody></table></body></html>";
     }
 
     function openPdfPreview() {
