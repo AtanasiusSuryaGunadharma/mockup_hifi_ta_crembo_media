@@ -150,6 +150,26 @@
     .headline h2 { margin: 0; font-size: clamp(1.2rem, 2.2vw, 1.95rem); }
     .headline p { margin: 4px 0 0; color: #4b5563; font-size: 0.86rem; }
 
+    .meta-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .world-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid #6b7280;
+      background: #fff;
+      color: #374151;
+      text-decoration: none;
+    }
+
     .chip {
       border: 1px solid #1f1f1f;
       background: #fafafa;
@@ -378,7 +398,18 @@
             <h2>Kelola Data Admin</h2>
             <p>Atur admin operasional dan tentukan hak aksesnya ke modul utama website.</p>
           </div>
-          <span class="chip" id="adminCountChip">Total Admin: 0</span>
+          <div class="meta-badges">
+            <span class="chip" id="adminCountChip">Total Admin: 0</span>
+            <span class="chip" id="liveDateTime">-</span>
+            <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"></circle>
+                <path d="M3 12H21" stroke="currentColor" stroke-width="1.8"></path>
+                <path d="M12 3C14.3 5.5 15.6 8.7 15.6 12C15.6 15.3 14.3 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+                <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
+              </svg>
+            </a>
+          </div>
         </section>
 
         <section class="grid">
@@ -465,6 +496,7 @@
     const blockedBox = document.getElementById("blockedBox");
     const adminContent = document.getElementById("adminContent");
     const adminCountChip = document.getElementById("adminCountChip");
+    const liveDateTime = document.getElementById("liveDateTime");
     const adminTableBody = document.getElementById("adminTableBody");
     const adminForm = document.getElementById("adminForm");
     const formTitle = document.getElementById("formTitle");
@@ -723,6 +755,20 @@
       resetForm();
     }
 
+    function updateLiveDateTime() {
+      const now = new Date();
+      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+      const day = dayNames[now.getDay()];
+      const date = String(now.getDate()).padStart(2, "0");
+      const month = monthNames[now.getMonth()];
+      const year = now.getFullYear();
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+      liveDateTime.textContent = day + ", " + date + " " + month + " " + year + " " + hour + ":" + minute + ":" + second;
+    }
+
     function setupAccessGuard() {
       const session = readSession();
       const role = String(session.role || "admin");
@@ -760,6 +806,8 @@
     loadAdmins();
     resetForm();
     renderTable();
+    updateLiveDateTime();
+    setInterval(updateLiveDateTime, 1000);
   </script>
 <script src="_sidebar-fix.js"></script>
 </body>

@@ -1142,17 +1142,14 @@
         + 'th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;vertical-align:top;}'
         + 'th{background:#f3f4f6;text-transform:uppercase;font-size:0.72rem;}'
         + '@media print{.toolbar{display:none;}body{background:#fff;} .page{margin:0;max-width:none;border:0;border-radius:0;padding:0;}}'
-        + '</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body>'
+        + '</style></head><body>'
         + '<div class="toolbar"><h1>Preview Laporan Data Anggota</h1><div class="actions"><button onclick="window.print()">Download PDF</button><button onclick="window.close()">Tutup</button></div></div>'
         + '<main class="page">'
         + '<h2 style="margin:0 0 8px;">Laporan Data Daftar Anggota</h2>'
         + '<div class="meta"><span>Total data: ' + rows.length + ' anggota</span><span>Dibuat pada: ' + generatedAt + '</span><span>Sumber: Modul Manajemen Data Anggota - Crembo Media</span></div>'
         + '<table><thead><tr><th>No</th><th>Nama</th><th>Email</th><th>No WA</th><th>Alamat</th><th>Tanggal Lahir</th><th>Role</th><th>Status</th></tr></thead><tbody>'
         + tableRows
-        + '</tbody></table></main><script src="_sidebar-fix.js"></script>
-</body></html>';
+        + '</tbody></table></main></body></html>';
     }
 
     function openMemberReportPreview() {
@@ -1194,15 +1191,12 @@
           + '</tr>';
       }).join("");
 
-      const excelHtml = '<html><head><meta charset="utf-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body>'
+      const excelHtml = '<html><head><meta charset="utf-8"></head><body>'
         + '<table border="1">'
         + tableHeader
         + tableBody
         + '</table>'
-        + '<script src="_sidebar-fix.js"></script>
-</body></html>';
+        + '</body></html>';
 
       const blob = new Blob(["\ufeff", excelHtml], { type: "application/vnd.ms-excel;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
