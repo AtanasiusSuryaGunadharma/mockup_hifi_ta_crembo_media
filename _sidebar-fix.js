@@ -66,12 +66,54 @@
     '#mobileSidebarBtn, #mobileMenuBtn, .mobile-toggle, .mobile-menu'
   ));
 
+  if (sidebar && mobileBtns.length === 0) {
+    var headerHost = document.querySelector('.headline, .topbar, .header, .head, .dashboard-headline-bar');
+    if (headerHost) {
+      var autoMenu = document.createElement('button');
+      autoMenu.id = 'mobileSidebarBtn';
+      autoMenu.type = 'button';
+      autoMenu.className = 'mobile-toggle';
+      autoMenu.textContent = 'Menu';
+
+      var firstBlock = headerHost.firstElementChild;
+      if (firstBlock && firstBlock !== autoMenu) {
+        firstBlock.parentNode.insertBefore(autoMenu, firstBlock);
+      } else {
+        headerHost.insertBefore(autoMenu, headerHost.firstChild);
+      }
+      mobileBtns.push(autoMenu);
+    }
+  }
+
+  var sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  if (sidebar && !sidebarBackdrop) {
+    sidebarBackdrop = document.createElement('div');
+    sidebarBackdrop.id = 'sidebarBackdrop';
+    sidebarBackdrop.className = 'sidebar-backdrop';
+    sidebarBackdrop.setAttribute('aria-hidden', 'true');
+    if (sidebar.parentNode) {
+      sidebar.parentNode.insertBefore(sidebarBackdrop, sidebar.nextSibling);
+    } else {
+      document.body.appendChild(sidebarBackdrop);
+    }
+  }
+
+  function closeSidebar() {
+    if (!sidebar) return;
+    sidebar.classList.remove('show');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
   mobileBtns.forEach(function (btn) {
     if (!btn || btn._mobileFixed) return;
     btn._mobileFixed = true;
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      if (sidebar) sidebar.classList.toggle('show');
+      if (!sidebar) return;
+      var isOpen = sidebar.classList.toggle('show');
+      if (sidebarBackdrop) sidebarBackdrop.classList.toggle('show', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
   });
 
@@ -81,6 +123,17 @@
     if (sidebar.contains(e.target)) return;
     var isMobileBtn = mobileBtns.some(function (b) { return b && b.contains(e.target); });
     if (!isMobileBtn) sidebar.classList.remove('show');
+  });
+
+  if (sidebarBackdrop && !sidebarBackdrop._mobileFixed) {
+    sidebarBackdrop._mobileFixed = true;
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+  }
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 860) {
+      closeSidebar();
+    }
   });
 
   /* ── 6. Consistent topbar: inject datetime + globe if missing ── */

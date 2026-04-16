@@ -1097,17 +1097,19 @@ button.btn {
   .layout { grid-template-columns: 1fr; }
 
   .sidebar {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 100;
-    width: 280px;
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.35);
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: min(290px, 86vw) !important;
+    height: 100vh !important;
+    z-index: 30 !important;
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.35) !important;
+    transform: translateX(-102%) !important;
+    transition: transform 220ms ease !important;
   }
 
-  .sidebar.show { display: block; }
+  .sidebar.show { transform: translateX(0) !important; }
 
   .mobile-toggle,
   .mobile-menu { display: inline-flex; }
@@ -1115,6 +1117,17 @@ button.btn {
   .headline { flex-direction: column; align-items: flex-start; }
   .dashboard-headline-bar { flex-direction: column; align-items: flex-start; }
 }
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 18, 32, 0.36);
+  backdrop-filter: blur(1px);
+  z-index: 25;
+}
+
+.sidebar-backdrop.show { display: block; }
 
 @media (max-width: 520px) {
   .cards { grid-template-columns: 1fr; }
