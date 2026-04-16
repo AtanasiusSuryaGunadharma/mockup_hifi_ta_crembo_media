@@ -212,37 +212,110 @@
     }
 
     .main {
-      padding: 0;
+      padding: 20px;
       min-width: 0;
     }
 
-    .header {
-      height: 66px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--line);
+    .dashboard-headline-bar {
+      background: linear-gradient(135deg, var(--primary-deeper), var(--primary));
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .dashboard-headline-bar h1 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .head-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .topbar {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--primary-deeper), var(--primary));
+      border-radius: var(--radius);
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 0 18px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      box-shadow: var(--soft-shadow);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
     }
 
-    .header h1 {
+    .topbar::before { display: none; content: none; }
+
+    .mobile-toggle {
+      display: none;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+
+    .mobile-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .headline {
       margin: 0;
-      font-size: 1.05rem;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 700;
+      color: #fff;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.25;
     }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #374151;
-      font-size: 0.82rem;
-      font-weight: 600;
+    .subhead {
+      margin: 3px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.84rem;
     }
+
+    .quick-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      padding: 5px 11px;
+      font-size: 0.74rem;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: 600;
+      white-space: normal;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    .chip strong { color: var(--accent-gold-light); }
 
     .header-notification {
       position: relative;
@@ -306,7 +379,7 @@
     }
 
     .content {
-      padding: 18px;
+      padding: 0;
       display: grid;
       gap: 14px;
     }
@@ -856,30 +929,47 @@
     }
 
     @media (max-width: 860px) {
-      .content { padding: 14px; }
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        padding: 14px;
+      .content { padding: 0; }
+      .main { padding: 14px; }
+      .sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: min(290px, 86vw);
+        height: 100vh;
+        z-index: 30;
+        transform: translateX(-102%);
+        transition: transform 220ms ease;
       }
-      .header-right {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .cards { grid-template-columns: 1fr; }
-      .task-grid { grid-template-columns: 1fr; }
-      .cta-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 520px) {
-      .content { padding: 12px; }
-      .stat h2 { font-size: 1.8rem; }
-      .panel-head, .chart-head { padding: 12px 14px; }
+      .sidebar.show { transform: translateX(0); }
+      .mobile-toggle { display: inline-block; }
+      .dashboard-headline-bar { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .dashboard-headline-bar > div:first-child { width: 100%; min-width: 0; }
+      .topbar { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .topbar > div:first-child { width: 100%; min-width: 0; }
+      .quick-filter { justify-content: flex-start; }
+      .quick-filter .chip { display: inline-block; width: 100%; }
       .notification-tools { grid-template-columns: 1fr; }
       .notification-tabs { gap: 6px; }
       .notification-tab { width: calc(50% - 3px); }
+      .cards { grid-template-columns: 1fr; }
+      .task-grid { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .activity-table-wrap { overflow: visible; }
+      .activity-table-wrap table { min-width: 0; }
+      .activity-table-wrap thead { display: none; }
+      .activity-table-wrap tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; border: 1px solid var(--line-soft); border-radius: 12px; padding: 10px; margin-bottom: 10px; background: #fff; }
+      .activity-table-wrap tbody td { display: flex; justify-content: space-between; gap: 8px; border: 0; padding: 4px 0; min-width: 0; }
+      .activity-table-wrap tbody td::before { content: attr(data-label); font-size: 0.68rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.03em; flex: 0 0 42%; }
+      .activity-table-wrap tbody td:last-child { grid-column: 1 / -1; }
+      .activity-table-wrap tbody td:last-child::before { flex-basis: 34%; }
+    }
+
+    @media (max-width: 520px) {
+      .main { padding: 12px; }
+      .stat h2 { font-size: 1.8rem; }
+      .panel-head, .chart-head { padding: 12px 14px; }
       .chart-area { height: 200px; }
     }
   </style>
@@ -903,17 +993,17 @@
       </div>
 
       <div class="menu-group open">
-        <button class="menu-toggle" type="button">Dashboard Utama <span>-</span></button>
+        <button class="menu-toggle" type="button">Ringkasan <span>-</span></button>
         <div class="menu-items">
-          <a class="menu-link active" href="#">Ringkasan Dashboard</a>
+          <a class="menu-link active" href="#">Dashboard Utama</a>
           <a class="menu-link" href="profil-anggota.html">Profil Saya</a>
           <a class="menu-link" href="sertifikat-anggota.html">Unduh Sertifikat Anggota</a>
           <a class="menu-link" href="log-aktivitas.html?role=anggota">Log Aktivitas Saya</a>
         </div>
       </div>
 
-      <div class="menu-group open">
-        <button class="menu-toggle" type="button">Tugas Streaming / Multimedia <span>-</span></button>
+      <div class="menu-group">
+        <button class="menu-toggle" type="button">Tugas Streaming <span>+</span></button>
         <div class="menu-items">
           <a class="menu-link" href="jadwal-tugas-misa-anggota.html">Jadwal Tugas Misa Biasa/Misa Besar</a>
           <a class="menu-link" href="request-tugas-anggota.html">Request Tugas Anggota</a>
@@ -958,10 +1048,10 @@
     <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
     <main class="main">
-      <header class="header">
-        <h1>Dashboard Anggota</h1>
-        <div class="header-right">
-          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
+      <header class="dashboard-headline-bar" aria-label="Header dashboard waktu berjalan">
+        <button id="mobileMenuBtn" class="mobile-toggle" type="button">Menu</button>
+        <h1>Dashboard</h1>
+        <div class="head-meta">
           <button id="notificationBtn" class="header-notification" type="button" aria-label="Buka notifikasi" title="Notifikasi">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 9C6 5.7 8.7 3 12 3C15.3 3 18 5.7 18 9V12.2L19.6 15.4C19.8 15.8 19.7 16.3 19.4 16.6C19.2 16.9 18.8 17 18.4 17H5.6C5.2 17 4.8 16.9 4.6 16.6C4.3 16.3 4.2 15.8 4.4 15.4L6 12.2V9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path>
@@ -978,6 +1068,18 @@
               <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
             </svg>
           </a>
+        </div>
+      </header>
+
+      <header class="topbar">
+        <div>
+          <h2 class="headline">Dashboard Anggota Crembo Media</h2>
+          <p class="subhead">Menu anggota mengikuti pola dashboard admin: ringkas, responsif, dan mudah dibaca di mobile.</p>
+        </div>
+        <div class="quick-filter" aria-label="Ringkasan cepat anggota">
+          <span class="chip"><strong id="metricQuickLabel">Jadwal:</strong> Minggu Ini</span>
+          <span class="chip"><strong>Task:</strong> Aktif</span>
+          <span class="chip"><strong>Notifikasi:</strong> <span id="notificationCountChip">5</span></span>
         </div>
       </header>
 
@@ -1167,7 +1269,18 @@
     menuGroups.forEach(function (group) {
       const btn = group.querySelector(".menu-toggle");
       btn.addEventListener("click", function () {
-        group.classList.toggle("open");
+        const isOpen = group.classList.toggle("open");
+        if (isOpen) {
+          menuGroups.forEach(function (otherGroup) {
+            if (otherGroup !== group) {
+              otherGroup.classList.remove("open");
+              const otherBtn = otherGroup.querySelector(".menu-toggle span");
+              if (otherBtn) {
+                otherBtn.textContent = "+";
+              }
+            }
+          });
+        }
         const mark = btn.querySelector("span");
         mark.textContent = group.classList.contains("open") ? "-" : "+";
       });
@@ -1227,6 +1340,7 @@
     const taskFilterYearSelect = document.getElementById("taskFilterYear");
     const notificationBtn = document.getElementById("notificationBtn");
     const notificationCount = document.getElementById("notificationCount");
+    const notificationCountChip = document.getElementById("notificationCountChip");
     const notificationPanel = document.getElementById("notificationPanel");
     const notificationSearch = document.getElementById("notificationSearch");
     const notificationTypeFilter = document.getElementById("notificationTypeFilter");
@@ -1349,7 +1463,11 @@
         return matchesTab && matchesType && matchesStatus && matchesKeyword;
       });
 
-      notificationCount.textContent = String(items.filter(function (item) { return item.status === "unread"; }).length);
+      const unreadCount = String(items.filter(function (item) { return item.status === "unread"; }).length);
+      notificationCount.textContent = unreadCount;
+      if (notificationCountChip) {
+        notificationCountChip.textContent = unreadCount;
+      }
 
       if (!filtered.length) {
         notificationList.innerHTML = '<div class="empty">Tidak ada notifikasi sesuai filter.</div>';
