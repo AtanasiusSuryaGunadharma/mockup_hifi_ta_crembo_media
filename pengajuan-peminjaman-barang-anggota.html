@@ -791,6 +791,55 @@
       .barang-grid { grid-template-columns: 1fr; }
       .search-box { width: 100%; }
     }
+
+    @media (max-width: 768px) {
+      #pengajuan .table-wrap {
+        overflow-x: visible;
+      }
+
+      #pengajuan table {
+        min-width: 0;
+      }
+
+      #pengajuan thead {
+        display: none;
+      }
+
+      #pengajuan tbody {
+        display: grid;
+        gap: 10px;
+      }
+
+      #pengajuan tr {
+        display: block;
+        border: 1px solid #dbe2ef;
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      #pengajuan td {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 8px;
+        border-bottom: 1px dashed #e5e9f2;
+        padding: 8px 0;
+      }
+
+      #pengajuan td:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      #pengajuan td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #64748b;
+        font-weight: 700;
+      }
+    }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_admin-theme.css">
@@ -1330,12 +1379,12 @@
         const periode = item.tanggalMulai + " sd " + item.tanggalSelesai;
 
         return '<tr>'
-          + '<td>' + item.barangNama + '</td>'
-          + '<td>' + item.jumlahDiminta + '</td>'
-          + '<td style="font-size: 0.75rem;">' + periode + '</td>'
-          + '<td>' + item.tanggalPengajuan + '</td>'
-          + '<td>' + statusHtml + '</td>'
-          + '<td>' + actionHtml + '</td>'
+          + '<td data-label="Barang">' + item.barangNama + '</td>'
+          + '<td data-label="Jumlah">' + item.jumlahDiminta + '</td>'
+          + '<td data-label="Periode" style="font-size: 0.75rem;">' + periode + '</td>'
+          + '<td data-label="Tanggal Pengajuan">' + item.tanggalPengajuan + '</td>'
+          + '<td data-label="Status">' + statusHtml + '</td>'
+          + '<td data-label="Aksi">' + actionHtml + '</td>'
           + '</tr>';
       }).join("");
     }
