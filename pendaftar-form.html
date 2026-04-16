@@ -120,34 +120,38 @@
     .main { padding: 16px; }
 
     .meta-header {
-      border: 1px solid #cfcfcf;
-      background: #f3f3f3;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+      box-shadow: var(--shadow);
     }
 
     .meta-title {
       margin: 0;
-      font-size: 1.35rem;
-      font-weight: 700;
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-weight: 800;
+      color: #fff;
     }
 
     .meta-badges {
-      display: flex;
+      display: inline-flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
+      color: rgba(255, 255, 255, 0.92);
     }
 
     .chip {
-      border: 1px solid #1f1f1f;
-      background: #fafafa;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
       border-radius: 999px;
       padding: 5px 10px;
       font-size: 0.76rem;
@@ -161,29 +165,64 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      border: 1px solid #6b7280;
-      background: #fff;
-      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
       text-decoration: none;
     }
 
     .world-link svg { width: 18px; height: 18px; }
 
     .headline {
-      border: 1px solid #cfcfcf;
-      background: #f3f3f3;
+      border: 1px solid #d6d8de;
+      background: #fff;
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+      box-shadow: var(--shadow);
     }
 
-    .headline h2 { margin: 0; font-size: clamp(1.2rem, 2.1vw, 1.9rem); }
+    .headline h2 { margin: 0; font-size: clamp(1.18rem, 2vw, 1.6rem); }
     .headline p { margin: 4px 0 0; color: #4b5563; font-size: 0.86rem; }
+
+    .headline > div:first-child { min-width: 0; flex: 1; }
+
+    .headline .btn.ghost { margin-left: auto; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .summary-card {
+      border: 1px solid #d6d8de;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .summary-card span {
+      color: #6b7280;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .summary-card strong {
+      font-size: 1.4rem;
+      color: #111827;
+    }
 
     .toolbar {
       border: 2px solid var(--line);
@@ -198,9 +237,16 @@
 
     .filters {
       display: grid;
-      grid-template-columns: 1.3fr auto auto;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr auto;
       gap: 8px;
       align-items: center;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     input {
@@ -246,6 +292,10 @@
       background: #fff;
       box-shadow: var(--shadow);
       overflow: auto;
+    }
+
+    .table-wrap table {
+      min-width: 1080px;
     }
 
     table {
@@ -349,7 +399,7 @@
 
     <main class="main">
       <header class="meta-header" aria-label="Header dashboard waktu berjalan">
-        <h1 class="meta-title">Dashboard</h1>
+        <h1 class="meta-title">Data Pendaftar Form</h1>
         <div class="meta-badges">
           <span id="liveDateTime" class="chip">-</span>
           <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
@@ -363,19 +413,47 @@
         </div>
       </header>
 
-      <header class="headline">
-        <div>
+              <h2 id="pageTitle">Data Pendaftar Form</h2>
+              <p id="pageDesc">Daftar data diri pendaftar dan jawaban form.</p>
           <h2 id="pageTitle">Data Pendaftar Form</h2>
           <p id="pageDesc">Daftar data diri pendaftar dan jawaban form.</p>
         </div>
         <a class="btn ghost" href="manajemen-form-pendaftaran.html">Kembali</a>
       </header>
 
-      <section class="toolbar" aria-label="Aksi data pendaftar">
-        <div class="filters">
-          <input id="searchInput" type="search" placeholder="Cari identitas pendaftar atau jawaban...">
+              <input id="searchInput" type="search" placeholder="Cari identitas pendaftar atau jawaban...">
+              <select id="roleFilter">
+                <option value="all">Semua Role</option>
+                <option value="public">Public</option>
+                <option value="internal">Internal</option>
+              </select>
+              <select id="sortFilter">
+                <option value="newest">Terbaru</option>
+                <option value="oldest">Terlama</option>
+                <option value="identity-asc">Identitas A-Z</option>
+                <option value="identity-desc">Identitas Z-A</option>
+              </select>
+              <div class="toolbar-actions">
+                <button id="downloadExcelBtn" class="btn primary" type="button">Download Excel</button>
+                <button id="downloadPdfBtn" class="btn" type="button">Download PDF</button>
+              </div>
           <button id="downloadExcelBtn" class="btn primary" type="button">Download Excel</button>
           <button id="downloadPdfBtn" class="btn" type="button">Download PDF</button>
+
+          <section class="summary-grid" aria-label="Ringkasan pendaftar">
+            <article class="summary-card">
+              <span>Total Submit</span>
+              <strong id="summaryTotal">0</strong>
+            </article>
+            <article class="summary-card">
+              <span>Public</span>
+              <strong id="summaryPublic">0</strong>
+            </article>
+            <article class="summary-card">
+              <span>Internal</span>
+              <strong id="summaryInternal">0</strong>
+            </article>
+          </section>
         </div>
       </section>
 
@@ -410,6 +488,8 @@
     const pageTitle = document.getElementById("pageTitle");
     const pageDesc = document.getElementById("pageDesc");
     const searchInput = document.getElementById("searchInput");
+    const roleFilter = document.getElementById("roleFilter");
+    const sortFilter = document.getElementById("sortFilter");
     const downloadExcelBtn = document.getElementById("downloadExcelBtn");
     const downloadPdfBtn = document.getElementById("downloadPdfBtn");
     const submissionRows = document.getElementById("submissionRows");
@@ -417,6 +497,9 @@
     const emptyState = document.getElementById("emptyState");
     const liveDateTime = document.getElementById("liveDateTime");
     const notify = document.getElementById("notify");
+    const summaryTotal = document.getElementById("summaryTotal");
+    const summaryPublic = document.getElementById("summaryPublic");
+    const summaryInternal = document.getElementById("summaryInternal");
 
     let currentForm = null;
     let allSubmissions = [];
@@ -487,13 +570,31 @@
 
     function filteredSubmissions() {
       const keyword = searchInput.value.trim().toLowerCase();
+      const selectedRole = roleFilter.value;
+      const sortMode = sortFilter.value;
       const rows = allSubmissions
         .filter(function (item) {
           return item && item.formId === formId;
         })
-        .sort(function (a, b) {
-          return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+        .filter(function (item) {
+          if (selectedRole !== "all" && (item.submitter && item.submitter.role ? item.submitter.role : "public") !== selectedRole) {
+            return false;
+          }
+          return true;
         });
+
+      rows.sort(function (a, b) {
+        if (sortMode === "oldest") {
+          return new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime();
+        }
+        if (sortMode === "identity-asc" || sortMode === "identity-desc") {
+          const left = String(a && a.submitter && a.submitter.identifier ? a.submitter.identifier : "");
+          const right = String(b && b.submitter && b.submitter.identifier ? b.submitter.identifier : "");
+          const result = left.localeCompare(right);
+          return sortMode === "identity-asc" ? result : result * -1;
+        }
+        return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+      });
 
       if (!keyword) {
         return rows;
@@ -502,6 +603,20 @@
       return rows.filter(function (item) {
         return submissionToSearchText(item).indexOf(keyword) >= 0;
       });
+    }
+
+    function renderSummary(list) {
+      const total = list.length;
+      const publicCount = list.filter(function (item) {
+        return (item.submitter && item.submitter.role ? item.submitter.role : "public") === "public";
+      }).length;
+      const internalCount = list.filter(function (item) {
+        return (item.submitter && item.submitter.role ? item.submitter.role : "public") === "internal";
+      }).length;
+
+      summaryTotal.textContent = String(total);
+      summaryPublic.textContent = String(publicCount);
+      summaryInternal.textContent = String(internalCount);
     }
 
     function renderRows() {
@@ -519,6 +634,7 @@
       pageDesc.textContent = "Total pendaftar: " + String(allSubmissions.filter(function (s) { return s && s.formId === formId; }).length);
 
       const list = filteredSubmissions();
+      renderSummary(list);
       if (!list.length) {
         submissionRows.innerHTML = "";
         emptyState.style.display = "block";
@@ -593,6 +709,8 @@
     }
 
     searchInput.addEventListener("input", renderRows);
+    roleFilter.addEventListener("change", renderRows);
+    sortFilter.addEventListener("change", renderRows);
     downloadExcelBtn.addEventListener("click", exportExcel);
     downloadPdfBtn.addEventListener("click", exportPdf);
 

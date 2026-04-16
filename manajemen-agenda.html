@@ -123,34 +123,38 @@
     .main { padding: 16px; }
 
     .meta-header {
-      border: 1px solid #cfcfcf;
-      background: #f3f3f3;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #7f0000 0%, #9f1d1d 45%, #b32626 100%);
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+      box-shadow: var(--shadow);
     }
 
     .meta-title {
       margin: 0;
-      font-size: 1.35rem;
-      font-weight: 700;
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-weight: 800;
+      color: #fff;
     }
 
     .meta-badges {
-      display: flex;
+      display: inline-flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
+      color: rgba(255, 255, 255, 0.92);
     }
 
     .chip {
-      border: 1px solid #1f1f1f;
-      background: #fafafa;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
       border-radius: 999px;
       padding: 5px 10px;
       font-size: 0.76rem;
@@ -164,9 +168,9 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      border: 1px solid #6b7280;
-      background: #fff;
-      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
       text-decoration: none;
     }
 
@@ -176,20 +180,25 @@
     }
 
     .headline {
-      border: 1px solid #cfcfcf;
-      background: #f3f3f3;
+      border: 1px solid #d6d8de;
+      background: #fff;
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px 14px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+      box-shadow: var(--shadow);
     }
 
-    .headline h2 { margin: 0; font-size: clamp(1.2rem, 2.1vw, 1.9rem); }
+    .headline h2 { margin: 0; font-size: clamp(1.18rem, 2vw, 1.6rem); }
     .headline p { margin: 4px 0 0; color: #4b5563; font-size: 0.86rem; }
+
+    .headline > div:first-child { min-width: 0; flex: 1; }
+
+    .headline .btn.primary { margin-left: auto; }
 
     .toolbar {
       border: 2px solid var(--line);
@@ -378,7 +387,7 @@
 
     <main class="main">
       <header class="meta-header" aria-label="Header dashboard waktu berjalan">
-        <h1 class="meta-title">Dashboard</h1>
+        <h1 class="meta-title">Manajemen Agenda</h1>
         <div class="meta-badges">
           <span id="liveDateTime" class="chip">-</span>
           <a class="world-link" href="home.html?session=active" title="Kembali ke Home (tetap login)">
@@ -394,7 +403,7 @@
 
       <header class="headline">
         <div>
-          <h2>Manajemen Agenda</h2>
+          <h2>Daftar Agenda</h2>
           <p>Kelola acara dan kegiatan sekolah.</p>
         </div>
         <a class="btn primary" href="form-agenda.html">+ Tambah Agenda</a>
