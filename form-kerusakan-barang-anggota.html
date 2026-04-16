@@ -40,6 +40,17 @@
       overflow-y: auto;
     }
 
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.35);
+      backdrop-filter: blur(1px);
+      z-index: 25;
+    }
+
+    .sidebar-backdrop.show { display: block; }
+
     .sidebar > * { margin-bottom: 12px; }
     .sidebar > *:last-child { margin-bottom: 0; }
 
@@ -127,44 +138,91 @@
       background: rgba(255,255,255,0.1);
     }
 
-    .main { padding: 0; min-width: 0; }
+    .main { min-width: 0; padding: 20px; }
 
     .header {
-      height: 66px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .header h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 800; color: #fff; }
+
+    .header-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .topbar {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
+      border-radius: var(--radius);
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 0 18px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      box-shadow: var(--soft-shadow);
+      margin-bottom: 14px;
     }
 
-    .header h1 { margin: 0; font-size: 1.05rem; }
+    .headline {
+      margin: 0;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 700;
+      color: #fff;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.25;
+    }
 
-    .header-right {
+    .subhead {
+      margin: 3px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.84rem;
+    }
+
+    .quick-filter {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #374151;
-      font-size: 0.82rem;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .quick-chip {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      padding: 5px 11px;
+      font-size: 0.74rem;
+      border-radius: 999px;
+      color: #fff;
       font-weight: 600;
     }
 
-    .mobile-menu {
+    .mobile-toggle {
       display: none;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
       background: #fff;
       padding: 5px 9px;
       font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .content {
-      padding: 18px;
+      padding: 0;
       display: grid;
       gap: 14px;
     }
@@ -309,18 +367,29 @@
 
     @media (max-width: 1080px) {
       .layout { grid-template-columns: 1fr; }
+      .main { padding: 14px; }
       .sidebar {
         position: fixed;
-        top: 66px;
+        top: 0;
         left: 0;
-        width: 292px;
-        height: calc(100vh - 66px);
-        display: none;
-        z-index: 20;
+        width: min(290px, 86vw);
+        height: 100vh;
+        z-index: 30;
+        transform: translateX(-102%);
+        transition: transform 220ms ease;
       }
-      .sidebar.show { display: block; }
-      .mobile-menu { display: inline-block; }
+      .sidebar.show { transform: translateX(0); }
+      .mobile-toggle { display: inline-block; }
+      .header { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .topbar { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .topbar > div:first-child { width: 100%; min-width: 0; }
+      .quick-filter { justify-content: flex-start; }
+      .quick-filter .quick-chip { width: 100%; }
       .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .main { padding: 12px; }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -355,26 +424,38 @@
         <button class="menu-toggle" type="button">Peminjaman Barang <span>-</span></button>
         <div class="menu-items">
           <a class="menu-link" href="pengajuan-peminjaman-barang-anggota.html">Pengajuan Peminjaman</a>
-          <a class="menu-link" href="input-pengambilan-barang-anggota.html">Input Pengambilan Barang</a>
           <a class="menu-link" href="input-pengembalian-barang-anggota.html">Input Pengembalian Barang</a>
+          <a class="menu-link" href="input-pengambilan-barang-anggota.html">Input Pengambilan Barang</a>
+          <a class="menu-link" href="riwayat-peminjaman-barang-anggota.html">Riwayat Peminjaman Saya</a>
           <a class="menu-link active" href="form-kerusakan-barang-anggota.html">Form Kerusakan Barang</a>
           <a class="menu-link" href="riwayat-form-kerusakan-barang-anggota.html">Riwayat Form Kerusakan</a>
-          <a class="menu-link" href="riwayat-peminjaman-barang-anggota.html">Riwayat Peminjaman Saya</a>
         </div>
       </div>
 
       <div class="side-bottom">
-        <a class="side-action" href="home.html?session=active">Kembali ke Home (Tetap Login)</a>
+        <a class="side-action" href="dashboard-anggota.html?role=anggota">Kembali ke Dashboard Utama</a>
         <a class="side-action" href="login.html">Keluar</a>
       </div>
     </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
     <main class="main">
       <header class="header">
+        <button id="mobileMenuBtn" class="mobile-toggle" type="button">Menu</button>
         <h1>Form Kerusakan Barang</h1>
         <div class="header-right">
-          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
           <span id="liveDateTime">-</span>
+        </div>
+      </header>
+
+      <header class="topbar">
+        <div>
+          <h2 class="headline">Dashboard Anggota Crembo Media</h2>
+          <p class="subhead">Laporkan kerusakan barang inventaris agar bisa segera ditindaklanjuti admin.</p>
+        </div>
+        <div class="quick-filter" aria-label="Ringkasan form kerusakan barang">
+          <span class="quick-chip"><strong>Modul:</strong> Peminjaman Barang</span>
+          <span class="quick-chip"><strong>Form:</strong> Laporan Kerusakan</span>
         </div>
       </header>
 
@@ -455,6 +536,7 @@
     const NOTIFICATION_STORAGE_KEY = "crembo-admin-notifications";
 
     const sidebar = document.getElementById("sidebar");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const memberName = document.getElementById("memberName");
     const memberAvatar = document.getElementById("memberAvatar");
@@ -655,8 +737,27 @@
       });
     });
 
+    function setSidebarOpen(isOpen) {
+      sidebar.classList.toggle("show", isOpen);
+      sidebarBackdrop.classList.toggle("show", isOpen);
+      mobileMenuBtn.setAttribute("aria-expanded", String(isOpen));
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    }
+
     mobileMenuBtn.addEventListener("click", function () {
-      sidebar.classList.toggle("show");
+      setSidebarOpen(!sidebar.classList.contains("show"));
+    });
+
+    sidebarBackdrop.addEventListener("click", function () {
+      setSidebarOpen(false);
+    });
+
+    document.querySelectorAll(".sidebar a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (window.matchMedia("(max-width: 1080px)").matches) {
+          setSidebarOpen(false);
+        }
+      });
     });
 
     photoInput.addEventListener("change", handlePhotoChange);

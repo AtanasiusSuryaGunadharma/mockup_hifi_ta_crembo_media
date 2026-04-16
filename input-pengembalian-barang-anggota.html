@@ -47,6 +47,17 @@
       overflow-y: auto;
     }
 
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.35);
+      backdrop-filter: blur(1px);
+      z-index: 25;
+    }
+
+    .sidebar-backdrop.show { display: block; }
+
     .sidebar > * {
       margin-bottom: 12px;
     }
@@ -194,35 +205,82 @@
     }
 
     .main {
-      padding: 0;
       min-width: 0;
+      padding: 20px;
     }
 
     .header {
-      height: 66px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
+      border-radius: var(--radius);
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      padding: 0 18px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: 12px;
+      margin-bottom: 14px;
+      box-shadow: var(--soft-shadow);
     }
 
     .header h1 {
       margin: 0;
-      font-size: 1.05rem;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 800;
+      color: #fff;
     }
 
     .header-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .topbar {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
+      border-radius: var(--radius);
+      padding: 14px 18px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      color: #374151;
-      font-size: 0.82rem;
+      box-shadow: var(--soft-shadow);
+      margin-bottom: 14px;
+    }
+
+    .headline {
+      margin: 0;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 700;
+      color: #fff;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.25;
+    }
+
+    .subhead {
+      margin: 3px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.84rem;
+    }
+
+    .quick-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .quick-chip {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      padding: 5px 11px;
+      font-size: 0.74rem;
+      border-radius: 999px;
+      color: #fff;
       font-weight: 600;
     }
 
@@ -248,7 +306,7 @@
     }
 
     .content {
-      padding: 18px;
+      padding: 0;
       display: grid;
       gap: 14px;
     }
@@ -443,28 +501,71 @@
       border-left: 3px solid #4b5563;
     }
 
-    .mobile-menu {
+    .mobile-toggle {
       display: none;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
       background: #fff;
       padding: 5px 9px;
       font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     @media (max-width: 1080px) {
       .layout { grid-template-columns: 1fr; }
+      .main { padding: 14px; }
       .sidebar {
         position: fixed;
-        top: 66px;
+        top: 0;
         left: 0;
-        width: 292px;
-        height: calc(100vh - 66px);
-        display: none;
-        z-index: 20;
+        width: min(290px, 86vw);
+        height: 100vh;
+        z-index: 30;
+        transform: translateX(-102%);
+        transition: transform 220ms ease;
       }
-      .sidebar.show { display: block; }
-      .mobile-menu { display: inline-block; }
+      .sidebar.show { transform: translateX(0); }
+      .mobile-toggle { display: inline-block; }
+      .header { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .topbar { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
+      .topbar > div:first-child { width: 100%; min-width: 0; }
+      .quick-filter { justify-content: flex-start; }
+      .quick-filter .quick-chip { width: 100%; }
+    }
+
+    @media (max-width: 768px) {
+      .table-wrap { overflow-x: visible; }
+      table { min-width: 0; }
+      thead { display: none; }
+      tbody { display: grid; gap: 10px; }
+      tbody tr {
+        display: block;
+        border: 1px solid #dbe2ef;
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+      }
+      tbody td {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 8px;
+        border-bottom: 1px dashed #e5e9f2;
+        padding: 8px 0;
+      }
+      tbody td:last-child { border-bottom: 0; padding-bottom: 0; }
+      tbody td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #64748b;
+        font-weight: 700;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main { padding: 12px; }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -487,83 +588,29 @@
       </div>
 
       <div class="menu-group open">
-        <button class="menu-toggle" type="button">Dashboard Utama <span>-</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="dashboard-anggota.html">Ringkasan Dashboard</a>
-          <a class="menu-link" href="profil-anggota.html">Profil Saya</a>
-          <a class="menu-link" href="#">Log Aktivitas Saya</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Tugas Streaming / Multimedia <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="jadwal-tugas-misa-anggota.html">Jadwal Tugas Misa Biasa/Misa Besar</a>
-          <a class="menu-link" href="request-tugas-anggota.html">Request Tugas Anggota</a>
-          <a class="menu-link" href="pembatalan-tugas-anggota.html">Pembatalan Tugas (maks H-3)</a>
-          <a class="menu-link" href="penukaran-jadwal-tugas-anggota.html">Penukaran Jadwal Tugas</a>
-          <a class="menu-link" href="riwayat-tugas-saya.html">Riwayat Tugas Saya</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Monitoring Kewajiban Tugas <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="monitoring-kewajiban-tugas-anggota.html">Monitoring Kewajiban Tugas</a>
-        </div>
-      </div>
-
-      <div class="menu-group open">
         <button class="menu-toggle" type="button">Peminjaman Barang <span>-</span></button>
         <div class="menu-items">
           <a class="menu-link" href="pengajuan-peminjaman-barang-anggota.html">Pengajuan Peminjaman</a>
+          <a class="menu-link active" href="input-pengembalian-barang-anggota.html">Input Pengembalian Barang</a>
           <a class="menu-link" href="input-pengambilan-barang-anggota.html">Input Pengambilan Barang</a>
-          <a class="menu-link active" href="#">Input Pengembalian Barang</a>
           <a class="menu-link" href="riwayat-peminjaman-barang-anggota.html">Riwayat Peminjaman Saya</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Kegiatan & Informasi <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="#">Form Pendaftaran Kegiatan</a>
-          <a class="menu-link" href="#">Status Pendaftaran</a>
-          <a class="menu-link" href="#">Agenda Kegiatan Aktif</a>
-          <a class="menu-link" href="#">Pengumuman Aktif</a>
-          <a class="menu-link" href="#">Detail Agenda / Pengumuman</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Evaluasi & Notifikasi <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="#">Notifikasi Pengingat Tugas</a>
-          <a class="menu-link" href="#">Notifikasi Tukar Jadwal</a>
-          <a class="menu-link" href="#">Notifikasi Peminjaman</a>
-          <a class="menu-link" href="#">Notifikasi Agenda/Pengumuman</a>
-          <a class="menu-link" href="#">Notifikasi Status Keanggotaan</a>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-toggle" type="button">Akun & Keanggotaan <span>+</span></button>
-        <div class="menu-items">
-          <a class="menu-link" href="profil-anggota.html">Profil Anggota (Semua Pengaturan)</a>
-          <a class="menu-link" href="sertifikat-anggota.html">Unduh Sertifikat Anggota</a>
+          <a class="menu-link" href="form-kerusakan-barang-anggota.html">Form Kerusakan Barang</a>
+          <a class="menu-link" href="riwayat-form-kerusakan-barang-anggota.html">Riwayat Form Kerusakan</a>
         </div>
       </div>
 
       <div class="side-bottom">
-        <a class="side-action" href="home.html?session=active">Kembali ke Home (Tetap Login)</a>
+        <a class="side-action" href="dashboard-anggota.html?role=anggota">Kembali ke Dashboard Utama</a>
         <a class="side-action" href="login.html">Keluar</a>
       </div>
     </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
     <main class="main">
       <header class="header">
+        <button id="mobileMenuBtn" class="mobile-toggle" type="button">Menu</button>
         <h1>Input Pengembalian Barang</h1>
         <div class="header-right">
-          <button id="mobileMenuBtn" class="mobile-menu" type="button">Menu</button>
           <span id="liveDateTime">-</span>
           <a class="home-globe" href="dashboard-anggota.html" title="Kembali ke Dashboard">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -573,6 +620,17 @@
               <path d="M12 3C9.7 5.5 8.4 8.7 8.4 12C8.4 15.3 9.7 18.5 12 21" stroke="currentColor" stroke-width="1.8"></path>
             </svg>
           </a>
+        </div>
+      </header>
+
+      <header class="topbar">
+        <div>
+          <h2 class="headline">Dashboard Anggota Crembo Media</h2>
+          <p class="subhead">Input bukti pengembalian dan kondisi akhir barang untuk menutup transaksi.</p>
+        </div>
+        <div class="quick-filter" aria-label="Ringkasan input pengembalian barang">
+          <span class="quick-chip"><strong>Modul:</strong> Peminjaman Barang</span>
+          <span class="quick-chip"><strong>Tahap:</strong> Pengembalian</span>
         </div>
       </header>
 
@@ -654,9 +712,30 @@
     });
 
     const sidebar = document.getElementById("sidebar");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+    function setSidebarOpen(isOpen) {
+      sidebar.classList.toggle("show", isOpen);
+      sidebarBackdrop.classList.toggle("show", isOpen);
+      mobileMenuBtn.setAttribute("aria-expanded", String(isOpen));
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    }
+
     mobileMenuBtn.addEventListener("click", function () {
-      sidebar.classList.toggle("show");
+      setSidebarOpen(!sidebar.classList.contains("show"));
+    });
+
+    sidebarBackdrop.addEventListener("click", function () {
+      setSidebarOpen(false);
+    });
+
+    document.querySelectorAll(".sidebar a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (window.matchMedia("(max-width: 1080px)").matches) {
+          setSidebarOpen(false);
+        }
+      });
     });
 
     const sessionRaw = localStorage.getItem("crembo-login-session");
@@ -686,6 +765,11 @@
     const pengembalianPhotoPreview = document.getElementById("pengembalianPhotoPreview");
 
     const RIWAYAT_STORAGE_KEY = "crembo-peminjaman-riwayat";
+    const DEMO_RIWAYAT = [
+      { id: "rwyt-demo-1", pengajuanId: "pjn-demo-1", barangId: "inv-001", barangNama: "Kamera Sony A6400", jumlah: 1, tanggalDiambil: "2026-04-10", jamDiambil: "08:15", tanggalDikembalikan: null, jamDikembalikan: null, kondisiSebelum: "Baik", kondisiSesudah: null, keterangan: "Dipakai untuk dokumentasi Misa Harian" },
+      { id: "rwyt-demo-2", pengajuanId: "pjn-demo-2", barangId: "inv-002", barangNama: "Wireless Microphone Set", jumlah: 2, tanggalDiambil: "2026-04-09", jamDiambil: "17:30", tanggalDikembalikan: null, jamDikembalikan: null, kondisiSebelum: "Baik, Baik", kondisiSesudah: null, keterangan: "Satu set untuk live dan satu set cadangan" },
+      { id: "rwyt-demo-3", pengajuanId: "pjn-demo-3", barangId: "inv-003", barangNama: "Tripod Heavy Duty", jumlah: 1, tanggalDiambil: "2026-04-05", jamDiambil: "09:00", tanggalDikembalikan: "2026-04-08", jamDikembalikan: "16:45", kondisiSebelum: "Baik", kondisiSesudah: "Baik", keterangan: "Sudah dikembalikan setelah kegiatan" }
+    ];
     let pengembalianPhotoData = "";
 
     function updateLiveDateTime() {
@@ -717,7 +801,8 @@
     }
 
     function readRiwayat() {
-      return safeParse(localStorage.getItem(RIWAYAT_STORAGE_KEY), []);
+      const stored = safeParse(localStorage.getItem(RIWAYAT_STORAGE_KEY), []);
+      return stored.length ? stored : DEMO_RIWAYAT.slice();
     }
 
     function saveRiwayat(items) {
@@ -747,59 +832,6 @@
       pengembalianPhotoPreview.style.display = "flex";
     }
 
-    function seedRiwayatIfEmpty() {
-      if (localStorage.getItem(RIWAYAT_STORAGE_KEY)) {
-        return;
-      }
-
-      const demo = [
-        {
-          id: "rwyt-demo-1",
-          pengajuanId: "pjn-demo-1",
-          barangId: "inv-001",
-          barangNama: "Kamera Sony A6400",
-          jumlah: 1,
-          tanggalDiambil: "2026-04-10",
-          jamDiambil: "08:15",
-          tanggalDikembalikan: null,
-          jamDikembalikan: null,
-          kondisiSebelum: "Baik",
-          kondisiSesudah: null,
-          keterangan: "Dipakai untuk dokumentasi Misa Harian"
-        },
-        {
-          id: "rwyt-demo-2",
-          pengajuanId: "pjn-demo-2",
-          barangId: "inv-002",
-          barangNama: "Wireless Microphone Set",
-          jumlah: 2,
-          tanggalDiambil: "2026-04-09",
-          jamDiambil: "17:30",
-          tanggalDikembalikan: null,
-          jamDikembalikan: null,
-          kondisiSebelum: "Baik, Baik",
-          kondisiSesudah: null,
-          keterangan: "Satu set untuk live dan satu set cadangan"
-        },
-        {
-          id: "rwyt-demo-3",
-          pengajuanId: "pjn-demo-3",
-          barangId: "inv-003",
-          barangNama: "Tripod Heavy Duty",
-          jumlah: 1,
-          tanggalDiambil: "2026-04-05",
-          jamDiambil: "09:00",
-          tanggalDikembalikan: "2026-04-08",
-          jamDikembalikan: "16:45",
-          kondisiSebelum: "Baik",
-          kondisiSesudah: "Baik",
-          keterangan: "Sudah dikembalikan setelah kegiatan"
-        }
-      ];
-
-      localStorage.setItem(RIWAYAT_STORAGE_KEY, JSON.stringify(demo));
-    }
-
     function renderActiveLoanTable() {
       let items = readRiwayat().filter(function (item) {
         return !item.tanggalDikembalikan;
@@ -813,10 +845,10 @@
 
       activeLoanTableRows.innerHTML = items.map(function (item) {
         return '<tr>'
-          + '<td>' + item.barangNama + '</td>'
-          + '<td>' + item.tanggalDiambil + ' ' + item.jamDiambil + '</td>'
-          + '<td><span class="status-warn">Sedang Dipinjam</span></td>'
-          + '<td><button class="mini-btn" data-id="' + item.id + '" onclick="openForm(this)">Input Pengembalian</button></td>'
+          + '<td data-label="Barang">' + item.barangNama + '</td>'
+          + '<td data-label="Tanggal Pengambilan">' + item.tanggalDiambil + ' ' + item.jamDiambil + '</td>'
+          + '<td data-label="Status"><span class="status-warn">Sedang Dipinjam</span></td>'
+          + '<td data-label="Aksi"><button class="mini-btn" data-id="' + item.id + '" onclick="openForm(this)">Input Pengembalian</button></td>'
           + '</tr>';
       }).join("");
     }
@@ -949,7 +981,6 @@
       alert("Pengembalian barang berhasil disimpan!");
     });
 
-    seedRiwayatIfEmpty();
     renderActiveLoanTable();
   </script>
 <script src="_sidebar-fix.js"></script>
