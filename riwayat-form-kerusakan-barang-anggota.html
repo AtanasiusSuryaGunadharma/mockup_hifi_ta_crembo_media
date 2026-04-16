@@ -140,9 +140,8 @@
 
     .main { min-width: 0; padding: 20px; }
 
-    .header {
-    .header,
-    .dashboard-headline-bar {
+    .dashboard-headline-bar,
+    .topbar {
       background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
       border-radius: var(--radius);
       padding: 14px 20px;
@@ -154,36 +153,24 @@
       box-shadow: var(--soft-shadow);
     }
 
-    .header h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 800; color: #fff; }
-    .header h1,
-    .dashboard-headline-bar h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 800; color: #fff; }
+    .dashboard-headline-bar h1 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 800;
+      color: #fff;
+    }
 
-    .header-right {
-    .header-right,
     .head-meta {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
       justify-content: flex-end;
-      color: rgba(255, 255, 255, 0.88);
+      color: #fff;
       font-size: 0.85rem;
       font-weight: 600;
       min-width: 0;
       max-width: 100%;
-    }
-
-    .topbar {
-      border: 1px solid transparent;
-      background: linear-gradient(135deg, var(--blue-3), var(--blue-2));
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: var(--soft-shadow);
-      margin-bottom: 14px;
     }
 
     .headline {
