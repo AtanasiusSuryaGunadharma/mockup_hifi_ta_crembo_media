@@ -418,7 +418,7 @@
 			{ id:"s17", type:"biasa", date:"2026-06-14", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Lisa", OP:"Evan", vMix:"", Kamera:"Jose", Supervisor:"Tyas", Fotografer:"Rikha" }, status:"Published" },
 			{ id:"s18", type:"biasa", date:"2026-06-21", time:"18:00", namaLocation:"Gereja Utama", keterangan:"", roles:{ PD:"Rossa", OP:"Aurel", vMix:"", Kamera:"Asha", Supervisor:"Dewi", Fotografer:"Fajar" }, status:"Published" },
 		];
-		localStorage.setItem(SCHEDULE_KEY, JSON.stringify(dummySchedule));
+		window.__cremboJadwalStreamingData = dummySchedule;
 	})();
 
 	// ─── UTILS ───────────────────────────────────────────────────────────────────
@@ -427,8 +427,7 @@
 
 	function safeParse(raw) { try { return JSON.parse(raw); } catch(e) { return null; } }
 	function loadSchedule() {
-		const raw = localStorage.getItem(SCHEDULE_KEY);
-		const data = raw ? safeParse(raw) : null;
+		const data = window.__cremboJadwalStreamingData;
 		return Array.isArray(data) ? data.filter(s => s.status === "Published") : [];
 	}
 	function formatDate(val) {

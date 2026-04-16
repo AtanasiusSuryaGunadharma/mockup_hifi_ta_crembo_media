@@ -983,6 +983,52 @@
     const BIG_MASS_STORAGE_KEY = "crembo-registrasi-misa-besar-schedules";
     const MISA_NAME_STORAGE_KEY = "crembo-registrasi-misa-names";
     const HIDDEN_DEFAULT_SCHEDULE_KEY = "crembo-registrasi-misa-besar-hidden-default";
+    const DUMMY_DRAFTS = [
+      {
+        id: "draft-registrasi-001",
+        misaName: "Misa Kamis Putih",
+        misaDate: "2026-04-02",
+        misaTime: "18:00",
+        misaNote: "Registrasi petugas lengkap",
+        allowMemberRequest: true,
+        roles: [
+          { role: "PD", member: "Rikha", count: 1 },
+          { role: "OP", member: "Evan", count: 1 },
+          { role: "Kamera", members: ["Jeni", "Tyas"], multi: true, count: 2 },
+          { role: "Supervisor", member: "Asha", count: 1 }
+        ]
+      }
+    ];
+    const DUMMY_PUBLISHED_MASS = [
+      {
+        id: "publish-registrasi-001",
+        name: "Misa Jumat Agung",
+        date: "2026-04-03",
+        time: "17:30",
+        roles: [
+          { role: "PD", member: "Lisa", count: 1 },
+          { role: "OP", member: "Evan", count: 1 },
+          { role: "vMix", member: "Jose", count: 1 },
+          { role: "Kamera", members: ["Rossa", "Aurel"], multi: true, count: 2 },
+          { role: "Supervisor", member: "Asha", count: 1 }
+        ],
+        allowMemberRequest: false
+      },
+      {
+        id: "publish-registrasi-002",
+        name: "Misa Vigili Paskah",
+        date: "2026-04-04",
+        time: "19:00",
+        roles: [
+          { role: "PD", member: "Rikha", count: 1 },
+          { role: "OP", member: "Jeni", count: 1 },
+          { role: "vMix", member: "Asha", count: 1 },
+          { role: "Kamera", members: ["Dewi", "Bagas"], multi: true, count: 2 },
+          { role: "Fotografer", member: "Citra", count: 1 }
+        ],
+        allowMemberRequest: true
+      }
+    ];
     let currentEditingDraftId = "";
     let currentDetailDraftId = "";
 
@@ -1005,22 +1051,11 @@
     }
 
     function readHiddenDefaultScheduleIds() {
-      try {
-        const raw = localStorage.getItem(HIDDEN_DEFAULT_SCHEDULE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return [];
     }
 
     function saveHiddenDefaultScheduleIds(items) {
-      const clean = Array.from(new Set((Array.isArray(items) ? items : []).map(function (item) {
-        return String(item || "").trim();
-      }).filter(function (item) {
-        return !!item;
-      })));
-      localStorage.setItem(HIDDEN_DEFAULT_SCHEDULE_KEY, JSON.stringify(clean));
+      void items;
     }
 
     function getCombinedScheduleRows() {
@@ -1345,31 +1380,19 @@
     }
 
     function readDrafts() {
-      try {
-        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return DUMMY_DRAFTS.slice();
     }
 
     function saveDrafts(items) {
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(items));
+      void items;
     }
 
     function readPublishedMassSchedules() {
-      try {
-        const raw = localStorage.getItem(BIG_MASS_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return DUMMY_PUBLISHED_MASS.slice();
     }
 
     function savePublishedMassSchedules(items) {
-      localStorage.setItem(BIG_MASS_STORAGE_KEY, JSON.stringify(items));
+      void items;
     }
 
     function upsertPublishedMassSchedule(entry) {

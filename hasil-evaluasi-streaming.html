@@ -1311,6 +1311,8 @@
       }
     };
 
+    let currentEvaluations = JSON.parse(JSON.stringify(DUMMY_EVALUATIONS));
+
     const schedules = [
       {
         id: "normal-2026-04-08-1800",
@@ -1476,17 +1478,7 @@
     }
 
     function readQuestionConfig() {
-      try {
-        const raw = localStorage.getItem(QUESTION_CONFIG_KEY);
-        if (!raw) {
-          return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-        }
-        const parsed = JSON.parse(raw);
-        const sanitized = sanitizeQuestionConfig(parsed);
-        return sanitized.length ? sanitized : sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-      } catch (err) {
-        return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
-      }
+      return sanitizeQuestionConfig(DEFAULT_QUESTION_CONFIG);
     }
 
     function hasMeaningfulAnswer(answer) {
@@ -1561,22 +1553,7 @@
     }
 
     function readStoredEvaluations() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        const isSeeded = localStorage.getItem(STORAGE_SEED_KEY) === DUMMY_SEED_VERSION;
-
-        if (!isSeeded) {
-          const merged = Object.assign({}, DUMMY_EVALUATIONS, parsed);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-          localStorage.setItem(STORAGE_SEED_KEY, DUMMY_SEED_VERSION);
-          return merged;
-        }
-
-        return parsed;
-      } catch (err) {
-        return {};
-      }
+      return currentEvaluations;
     }
 
     function renderAiToggleButton() {
@@ -2023,6 +2000,16 @@
 
     function renderResultPeriodInput() {
       const scale = periodScaleFilter.value;
+      const today = new Date();
+      if (scale === "week" && !periodWeekInput.value) {
+        periodWeekInput.value = getISOWeekValue(today);
+      }
+      if (scale === "month" && !periodMonthInput.value) {
+        periodMonthInput.value = String(today.getFullYear()) + "-" + String(today.getMonth() + 1).padStart(2, "0");
+      }
+      if (scale === "year" && !periodYearInput.value) {
+        periodYearInput.value = String(today.getFullYear());
+      }
       periodWeekInput.hidden = scale !== "week";
       periodMonthInput.hidden = scale !== "month";
       periodYearInput.hidden = scale !== "year";
@@ -2147,8 +2134,7 @@
     }
 
     function deleteEvaluationByScheduleId(scheduleId) {
-      const saved = readStoredEvaluations();
-      if (!saved[scheduleId]) {
+      if (!currentEvaluations[scheduleId]) {
         return;
       }
 
@@ -2157,8 +2143,7 @@
         return;
       }
 
-      delete saved[scheduleId];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+      delete currentEvaluations[scheduleId];
       renderEvaluationResults();
     }
 
@@ -2212,9 +2197,9 @@
       const scaleLabel = getScaleLabel();
       const periodValue = getSelectedPeriodValue() || "Semua";
 
-      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body>';
+      let html = '<html><head><meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">' +
+        '<link rel="stylesheet" href="_admin-theme.css">' +
+        '</head><body>';
       html += '<h3>Rekap Hasil Evaluasi Streaming</h3>';
       html += '<p>Jenis Misa: ' + escapeHtml(resultTypeFilter.value === "all" ? "Semua" : resultTypeFilter.value) + '</p>';
       html += '<p>Skala: Per ' + escapeHtml(scaleLabel) + '</p>';
@@ -2265,8 +2250,7 @@
         html += '<tr><td colspan="5">Tidak ada data misa terlewat yang belum diisi.</td></tr>';
       }
 
-      html += '</table><script src="_sidebar-fix.js"></script>
-</body></html>';
+      html += '</table></body></html>';
 
       const blob = new Blob([html], { type: "application/vnd.ms-excel" });
       const url = URL.createObjectURL(blob);
@@ -2326,9 +2310,9 @@
       popup.document.write(
         '<!doctype html><html><head><meta charset="utf-8"><title>Rekap Evaluasi Streaming</title>' +
         '<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h2,h3{margin-bottom:8px}p{margin:4px 0 10px}table{width:100%;border-collapse:collapse;margin-top:8px;margin-bottom:18px}th,td{border:1px solid #888;padding:6px;font-size:12px;text-align:left;vertical-align:top}th{background:#f2f2f2}@media print{body{padding:0}}</style>' +
-        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="_admin-theme.css">
-</head><body>' +
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">' +
+        '<link rel="stylesheet" href="_admin-theme.css">' +
+        '</head><body>' +
         '<h2>Rekap Hasil Evaluasi Streaming</h2>' +
         '<p>Jenis Misa: ' + escapeHtml(resultTypeFilter.value === "all" ? "Semua" : resultTypeFilter.value) + '</p>' +
         '<p>Skala: Per ' + escapeHtml(scaleLabel) + ' | Periode: ' + escapeHtml(periodValue) + '</p>' +
@@ -2336,8 +2320,7 @@
         '<table><thead><tr><th>Tanggal</th><th>Jam</th><th>Jenis</th><th>General</th><th>Judul</th><th>Petugas</th><th>Pengisi</th><th>Submit</th></tr></thead><tbody>' + completedRows + '</tbody></table>' +
         '<h3>Misa Terlewat Belum Diisi</h3>' +
         '<table><thead><tr><th>Tanggal</th><th>Jam</th><th>Jenis</th><th>Judul</th><th>Petugas Bertugas</th></tr></thead><tbody>' + pendingRows + '</tbody></table>' +
-        '<script src="_sidebar-fix.js"></script>
-</body></html>'
+        '</body></html>'
       );
       popup.document.close();
       popup.focus();

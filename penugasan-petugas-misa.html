@@ -676,17 +676,9 @@
     }
 
     function getWeeklyTimesConfig() {
-      let stored = null;
-      try {
-        const raw = localStorage.getItem(WEEKLY_TIMES_KEY);
-        stored = raw ? JSON.parse(raw) : null;
-      } catch (error) {
-        stored = null;
-      }
-
       const result = {};
       for (let day = 0; day <= 6; day += 1) {
-        const source = stored && Array.isArray(stored[day]) ? stored[day] : DEFAULT_WEEKLY_TIMES[day];
+        const source = DEFAULT_WEEKLY_TIMES[day];
         result[day] = normalizeTimesArray(source);
       }
       return result;
@@ -709,13 +701,7 @@
     }
 
     function getBlackoutEntries() {
-      try {
-        const raw = localStorage.getItem(BLACKOUT_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return [];
     }
 
     function isBlackoutSlot(dateStr, timeStr) {
@@ -789,37 +775,19 @@
     }
 
     function readDrafts() {
-      try {
-        const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return [];
     }
 
     function readPublishedSchedules() {
-      try {
-        const raw = localStorage.getItem(BIG_MASS_STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return schedulesBesarDummy.slice();
     }
 
     function savePublishedSchedules(items) {
-      localStorage.setItem(BIG_MASS_STORAGE_KEY, JSON.stringify(items));
+      void items;
     }
 
     function readHiddenDefaultIds() {
-      try {
-        const raw = localStorage.getItem(HIDDEN_DEFAULT_SCHEDULE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
+      return [];
     }
 
     function roleSlotsFromRegistrasiRoles(roleItems, scheduleId) {

@@ -6,6 +6,11 @@
 (function () {
   'use strict';
 
+  if (window.__cremboSidebarFixed) {
+    return;
+  }
+  window.__cremboSidebarFixed = true;
+
   var path = window.location.pathname.split('/').pop() || 'index.html';
 
   function getLinkFilename(href) {
@@ -37,6 +42,9 @@
   /* ── 3. REPLACE toggle handlers (prevents double-binding bug) ── */
   var groups = Array.from(document.querySelectorAll('.menu-group'));
   groups.forEach(function (group) {
+    if (group.dataset.sidebarFixed === '1') return;
+    group.dataset.sidebarFixed = '1';
+
     var btn = group.querySelector('.group-toggle, .menu-toggle');
     if (!btn) return;
 
