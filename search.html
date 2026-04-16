@@ -61,6 +61,13 @@
 		.qf-btn{border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.12);color:#fff;padding:6px 18px;font-size:0.82rem;font-weight:600;border-radius:999px;cursor:pointer;font-family:inherit;backdrop-filter:blur(8px);transition:var(--transition);}
 		.qf-btn:hover,.qf-btn.active{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.6);}
 
+		/* SORT BAR */
+		.sort-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+		.sort-label{font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;}
+		.sort-btn{padding:6px 14px;font-size:0.8rem;font-weight:600;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink-secondary);cursor:pointer;font-family:inherit;transition:var(--transition);}
+		.sort-btn:hover{border-color:var(--primary);color:var(--primary);}
+		.sort-btn.active{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(128,0,0,0.2);}
+
 		/* PAGE CONTENT */
 		.page-content{padding:32px 0 48px;}
 
@@ -193,6 +200,15 @@
 			<div class="search-count" id="searchCountDisplay"></div>
 		</div>
 
+		<!-- SORT BAR -->
+		<div class="sort-bar" aria-label="Urutkan hasil">
+			<span class="sort-label">Urutkan:</span>
+			<button class="sort-btn active" type="button" data-sort="newest">Terbaru</button>
+			<button class="sort-btn" type="button" data-sort="oldest">Terlama</button>
+			<button class="sort-btn" type="button" data-sort="az">A → Z</button>
+			<button class="sort-btn" type="button" data-sort="za">Z → A</button>
+		</div>
+
 		<div class="search-layout">
 			<!-- Type sidebar -->
 			<aside class="type-panel" aria-label="Filter tipe konten">
@@ -266,6 +282,7 @@
 
 	let currentQuery = "";
 	let currentType  = "";
+	let currentSort  = "newest";
 
 	function esc(str){ return String(str||""); }
 
@@ -291,12 +308,18 @@
 	}
 
 	function filterResults(query, type) {
-		let data = DUMMY_RESULTS;
+		let data = DUMMY_RESULTS.slice();
 		if (type) data = data.filter(r => r.type === type);
 		if (query) {
 			const q = query.toLowerCase();
 			data = data.filter(r => r.title.toLowerCase().includes(q) || r.snippet.toLowerCase().includes(q));
 		}
+		// Sort
+		if (currentSort === "az") data.sort((a,b) => a.title.localeCompare(b.title, "id"));
+		else if (currentSort === "za") data.sort((a,b) => b.title.localeCompare(a.title, "id"));
+		else if (currentSort === "oldest") {} // already in original order as oldest
+		// "newest" = reverse of original order
+		else data.reverse();
 		return data;
 	}
 
@@ -382,6 +405,12 @@
 
 	document.querySelectorAll(".type-btn").forEach(b => b.addEventListener("click", () => setTypeFilter(b.dataset.type)));
 	document.querySelectorAll(".qf-btn").forEach(b => b.addEventListener("click", () => setTypeFilter(b.dataset.type)));
+
+	document.querySelectorAll(".sort-btn").forEach(b => b.addEventListener("click", function() {
+		currentSort = b.dataset.sort;
+		document.querySelectorAll(".sort-btn").forEach(s => s.classList.toggle("active", s.dataset.sort === currentSort));
+		renderResults();
+	}));
 
 	function syncStickyOffset() {
 		const h = topHeader ? topHeader.offsetHeight : 104;

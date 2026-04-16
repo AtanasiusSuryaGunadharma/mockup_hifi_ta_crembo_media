@@ -242,7 +242,7 @@
 	</div>
 
 	<main class="container page-content">
-		<!-- Filter bulan saja -->
+		<!-- Filter bulan dan tahun -->
 		<div class="filter-bar">
 			<div class="filter-group">
 				<span class="filter-label">Bulan:</span>
@@ -259,6 +259,15 @@
 					<option value="10">Oktober</option>
 					<option value="11">November</option>
 					<option value="12">Desember</option>
+				</select>
+			</div>
+			<div class="filter-group">
+				<span class="filter-label">Tahun:</span>
+				<select id="filterTahun" class="filter-select" aria-label="Filter tahun">
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+					<option value="2026" selected>2026</option>
+					<option value="2027">2027</option>
 				</select>
 			</div>
 			<div id="filterInfo" class="filter-group" style="margin-left:auto;">
@@ -431,6 +440,10 @@
 		const d = new Date(dateStr + "T00:00:00");
 		return isNaN(d) ? 0 : d.getMonth() + 1;
 	}
+	function getYear(dateStr) {
+		const d = new Date(dateStr + "T00:00:00");
+		return isNaN(d) ? 0 : d.getFullYear();
+	}
 	function esc(str) { return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 	function roleCell(val) {
 		if (!val) return '<td><span style="color:var(--muted);font-style:italic;font-size:0.8rem;">—</span></td>';
@@ -442,6 +455,7 @@
 	const searchForm        = document.getElementById("searchForm");
 	const searchInput       = document.getElementById("searchInput");
 	const filterBulan       = document.getElementById("filterBulan");
+	const filterTahun       = document.getElementById("filterTahun");
 	const pillBulanan       = document.getElementById("pillBulanan");
 	const pillHariRaya      = document.getElementById("pillHariRaya");
 	const tableBulanan      = document.getElementById("tableBulanan");
@@ -460,16 +474,16 @@
 	})();
 
 	// ─── RENDER FUNCTIONS ─────────────────────────────────────────────────────────
-	function renderBulanan(month) {
+	function renderBulanan(month, year) {
 		const all = loadSchedule();
-		// Get blocked dates (misa besar) for this month
+		// Get blocked dates (misa besar) for this month+year
 		const blockedDates = new Set(
-			all.filter(s => s.type === "raya" && getMonth(s.date) === month).map(s => s.date)
+			all.filter(s => s.type === "raya" && getMonth(s.date) === month && getYear(s.date) === year).map(s => s.date)
 		);
-		const normal = all.filter(s => s.type === "biasa" && getMonth(s.date) === month);
+		const normal = all.filter(s => s.type === "biasa" && getMonth(s.date) === month && getYear(s.date) === year);
 
 		// Merge: normal rows + blocked rows for raya dates
-		const rayaInMonth = all.filter(s => s.type === "raya" && getMonth(s.date) === month);
+		const rayaInMonth = all.filter(s => s.type === "raya" && getMonth(s.date) === month && getYear(s.date) === year);
 		// Get all unique dates in month
 		const allDates = [...new Set([
 			...normal.map(s => s.date),
@@ -515,16 +529,16 @@
 		});
 
 		schedBulananBody.innerHTML = html;
-		const monthName = MONTHS[(month - 1)] + " 2026";
+		const monthName = MONTHS[(month - 1)] + " " + year;
 		tableInfoCount.textContent = no + " jadwal — " + monthName;
 		filterInfoText.textContent = monthName;
 	}
 
-	function renderHariRaya(month) {
+	function renderHariRaya(month, year) {
 		const all = loadSchedule();
 		let data = all.filter(s => s.type === "raya");
-		// If month selected (not "all"), filter
 		if (month) data = data.filter(s => getMonth(s.date) === month);
+		if (year)  data = data.filter(s => getYear(s.date) === year);
 		data.sort((a,b) => a.date.localeCompare(b.date));
 
 		if (!data.length) {
@@ -555,10 +569,11 @@
 
 	function render() {
 		const month = parseInt(filterBulan.value, 10);
+		const year  = parseInt(filterTahun.value, 10);
 		if (currentMode === "bulanan") {
-			renderBulanan(month);
+			renderBulanan(month, year);
 		} else {
-			renderHariRaya(month);
+			renderHariRaya(month, year);
 		}
 	}
 
@@ -589,6 +604,7 @@
 
 	// ─── EVENTS ───────────────────────────────────────────────────────────────────
 	filterBulan.addEventListener("change", render);
+	filterTahun.addEventListener("change", render);
 
 	searchForm.addEventListener("submit", function(e) {
 		e.preventDefault();
