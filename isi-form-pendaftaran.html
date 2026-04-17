@@ -601,7 +601,7 @@
 
       <div class="side-bottom">
         <a class="side-action" href="dashboard-anggota.html?role=anggota">Kembali ke Dashboard Utama</a>
-        <a class="side-action" href="login.html">Keluar</a>
+        <a id="authAction" class="side-action" href="login.html">Keluar</a>
       </div>
     </aside>
 
@@ -997,13 +997,13 @@
 
     function updateAccessHeader() {
       const viewer = getViewerContext();
-      if (viewer.isLoggedIn) {
-        accessChip.textContent = "Login: " + viewer.identifier;
-        authAction.textContent = "Keluar";
-        authAction.href = "login.html";
-      } else {
-        accessChip.textContent = "Mode Pengunjung (Hanya Form Umum)";
-        authAction.textContent = "Login";
+      if (accessChip) {
+        accessChip.textContent = viewer.isLoggedIn
+          ? "Login: " + viewer.identifier
+          : "Mode Pengunjung (Hanya Form Umum)";
+      }
+      if (authAction) {
+        authAction.textContent = viewer.isLoggedIn ? "Keluar" : "Login";
         authAction.href = "login.html";
       }
     }
