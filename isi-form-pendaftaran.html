@@ -870,9 +870,11 @@
       if (session && session.identifier) {
         const idType = session.identifierType ? String(session.identifierType) : "identifier";
         const identifier = String(session.identifier || "").trim().toLowerCase();
+        const guestId = getOrCreateGuestId();
         return {
           isLoggedIn: true,
           key: "login:" + idType + ":" + identifier,
+          aliasKeys: ["login:" + idType + ":" + identifier, "guest:" + guestId],
           identifier: String(session.fullName || session.identifier || "Pengguna"),
           role: String(session.role || "anggota")
         };
@@ -882,6 +884,7 @@
       return {
         isLoggedIn: false,
         key: "guest:" + guestId,
+        aliasKeys: ["guest:" + guestId],
         identifier: "Pengunjung",
         role: "public"
       };
@@ -895,9 +898,27 @@
 
     function getMySubmission(formId) {
       const viewer = getViewerContext();
+      const keys = Array.isArray(viewer.aliasKeys) && viewer.aliasKeys.length ? viewer.aliasKeys : [viewer.key];
       return submissions.find(function (item) {
-        return item && item.formId === formId && item.submitter && item.submitter.key === viewer.key;
+        return item && item.formId === formId && item.submitter && keys.indexOf(String(item.submitter.key || "")) !== -1;
       }) || null;
+    }
+
+    function refreshDataAndRender() {
+      const previousActiveId = activeFormId;
+      readData();
+      updateAccessHeader();
+      initTargetFilterByAccess();
+      renderCards();
+
+      const visibleList = getFilteredForms();
+      if (previousActiveId && visibleList.some(function (item) { return item.id === previousActiveId; })) {
+        activeFormId = previousActiveId;
+      } else if (!visibleList.some(function (item) { return item.id === activeFormId; })) {
+        activeFormId = "";
+      }
+
+      renderRightPanel();
     }
 
     function getFormStatus(form) {
@@ -1280,14 +1301,35 @@
       if (!viewer.isLoggedIn) {
         targetFilter.value = "public";
         targetFilter.innerHTML = '<option value="public">Umum</option>';
+        return;
+      }
+
+      if (targetFilter.options.length <= 1) {
+        targetFilter.innerHTML = ''
+          + '<option value="all">Semua Target</option>'
+          + '<option value="public">Umum</option>'
+          + '<option value="internal">Internal</option>';
+        targetFilter.value = "all";
       }
     }
 
-    readData();
-    updateAccessHeader();
-    initTargetFilterByAccess();
-    renderCards();
-    renderRightPanel();
+    window.addEventListener("storage", function (event) {
+      if (!event || !event.key) {
+        return;
+      }
+      if (event.key === FORM_STORAGE_KEY || event.key === SUBMISSION_STORAGE_KEY || event.key === SESSION_STORAGE_KEY || event.key === GUEST_KEY) {
+        refreshDataAndRender();
+      }
+    });
+
+    window.addEventListener("focus", refreshDataAndRender);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) {
+        refreshDataAndRender();
+      }
+    });
+
+    refreshDataAndRender();
   </script>
 <script src="_sidebar-fix.js"></script>
 </body>
