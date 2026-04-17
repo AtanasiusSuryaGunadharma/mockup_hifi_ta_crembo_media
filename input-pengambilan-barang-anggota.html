@@ -804,9 +804,37 @@
       }
     }
 
-    function readPengajuan() {
+    function getStoredPengajuan() {
       const stored = safeParse(localStorage.getItem(PENGAJUAN_STORAGE_KEY), []);
-      return stored.length ? stored : DEMO_PENGAJUAN.slice();
+      return Array.isArray(stored) ? stored : [];
+    }
+
+    function seedPengajuanDemoIfNeeded() {
+      const stored = getStoredPengajuan();
+      const hasApproved = stored.some(function (item) {
+        return item && item.status === "approved";
+      });
+
+      if (hasApproved) {
+        return stored;
+      }
+
+      const merged = stored.slice();
+      DEMO_PENGAJUAN.forEach(function (demoItem) {
+        const exists = merged.some(function (item) {
+          return item && item.id === demoItem.id;
+        });
+        if (!exists) {
+          merged.push(demoItem);
+        }
+      });
+
+      localStorage.setItem(PENGAJUAN_STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
+    function readPengajuan() {
+      return seedPengajuanDemoIfNeeded();
     }
 
     function savePengajuan(items) {
