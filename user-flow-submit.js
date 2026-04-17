@@ -1,14 +1,6 @@
 (function () {
-  var SUPABASE_URL = "https://iyqfsgtawhkbvbkvrbsa.supabase.co";
-  var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_MJ58ehoCWPwvX1m836BOPA_AhZepXMQ";
-
-  function headers() {
-    return {
-      apikey: SUPABASE_PUBLISHABLE_KEY,
-      Authorization: "Bearer " + SUPABASE_PUBLISHABLE_KEY,
-      "Content-Type": "application/json"
-    };
-  }
+  var runtimeDefs = [];
+  var LOCAL_SUBMISSION_KEY = "uf-last-submission";
 
   function escapeHtml(text) {
     return String(text || "")
@@ -28,40 +20,42 @@
     return String((element && element.value) || "").trim();
   }
 
-  var runtimeDefs = [];
-
-  function asNumber(value) {
-    var parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : NaN;
+  function normalizeText(value) {
+    return String(value || "").trim().toLowerCase();
   }
 
-  async function requestJson(method, path, body) {
-    var options = {
-      method: method,
-      headers: headers()
-    };
+  function buildContextQuestion(item) {
+    var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
 
-    if (body) {
-      options.body = JSON.stringify(body);
+    if (haystack.indexOf("dashboard") !== -1 || haystack.indexOf("header") !== -1 || haystack.indexOf("headline") !== -1) {
+      return "Apakah warna, kontras teks, dan posisi elemen header pada langkah ini sudah nyaman dilihat?";
     }
 
-    var response = await fetch(SUPABASE_URL + path, options);
-    var text = await response.text();
-    var data = text ? JSON.parse(text) : null;
-
-    if (!response.ok) {
-      throw new Error((data && (data.message || data.error_description || data.error)) || "Request gagal");
+    if (haystack.indexOf("form") !== -1) {
+      return "Apakah susunan field, label, dan tombol pada form ini sudah jelas?";
     }
 
-    return data;
-  }
-
-  async function ensureFlow(slug) {
-    var rows = await requestJson("GET", "/rest/v1/uf_flows?select=id,slug&slug=eq." + encodeURIComponent(slug));
-    if (!rows || !rows.length) {
-      throw new Error("Flow tidak ditemukan di database: " + slug);
+    if (haystack.indexOf("kerusakan") !== -1) {
+      return "Apakah alur pelaporan kerusakan barang pada langkah ini sudah mudah dipahami?";
     }
-    return rows[0];
+
+    if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
+      return "Apakah urutan aksi dan status persetujuan pada alur ini sudah sesuai?";
+    }
+
+    if (haystack.indexOf("berita") !== -1 || haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("agenda") !== -1) {
+      return "Apakah tampilan daftar dan tombol aksi pada halaman ini sudah rapi?";
+    }
+
+    if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
+      return "Apakah alur autentikasi dan pesan bantuannya sudah jelas?";
+    }
+
+    if (haystack.indexOf("profil") !== -1) {
+      return "Apakah komposisi judul, isi, dan tombol pada halaman ini sudah seimbang?";
+    }
+
+    return "Apakah tampilan langkah ini sudah sesuai dengan high fidelity mock up yang diharapkan?";
   }
 
   function collectNodeDefinitions(flowSlug) {
@@ -115,7 +109,12 @@
           step_title: nodeTitle,
           flow_title: laneTitle,
           action_instruction: actionInstruction,
-          question_text: "Apakah " + nodeTitle + " pada " + laneTitle + " sudah sesuai dan mudah digunakan?"
+          question_text: "Apakah " + nodeTitle + " pada " + laneTitle + " sudah sesuai dan mudah digunakan?",
+          context_question_text: buildContextQuestion({
+            step_title: nodeTitle,
+            flow_title: laneTitle,
+            action_instruction: actionInstruction
+          })
         });
 
         stepNo += 1;
@@ -125,112 +124,6 @@
     return defs;
   }
 
-  async function ensureStepsAndQuestions(flowId, defs) {
-    var existingSteps = await requestJson(
-      "GET",
-      "/rest/v1/uf_steps?select=id,flow_id,step_no,step_title,action_instruction&flow_id=eq." + flowId + "&order=step_no.asc"
-    );
-
-    var byStepNo = {};
-    (existingSteps || []).forEach(function (row) {
-      byStepNo[asNumber(row.step_no)] = row;
-    });
-
-    for (var i = 0; i < defs.length; i += 1) {
-      var item = defs[i];
-      var existingStep = byStepNo[asNumber(item.step_no)];
-
-      if (!existingStep) {
-        var inserted = await requestJson("POST", "/rest/v1/uf_steps", {
-          flow_id: flowId,
-          step_no: item.step_no,
-          step_title: item.step_title,
-          action_instruction: item.action_instruction,
-          page_url: window.location.pathname.split("/").pop()
-        });
-
-        if (inserted && inserted.length) {
-          byStepNo[item.step_no] = inserted[0];
-        }
-      } else {
-        var existingTitle = String(existingStep.step_title || "").trim();
-        var existingInstruction = String(existingStep.action_instruction || "").trim();
-        var nextTitle = String(item.step_title || "").trim();
-        var nextInstruction = String(item.action_instruction || "").trim();
-
-        if (existingTitle !== nextTitle || existingInstruction !== nextInstruction) {
-          await requestJson(
-            "PATCH",
-            "/rest/v1/uf_steps?id=eq." + encodeURIComponent(existingStep.id),
-            {
-              step_title: item.step_title,
-              action_instruction: item.action_instruction,
-              page_url: window.location.pathname.split("/").pop()
-            }
-          );
-        }
-      }
-    }
-
-    existingSteps = await requestJson(
-      "GET",
-      "/rest/v1/uf_steps?select=id,flow_id,step_no,step_title,action_instruction&flow_id=eq." + flowId + "&order=step_no.asc"
-    );
-
-    var qMap = {};
-    for (var j = 0; j < defs.length; j += 1) {
-      var currentDef = defs[j];
-      var step = existingSteps.find(function (row) {
-        return asNumber(row.step_no) === asNumber(currentDef.step_no);
-      });
-
-      if (!step) {
-        continue;
-      }
-
-      var questions = await requestJson(
-        "GET",
-        "/rest/v1/uf_questions?select=id,step_id,question_no,question_text&step_id=eq." + encodeURIComponent(step.id) + "&question_no=eq.1"
-      );
-
-      if (questions && questions.length) {
-        var currentQuestion = questions[0];
-        var oldText = String(currentQuestion.question_text || "").trim();
-        var newText = String(currentDef.question_text || "").trim();
-
-        if (oldText !== newText) {
-          await requestJson(
-            "PATCH",
-            "/rest/v1/uf_questions?id=eq." + encodeURIComponent(currentQuestion.id),
-            {
-              question_text: currentDef.question_text,
-              answer_type: "yes_no_note"
-            }
-          );
-          currentQuestion.question_text = currentDef.question_text;
-        }
-
-        qMap[step.id] = questions[0];
-        continue;
-      }
-
-      var insertedQuestion = await requestJson("POST", "/rest/v1/uf_questions", {
-        step_id: step.id,
-        question_no: 1,
-        question_text: currentDef.question_text,
-        answer_type: "yes_no_note"
-      });
-
-      if (insertedQuestion && insertedQuestion.length) {
-        qMap[step.id] = insertedQuestion[0];
-      }
-    }
-
-    return {
-      steps: existingSteps,
-      questionByStepId: qMap
-    };
-  }
 
   function buildQuestionnaire(defs) {
     defs.forEach(function (item) {
@@ -249,10 +142,21 @@
           '<span class="uf-node-question-flow">' + escapeHtml(item.flow_title) + '</span>',
         '</div>',
         '<p class="uf-node-question-action">' + escapeHtml(item.action_instruction) + '</p>',
-        '<p class="uf-node-question-text">Pertanyaan: ' + escapeHtml(item.question_text) + '</p>',
-        '<div class="uf-answer-row">',
-          '<label><input type="radio" name="answer-' + item.step_no + '" value="YA"> YA</label>',
-          '<label><input type="radio" name="answer-' + item.step_no + '" value="TIDAK"> TIDAK</label>',
+        '<div class="uf-question-block">',
+          '<p class="uf-question-label">Pertanyaan 1</p>',
+          '<p class="uf-node-question-text">' + escapeHtml(item.question_text) + '</p>',
+          '<div class="uf-answer-row">',
+            '<label><input type="radio" name="answer-main-' + item.step_no + '" value="YA"> YA</label>',
+            '<label><input type="radio" name="answer-main-' + item.step_no + '" value="TIDAK"> TIDAK</label>',
+          '</div>',
+        '</div>',
+        '<div class="uf-question-block">',
+          '<p class="uf-question-label">Pertanyaan 2</p>',
+          '<p class="uf-node-question-context">' + escapeHtml(item.context_question_text) + '</p>',
+          '<div class="uf-answer-row secondary">',
+            '<label><input type="radio" name="answer-context-' + item.step_no + '" value="YA"> YA</label>',
+            '<label><input type="radio" name="answer-context-' + item.step_no + '" value="TIDAK"> TIDAK</label>',
+          '</div>',
         '</div>',
         '<label class="uf-label">Catatan</label>',
         '<textarea id="note-' + item.step_no + '" rows="2" placeholder="Catatan untuk kotak ini..."></textarea>'
@@ -262,8 +166,8 @@
     });
   }
 
-  function selectedValue(stepNo) {
-    var checked = document.querySelector('input[name="answer-' + stepNo + '"]:checked');
+  function selectedValue(groupName, stepNo) {
+    var checked = document.querySelector('input[name="' + groupName + '-' + stepNo + '"]:checked');
     return checked ? checked.value : "";
   }
 
@@ -349,40 +253,29 @@
 
     var submitButton = byId("ufSubmitBtn");
     submitButton.disabled = true;
-    renderMessage("loading", "Sedang menyimpan hasil pengujian...");
+    renderMessage("loading", "Sedang menyimpan hasil pengujian secara lokal...");
 
     try {
-      var flow = await ensureFlow(flowSlug);
-      var mapping = await ensureStepsAndQuestions(flow.id, defs);
-
       var answers = [];
-      var stepNotes = [];
       var missingAnswers = [];
 
       defs.forEach(function (def) {
-        var step = (mapping.steps || []).find(function (s) {
-          return asNumber(s.step_no) === asNumber(def.step_no);
-        });
-        if (!step) {
-          return;
-        }
-
-        var question = mapping.questionByStepId[step.id];
-        var answerValue = selectedValue(def.step_no);
+        var mainAnswer = selectedValue("answer-main", def.step_no);
+        var contextAnswer = selectedValue("answer-context", def.step_no);
         var noteText = String((byId("note-" + def.step_no) || {}).value || "").trim();
 
-        if (!answerValue) {
+        if (!mainAnswer || !contextAnswer) {
           missingAnswers.push("Step " + def.step_no + " - " + def.step_title);
         }
 
-        if (question) {
-          answers.push({
-            step_id: step.id,
-            question_id: question.id,
-            answer_value: answerValue,
-            note_text: noteText
-          });
-        }
+        answers.push({
+          step_no: def.step_no,
+          step_title: def.step_title,
+          flow_title: def.flow_title,
+          main_answer: mainAnswer,
+          context_answer: contextAnswer,
+          note_text: noteText
+        });
       });
 
       if (missingAnswers.length) {
@@ -391,31 +284,28 @@
         return;
       }
 
-      var payload = {
-        payload: {
-          flow_slug: flowSlug,
-          tester_org: getElementValue("testerOrg"),
-          tester_phone: getElementValue("testerPhone"),
-          tester_device: testerDevice,
-          tester_browser: testerBrowser,
-          tester: {
-            full_name: fullName,
-            org: getElementValue("testerOrg"),
-            instansi_unit: getElementValue("testerOrg"),
-            email: getElementValue("testerEmail"),
-            phone: getElementValue("testerPhone"),
-            no_hp: getElementValue("testerPhone"),
-            device: testerDevice,
-            browser: testerBrowser,
-            user_agent: String(navigator.userAgent || "")
-          },
-          answers: answers,
-          step_notes: stepNotes
-        }
+      var submission = {
+        id: "local-" + Date.now(),
+        submitted_at: new Date().toISOString(),
+        flow_slug: flowSlug,
+        tester: {
+          full_name: fullName,
+          org: getElementValue("testerOrg"),
+          instansi_unit: getElementValue("testerOrg"),
+          email: getElementValue("testerEmail"),
+          phone: getElementValue("testerPhone"),
+          no_hp: getElementValue("testerPhone"),
+          device: testerDevice,
+          browser: testerBrowser,
+          user_agent: String(navigator.userAgent || "")
+        },
+        answers: answers
       };
 
-      var submissionId = await requestJson("POST", "/rest/v1/rpc/uf_submit_full", payload);
-      renderMessage("success", "Submit berhasil. ID submission: " + submissionId);
+      localStorage.setItem(LOCAL_SUBMISSION_KEY, JSON.stringify(submission));
+      localStorage.setItem(LOCAL_SUBMISSION_KEY + "-" + flowSlug, JSON.stringify(submission));
+      window.__UF_LAST_SUBMISSION__ = submission;
+      renderMessage("success", "Hasil pengujian tersimpan lokal. Koneksi Supabase sementara dimatikan.");
       byId("ufForm").reset();
       applyIdentityDefaults();
     } catch (error) {
@@ -436,13 +326,16 @@
       ".uf-form { display:grid; gap:10px; padding:12px; }",
       ".uf-grid { display:grid; grid-template-columns:repeat(2,minmax(220px,1fr)); gap:8px; }",
       ".uf-grid input,.uf-grid select { width:100%; border:1px solid #b9c2d1; border-radius:8px; padding:8px; font:inherit; font-size:0.82rem; background:#fff; color:#0f172a; }",
+      ".uf-question-block { border:1px solid #dbe3ef; border-radius:10px; background:#fff; padding:8px; display:grid; gap:6px; }",
+      ".uf-question-label { margin:0; font-size:0.72rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:0.04em; }",
       ".uf-node-question { margin-top:10px; border:1px solid #cbd5e1; border-radius:12px; background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%); padding:10px; display:grid; gap:8px; }",
       ".uf-node-question-head { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center; }",
       ".uf-node-question-step { display:inline-flex; align-items:center; border-radius:999px; padding:4px 8px; background:#dbeafe; color:#1e3a8a; font-size:0.72rem; font-weight:800; }",
       ".uf-node-question-flow { font-size:0.7rem; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; }",
-      ".uf-node-question-action,.uf-node-question-text { margin:0; font-size:0.78rem; color:#334155; line-height:1.45; }",
+      ".uf-node-question-action,.uf-node-question-text,.uf-node-question-context { margin:0; font-size:0.78rem; color:#334155; line-height:1.45; }",
       ".uf-node-question-text { font-weight:700; color:#0f172a; }",
       ".uf-answer-row { display:flex; gap:14px; flex-wrap:wrap; font-size:0.78rem; color:#1f2937; }",
+      ".uf-answer-row.secondary { border-top:1px dashed #dbe3ef; padding-top:6px; }",
       ".uf-label { font-size:0.75rem; font-weight:700; color:#374151; }",
       ".uf-node-question textarea { width:100%; border:1px solid #b9c2d1; border-radius:8px; padding:8px; font:inherit; font-size:0.8rem; resize:vertical; }",
       ".uf-submit-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }",
