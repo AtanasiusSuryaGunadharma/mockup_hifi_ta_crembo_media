@@ -283,6 +283,95 @@
 
     .field { display: grid; gap: 6px; }
 
+    .combo-box {
+      position: relative;
+    }
+
+    .combo-input {
+      padding-right: 38px;
+      cursor: text;
+    }
+
+    .combo-input-wrap {
+      position: relative;
+    }
+
+    .combo-toggle {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border: 0;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #475569;
+      font-size: 0.8rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .combo-panel {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      z-index: 25;
+      border: 1px solid #a7a7a7;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      display: none;
+      overflow: hidden;
+    }
+
+    .combo-panel.show { display: block; }
+
+    .combo-search-box {
+      padding: 8px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f7f7f7;
+    }
+
+    .combo-search-input {
+      width: 100%;
+      border: 1px solid #b9b9b9;
+      border-radius: 6px;
+      padding: 7px 8px;
+      font-size: 0.84rem;
+    }
+
+    .combo-options {
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .combo-option {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid #f0f0f0;
+      border-radius: 0;
+      background: #fff;
+      text-align: left;
+      padding: 8px 10px;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    .combo-option:hover,
+    .combo-option.active {
+      background: #ebebeb;
+    }
+
+    .combo-empty {
+      margin: 0;
+      padding: 8px 10px;
+      font-size: 0.79rem;
+      color: #666;
+      font-style: italic;
+    }
+
     .field label {
       font-size: 0.83rem;
       color: #374151;
@@ -484,7 +573,19 @@
             <div class="grid-2">
               <div class="field">
                 <label for="itemInput">Nama Barang</label>
-                <input id="itemInput" type="text" placeholder="Contoh: Kamera Sony A6400" required>
+                <div class="combo-box" id="barangCombo">
+                  <div class="combo-input-wrap">
+                    <input id="itemInput" class="combo-input" type="text" placeholder="Cari atau ketik nama barang" autocomplete="off" required>
+                    <button class="combo-toggle" type="button" tabindex="-1" aria-hidden="true">▾</button>
+                  </div>
+                  <div id="barangDropdown" class="combo-panel" aria-hidden="true">
+                    <div class="combo-search-box">
+                      <input id="barangSearchInput" class="combo-search-input" type="search" placeholder="Cari nama barang...">
+                    </div>
+                    <div id="barangOptions" class="combo-options"></div>
+                  </div>
+                </div>
+                <small style="color:#64748b;font-size:0.78rem;">Pilih dari saran dummy atau ketik manual jika nama barang tidak ada.</small>
               </div>
               <div class="field">
                 <label for="severitySelect">Tingkat Kerusakan</label>
@@ -557,9 +658,27 @@
     const photoInput = document.getElementById("photoInput");
     const photoPreview = document.getElementById("photoPreview");
     const statusBox = document.getElementById("statusBox");
+    const barangCombo = document.getElementById("barangCombo");
+    const barangDropdown = document.getElementById("barangDropdown");
+    const barangSearchInput = document.getElementById("barangSearchInput");
+    const barangOptions = document.getElementById("barangOptions");
 
     let sessionUser = null;
     let pendingPhotoData = "";
+    let barangComboOpen = false;
+
+    const DUMMY_BARANG_LIST = [
+      "Kamera Sony A6400",
+      "Wireless Microphone Set",
+      "Tripod Heavy Duty",
+      "LED Panel Portabel",
+      "Mixer Audio 8 Channel",
+      "Laptop Presentasi",
+      "Speaker Aktif",
+      "Kabel HDMI 10 Meter",
+      "Cermin Backdrop",
+      "Stand Mic"
+    ];
 
     function safeParse(raw, fallback) {
       try {
@@ -638,6 +757,70 @@
 
     function setStatus(message) {
       statusBox.textContent = message;
+    }
+
+    function seedBarangSuggestions() {
+      if (!barangOptions) {
+        return;
+      }
+      barangOptions.innerHTML = DUMMY_BARANG_LIST.map(function (item) {
+        return '<button class="combo-option" type="button" data-value="' + escapeHtml(item) + '">' + escapeHtml(item) + '</button>';
+      }).join("");
+    }
+
+    function renderBarangOptions(query) {
+      if (!barangOptions) {
+        return;
+      }
+
+      const cleanQuery = String(query || "").trim().toLowerCase();
+      const selectedValue = String(itemInput.value || "").trim().toLowerCase();
+      const filtered = DUMMY_BARANG_LIST.filter(function (item) {
+        return !cleanQuery || item.toLowerCase().indexOf(cleanQuery) !== -1;
+      });
+
+      let html = '<button class="combo-option' + (selectedValue ? '' : ' active') + '" type="button" data-value="">-- tetap ketik manual --</button>';
+
+      filtered.forEach(function (item) {
+        const activeClass = item.toLowerCase() === selectedValue ? ' active' : '';
+        html += '<button class="combo-option' + activeClass + '" type="button" data-value="' + escapeHtml(item) + '">' + escapeHtml(item) + '</button>';
+      });
+
+      if (!filtered.length) {
+        html += '<p class="combo-empty">Nama barang tidak ditemukan. Tetap bisa diketik manual.</p>';
+      }
+
+      barangOptions.innerHTML = html;
+    }
+
+    function openBarangDropdown() {
+      if (!barangDropdown) {
+        return;
+      }
+      barangComboOpen = true;
+      barangDropdown.classList.add("show");
+      barangDropdown.setAttribute("aria-hidden", "false");
+      renderBarangOptions(barangSearchInput.value);
+      barangSearchInput.value = itemInput.value;
+      barangSearchInput.focus();
+      barangSearchInput.select();
+    }
+
+    function closeBarangDropdown() {
+      if (!barangDropdown) {
+        return;
+      }
+      barangComboOpen = false;
+      barangDropdown.classList.remove("show");
+      barangDropdown.setAttribute("aria-hidden", "true");
+    }
+
+    function toggleBarangDropdown() {
+      if (barangComboOpen) {
+        closeBarangDropdown();
+      } else {
+        openBarangDropdown();
+      }
     }
 
     function fillMemberIdentity() {
@@ -768,9 +951,54 @@
 
     photoInput.addEventListener("change", handlePhotoChange);
     reportForm.addEventListener("submit", submitForm);
+    itemInput.addEventListener("focus", openBarangDropdown);
+    itemInput.addEventListener("click", openBarangDropdown);
+    itemInput.addEventListener("input", function () {
+      if (barangSearchInput) {
+        barangSearchInput.value = itemInput.value;
+      }
+      renderBarangOptions(itemInput.value);
+    });
+    itemInput.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowDown" || event.key === "Enter") {
+        event.preventDefault();
+        openBarangDropdown();
+      }
+    });
+    barangSearchInput.addEventListener("input", function () {
+      itemInput.value = barangSearchInput.value;
+      renderBarangOptions(barangSearchInput.value);
+    });
+    barangSearchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeBarangDropdown();
+        itemInput.focus();
+      }
+    });
+    barangDropdown.addEventListener("click", function (event) {
+      const option = event.target.closest(".combo-option");
+      if (!option) {
+        return;
+      }
+
+      const value = option.getAttribute("data-value") || "";
+      itemInput.value = value;
+      barangSearchInput.value = value;
+      renderBarangOptions(value);
+      if (value) {
+        itemCodeInput.focus();
+      }
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!barangCombo.contains(event.target)) {
+        closeBarangDropdown();
+      }
+    });
 
     if (guardMember()) {
       fillMemberIdentity();
+      seedBarangSuggestions();
       incidentDateInput.value = new Date().toISOString().slice(0, 10);
       setStatus("Form siap diisi.");
       updateLiveDateTime();
