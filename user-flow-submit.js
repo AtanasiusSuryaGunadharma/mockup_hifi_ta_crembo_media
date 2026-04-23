@@ -1000,7 +1000,9 @@
       step_notes: rpcStepNotes
     };
 
-    return await supabaseRequest("POST", "/rest/v1/rpc/uf_submit_full", payload);
+    return await supabaseRequest("POST", "/rest/v1/rpc/uf_submit_full", {
+      payload: payload
+    });
   }
 
   async function handleSubmit(event) {

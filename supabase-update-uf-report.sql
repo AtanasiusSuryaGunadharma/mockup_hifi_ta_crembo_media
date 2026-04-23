@@ -111,6 +111,29 @@ begin
 end;
 $$;
 
+create or replace function public.uf_submit_full(
+  answers jsonb,
+  flow_slug text,
+  step_notes jsonb,
+  tester jsonb
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return public.uf_submit_full(
+    jsonb_build_object(
+      'flow_slug', flow_slug,
+      'tester', coalesce(tester, '{}'::jsonb),
+      'answers', coalesce(answers, '[]'::jsonb),
+      'step_notes', coalesce(step_notes, '[]'::jsonb)
+    )
+  );
+end;
+$$;
+
 drop view if exists public.v_uf_report;
 
 create or replace view public.v_uf_report as
