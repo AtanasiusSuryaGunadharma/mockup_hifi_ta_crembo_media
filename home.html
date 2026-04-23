@@ -1215,6 +1215,91 @@
 			letter-spacing: 0.02em;
 		}
 
+		.scroll-top-btn {
+			position: fixed;
+			right: 22px;
+			bottom: 22px;
+			width: 58px;
+			height: 58px;
+			border: 1px solid rgba(255, 255, 255, 0.22);
+			border-radius: 999px;
+			background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 50%, var(--primary-light) 100%);
+			color: #fff;
+			box-shadow: 0 14px 30px rgba(128, 0, 0, 0.28), 0 0 0 0 rgba(128, 0, 0, 0.2);
+			cursor: pointer;
+			display: grid;
+			place-items: center;
+			z-index: 1400;
+			opacity: 0;
+			transform: translateY(16px) scale(0.92);
+			pointer-events: none;
+			transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+			backdrop-filter: blur(8px);
+		}
+
+		.scroll-top-btn::before {
+			content: "";
+			position: absolute;
+			inset: -6px;
+			border-radius: inherit;
+			border: 1px solid rgba(212, 160, 23, 0.28);
+			opacity: 0.75;
+			animation: scrollTopPulse 2.4s ease-out infinite;
+		}
+
+		.scroll-top-btn::after {
+			content: "";
+			position: absolute;
+			inset: 6px;
+			border-radius: inherit;
+			background: radial-gradient(circle at 30% 28%, rgba(255,255,255,0.25) 0%, transparent 42%);
+			pointer-events: none;
+		}
+
+		.scroll-top-btn svg {
+			position: relative;
+			z-index: 1;
+			width: 24px;
+			height: 24px;
+			transition: transform 0.25s ease;
+		}
+
+		.scroll-top-btn:hover {
+			transform: translateY(-2px) scale(1);
+			box-shadow: 0 16px 34px rgba(128, 0, 0, 0.34), 0 0 0 6px rgba(128, 0, 0, 0.08);
+			filter: brightness(1.06);
+		}
+
+		.scroll-top-btn:hover svg {
+			transform: translateY(-2px);
+		}
+
+		.scroll-top-btn.show {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+			pointer-events: auto;
+		}
+
+		.scroll-top-btn:focus-visible {
+			outline: 3px solid rgba(212, 160, 23, 0.55);
+			outline-offset: 3px;
+		}
+
+		@keyframes scrollTopPulse {
+			0% {
+				transform: scale(1);
+				opacity: 0.7;
+			}
+			70% {
+				transform: scale(1.24);
+				opacity: 0;
+			}
+			100% {
+				transform: scale(1.24);
+				opacity: 0;
+			}
+		}
+
 		/* ═══════════════════════════════════════════
 		   AGENDA LIST
 		   ═══════════════════════════════════════════ */
@@ -1625,6 +1710,18 @@
 			.brand p {
 				font-size: 0.72rem;
 			}
+
+			.scroll-top-btn {
+				right: 14px;
+				bottom: 14px;
+				width: 50px;
+				height: 50px;
+			}
+
+			.scroll-top-btn svg {
+				width: 21px;
+				height: 21px;
+			}
 		}
 
 		/* ═══════════════════════════════════════════
@@ -2031,6 +2128,13 @@
 		</section>
 	</main>
 
+	<button id="scrollTopBtn" class="scroll-top-btn" type="button" aria-label="Scroll ke atas" title="Scroll ke atas">
+		<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			<path d="M12 19V5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M6.5 10.5L12 5l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+		</svg>
+	</button>
+
 	<footer class="footer">
 		<div class="footer-main">
 			<div class="container footer-grid">
@@ -2084,6 +2188,8 @@
 		const aboutMediaPrev = document.getElementById("aboutMediaPrev");
 		const aboutMediaNext = document.getElementById("aboutMediaNext");
 		const homeMisaBesarNote = document.getElementById("homeMisaBesarNote");
+		const scrollTopBtn = document.getElementById("scrollTopBtn");
+		const aboutSection = document.querySelector('section[aria-label="Tentang Crembo"]');
 		const CAROUSEL_STORAGE_KEY = "crembo-home-carousel-slides";
 		const ABOUT_STORAGE_KEY = "crembo-home-about-content";
 		const BIG_MASS_STORAGE_KEY = "crembo-registrasi-misa-besar-schedules";
@@ -2143,8 +2249,24 @@
 			document.documentElement.style.setProperty("--header-h", headerHeight + "px");
 		}
 
+		function updateScrollTopVisibility() {
+			if (!scrollTopBtn || !aboutSection) {
+				return;
+			}
+
+			const triggerPoint = aboutSection.offsetTop - Math.min(window.innerHeight * 0.2, 160);
+			const shouldShow = window.scrollY >= Math.max(0, triggerPoint);
+			scrollTopBtn.classList.toggle("show", shouldShow);
+		}
+
+		function scrollToTop() {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+
 		syncStickyOffset();
 		window.addEventListener("resize", syncStickyOffset);
+		window.addEventListener("scroll", updateScrollTopVisibility, { passive: true });
+		window.addEventListener("resize", updateScrollTopVisibility);
 
 		menuToggle.addEventListener("click", function () {
 			const isOpen = mainNav.classList.toggle("open");
@@ -2184,6 +2306,10 @@
 			const keyword = searchInput.value.trim();
 			window.location.href = "search.html?q=" + encodeURIComponent(keyword);
 		});
+
+		if (scrollTopBtn) {
+			scrollTopBtn.addEventListener("click", scrollToTop);
+		}
 
 		function escapeHtml(text) {
 			return String(text || "")
@@ -2465,6 +2591,7 @@
 			startAboutAutoSlide();
 		});
 		startAutoScroll();
+		updateScrollTopVisibility();
 
 	
     (function () {
