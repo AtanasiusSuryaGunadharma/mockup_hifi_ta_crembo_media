@@ -24,6 +24,12 @@
     return String(value || "").trim().toLowerCase();
   }
 
+  function containsAny(haystack, terms) {
+    return terms.some(function (term) {
+      return haystack.indexOf(term) !== -1;
+    });
+  }
+
   function getFlowRoleLabel(flowSlug) {
     if (flowSlug === "super-admin") {
       return "Super Admin";
@@ -207,31 +213,27 @@
     var roleLabel = getFlowRoleLabel(flowSlug);
     var pack = getRoleScenarioPack(flowSlug);
 
-    if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
+    if (containsAny(haystack, ["dashboard anggota", "dashboard admin", "dashboard super admin"])) {
       return "Task scenario " + roleLabel + ": cek layout dashboard, sidebar, header, dan notifikasi. Pastikan nama akun " + pack.profile_name + " tampil sesuai role.";
     }
 
-    if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
+    if (containsAny(haystack, ["home", "entry", "beranda publik"])) {
       return "Task scenario " + roleLabel + ": mulai dari home, klik login, lalu masuk menggunakan akun dummy yang sudah disiapkan untuk role ini.";
     }
 
-    if (haystack.indexOf("log aktivitas") !== -1) {
+    if (containsAny(haystack, ["log aktivitas", "log "])) {
       return "Task scenario " + roleLabel + ": gunakan search, filter, export atau preview PDF jika tersedia, lalu pastikan hasil hanya sesuai cakupan role ini.";
     }
 
-    if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+    if (containsAny(haystack, ["pengumuman", "berita"])) {
       return "Task scenario " + roleLabel + ": isi judul dummy '" + pack.publication_title + "', kategori '" + pack.publication_category + "', lalu uji update, hapus, dan download laporan jika tersedia.";
-    }
-
-    if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
-      return "Task scenario " + roleLabel + ": buat judul dummy '" + pack.publication_title + "', kategori '" + pack.publication_category + "', lalu uji update, hapus, dan download laporan jika tersedia.";
     }
 
     if (haystack.indexOf("agenda") !== -1) {
       return "Task scenario " + roleLabel + ": isi judul '" + pack.agenda_title + "', tanggal '" + pack.agenda_date + "', lokasi '" + pack.agenda_place + "', lalu simpan dan cek opsi update/hapus.";
     }
 
-    if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
+    if (containsAny(haystack, ["form pendaftaran", "builder form", "manajemen form", "pendaftar", "isi form kegiatan", "pendaftaran retret", "pendaftaran"] )) {
       return "Task scenario " + roleLabel + ": gunakan dummy judul form '" + pack.registration_title + "', target '" + pack.registration_target + "', visibility '" + pack.registration_visibility + "', lalu uji simpan, edit, hapus, dan preview hasil.";
     }
 
@@ -239,15 +241,43 @@
       return "Task scenario " + roleLabel + ": pilih nama barang dummy '" + pack.damaged_item + "' atau ketik manual jika tidak ada, isi kode '" + pack.damaged_code + "', lalu kirim dan cek riwayat.";
     }
 
+    if (haystack.indexOf("evaluasi") !== -1) {
+      if (flowSlug === "anggota") {
+        return "Task scenario " + roleLabel + ": isi evaluasi dengan kendala teknis '" + pack.technical_issue + "', lalu tambahkan catatan audio dan pencahayaan sebelum simpan.";
+      }
+
+      return "Task scenario " + roleLabel + ": validasi hasil evaluasi dengan contoh kendala 'Kamera 1 mati', 'Audio pecah', dan 'Internet tersendat'.";
+    }
+
     if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
       return "Task scenario " + roleLabel + ": gunakan barang dummy '" + pack.loan_item + "' dengan keterangan '" + pack.loan_note + "', lalu uji alur approve, ambil, kembalikan, dan buka riwayat.";
     }
 
-    if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
+    if (containsAny(haystack, ["login", "otp", "reset", "masuk sistem"])) {
       return "Task scenario " + roleLabel + ": gunakan akun dummy nama '" + pack.login_name + "' dengan username '" + pack.login_user + "', password '" + pack.login_password + "', lalu cek recovery jika diminta.";
     }
 
-    return "Task scenario " + roleLabel + ": ikuti urutan langkah sesuai node, gunakan input dummy yang ditentukan pada deskripsi langkah, lalu catat hasilnya.";
+    if (containsAny(haystack, ["manajemen anggota", "kelola data admin", "sertifikat", "profil admin", "profil anggota", "profil publik", "profil organisasi", "kelola tentang", "manajemen profil"])) {
+      return "Task scenario " + roleLabel + ": gunakan data dummy nama '" + pack.member_name + "' dan akun pengelola '" + pack.profile_name + "' untuk uji tambah/edit/validasi data sesuai modul.";
+    }
+
+    if (containsAny(haystack, ["jadwal streaming", "jadwal tugas", "request tugas", "pembatalan", "tukar jadwal", "monitoring", "penugasan petugas", "registrasi misa", "riwayat tugas"])) {
+      return "Task scenario " + roleLabel + ": gunakan jadwal '" + pack.streaming_title + "' dan petugas '" + pack.streaming_petugas + "' untuk uji alur streaming end-to-end.";
+    }
+
+    if (containsAny(haystack, ["inventaris", "persetujuan peminjaman", "riwayat pinjam", "riwayat peminjaman", "pengajuan peminjaman"])) {
+      return "Task scenario " + roleLabel + ": gunakan barang '" + pack.loan_item + "' dan catatan '" + pack.loan_note + "' untuk uji alur inventaris dan approval.";
+    }
+
+    if (containsAny(haystack, ["carousel", "embed", "youtube", "instagram", "google maps", "search", "pencarian", "notifikasi"])) {
+      return "Task scenario " + roleLabel + ": gunakan konten dummy milik akun '" + pack.profile_name + "' lalu verifikasi tampilan publik dan hasil pencarian/notifikasi.";
+    }
+
+    if (containsAny(haystack, ["logout", "kembali ke home", "kembali ke dashboard"])) {
+      return "Task scenario " + roleLabel + ": akhiri sesi akun '" + pack.login_user + "' lalu pastikan halaman tujuan terbuka tanpa error.";
+    }
+
+    return "Task scenario " + roleLabel + ": gunakan akun '" + pack.login_user + "' (" + pack.login_name + "), jalankan aksi pada node, lalu validasi hasil tampil sesuai modul.";
   }
 
   function buildTaskScenarioDetails(flowSlug, item) {
@@ -255,23 +285,23 @@
     var roleLabel = getFlowRoleLabel(flowSlug);
     var pack = getRoleScenarioPack(flowSlug);
     var brief = buildTaskScenarioBrief(flowSlug, item);
-    var dummyData = "Gunakan input dummy sesuai instruksi task scenario untuk role " + roleLabel + ".";
-    var action = "Ikuti langkah yang tertulis pada node, lalu simpan atau lanjut ke langkah berikutnya.";
-    var expected = "Hasil tampil sesuai alur role yang sedang diuji.";
+    var dummyData = "Akun: " + pack.login_name + " | Username: " + pack.login_user + " | Password: " + pack.login_password + ".";
+    var action = "Jalankan aksi sesuai node, simpan perubahan, lalu lanjut ke langkah berikutnya.";
+    var expected = "Hasil tampil spesifik sesuai modul dan role " + roleLabel + ".";
 
-    if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
+    if (containsAny(haystack, ["dashboard anggota", "dashboard admin", "dashboard super admin"])) {
       dummyData = "Akun aktif: " + pack.profile_name + ". Fokus pada halaman dashboard, sidebar, header, dan notifikasi yang muncul.";
       action = "Buka dashboard, cek semua menu, lalu pastikan setiap ikon/tombol bisa diklik.";
       expected = "Dashboard memuat lengkap, nama akun tampil benar, dan setiap elemen navigasi stabil.";
-    } else if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
+    } else if (containsAny(haystack, ["home", "entry", "beranda publik"])) {
       dummyData = "Gunakan home sebagai titik awal lalu lanjut login dengan akun " + pack.login_name + ".";
       action = "Klik tombol Login di home lalu masuk ke halaman login sesuai role.";
       expected = "Alur masuk menuju halaman login berjalan normal.";
-    } else if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
+    } else if (containsAny(haystack, ["login", "otp", "reset", "masuk sistem"])) {
       dummyData = "Nama: " + pack.login_name + " | Username: " + pack.login_user + " | Password: " + pack.login_password + " | Email recovery: " + pack.login_email + " | OTP dummy: " + pack.otp_code + ".";
       action = "Masukkan kredensial dummy, cek recovery bila ada, lalu masuk ke dashboard role terkait.";
       expected = "Autentikasi berhasil dan redirect sesuai role yang diuji.";
-    } else if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+    } else if (containsAny(haystack, ["pengumuman", "berita"])) {
       dummyData = "Judul: '" + pack.publication_title + "' | Kategori: '" + pack.publication_category + "' | Penulis: '" + pack.profile_name + "' | Status: Draft/Published sesuai skenario.";
       action = "Tambahkan data dummy, lalu uji update, hapus, dan download laporan jika ada tombolnya.";
       expected = "Daftar konten berubah sesuai aksi dan detail laporan bisa dibuka.";
@@ -301,10 +331,38 @@
       dummyData = "Gunakan filter tanggal, role, search kata kunci, serta export/preview bila tersedia.";
       action = "Uji pencarian, filter, export, dan preview laporan pada log aktivitas.";
       expected = "Hasil log hanya sesuai cakupan role dan fitur output berfungsi.";
-    } else if (haystack.indexOf("profil") !== -1) {
-      dummyData = "Nama, jabatan, dan foto profil dummy yang sudah tersimpan di halaman.";
-      action = "Buka halaman profil, cek isi, lalu lakukan update bila tombol edit tersedia.";
-      expected = "Data profil tampil rapi dan perubahan tersimpan konsisten.";
+    } else if (containsAny(haystack, ["profil", "manajemen profil", "kelola tentang", "profil publik"])) {
+      dummyData = "Nama profil: '" + pack.profile_name + "' | Tentang: 'Koordinator tim multimedia Crembo' | Kontak: '" + pack.login_email + "'.";
+      action = "Buka halaman profil/tentang, ubah satu data, simpan, lalu cek sinkronisasi di halaman terkait.";
+      expected = "Data profil dan narasi tentang tampil konsisten setelah disimpan.";
+    } else if (containsAny(haystack, ["manajemen anggota", "kelola data admin", "sertifikat anggota", "setting sertifikat"])) {
+      dummyData = "Nama anggota: '" + pack.member_name + "' | Nama admin: '" + pack.admin_name + "' | Status anggota: Aktif | Nomor sertifikat: SRT-2026-014.";
+      action = "Uji tambah/edit/validasi data anggota atau admin, lalu uji generate/pengaturan sertifikat.";
+      expected = "Perubahan data user tersimpan dan pengaturan sertifikat bisa dipakai.";
+    } else if (containsAny(haystack, ["jadwal streaming", "jadwal tugas", "request tugas", "pembatalan", "tukar jadwal", "penugasan petugas", "registrasi misa", "riwayat tugas", "monitoring tugas", "monitoring kewajiban"])) {
+      dummyData = "Judul jadwal: '" + pack.streaming_title + "' | Petugas: '" + pack.streaming_petugas + "' | Tanggal: 2026-05-05 | Shift: 17:00-19:00.";
+      action = "Uji alur pilih jadwal, request/assign, ubah status, lalu validasi monitoring dan riwayat.";
+      expected = "Status tugas berpindah sesuai alur dan histori tersimpan benar.";
+    } else if (containsAny(haystack, ["inventaris", "persetujuan peminjaman", "riwayat pinjam", "riwayat peminjaman"])) {
+      dummyData = "Barang inventaris: '" + pack.loan_item + "' | Kode: INV-2026-031 | Kondisi awal: Baik | Keterangan: '" + pack.loan_note + "'.";
+      action = "Cek inventaris, proses approval, lalu validasi riwayat pinjam-kembali.";
+      expected = "Stok, status approval, dan riwayat transaksi konsisten.";
+    } else if (containsAny(haystack, ["carousel", "embed", "youtube", "instagram", "google maps"])) {
+      dummyData = "Judul carousel: 'Pelayanan Misa Paskah 2026' | Link YouTube: https://youtube.com/watch?v=crembo2026 | Link Instagram: https://instagram.com/crembo.media | Maps: Gereja St. Paulus.";
+      action = "Uji tambah/edit konten home lalu buka home untuk cek semua embed tampil.";
+      expected = "Konten home berubah sesuai input dan komponen embed tampil normal.";
+    } else if (containsAny(haystack, ["search", "pencarian"])) {
+      dummyData = "Kata kunci: 'misa', 'pengumuman', dan 'retret omk'.";
+      action = "Lakukan pencarian minimal 3 kata kunci lalu cek relevansi hasil.";
+      expected = "Hasil pencarian menampilkan konten terkait dan bisa dibuka detailnya.";
+    } else if (containsAny(haystack, ["notifikasi", "header"])) {
+      dummyData = "User: '" + pack.login_name + "' | Notifikasi uji: 'Jadwal tugas diperbarui' dan 'Form pendaftaran diterima'.";
+      action = "Buka header notifikasi, uji filter/search notifikasi, lalu cek status terbaca.";
+      expected = "Notifikasi tampil, bisa difilter, dan status terbaca berubah.";
+    } else if (containsAny(haystack, ["logout", "kembali ke home", "kembali ke dashboard"])) {
+      dummyData = "Sesi aktif akun: '" + pack.login_user + "'.";
+      action = "Klik kembali ke halaman tujuan dan lakukan logout dari sesi aktif.";
+      expected = "Sesi berakhir tanpa error dan halaman login/home terbuka.";
     }
 
     return {
