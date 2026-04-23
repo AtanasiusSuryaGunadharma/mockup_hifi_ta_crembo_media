@@ -27,6 +27,18 @@
   function buildContextQuestion(item) {
     var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
 
+    if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+      return "Apakah judul, kategori, update, hapus, dan download laporan pada task scenario ini sudah berjalan sesuai urutan?";
+    }
+
+    if (haystack.indexOf("agenda") !== -1) {
+      return "Apakah input judul, tanggal, lokasi, lalu aksi update/hapus pada task scenario agenda sudah jelas?";
+    }
+
+    if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
+      return "Apakah input field form, status publish, dan proses simpan pada task scenario ini sudah mudah diikuti?";
+    }
+
     if (haystack.indexOf("dashboard") !== -1 || haystack.indexOf("header") !== -1 || haystack.indexOf("headline") !== -1) {
       return "Apakah warna, kontras teks, dan posisi elemen header pada langkah ini sudah nyaman dilihat?";
     }
@@ -36,7 +48,7 @@
     }
 
     if (haystack.indexOf("kerusakan") !== -1) {
-      return "Apakah alur pelaporan kerusakan barang pada langkah ini sudah mudah dipahami?";
+      return "Apakah input nama barang, pencarian dummy, dan opsi manual pada task scenario kerusakan sudah mudah dipahami?";
     }
 
     if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
@@ -56,6 +68,109 @@
     }
 
     return "Apakah tampilan langkah ini sudah sesuai dengan high fidelity mock up yang diharapkan?";
+  }
+
+  function buildTaskScenarioBrief(item) {
+    var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
+
+    if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
+      return "Task scenario: cek layout dashboard, sidebar, header, dan notifikasi. Jika ada tombol/ikon, pastikan semua kliknya berjalan normal.";
+    }
+
+    if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
+      return "Task scenario: mulai dari home, klik login, lalu pastikan alur masuk sesuai role yang diuji.";
+    }
+
+    if (haystack.indexOf("log aktivitas") !== -1) {
+      return "Task scenario: gunakan search, filter, export atau preview PDF jika tersedia, lalu pastikan hasil hanya sesuai cakupan role.";
+    }
+
+    if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+      return "Task scenario: isi judul dummy 'Info Jadwal Pelayanan Minggu Palma', kategori 'Pengumuman Internal', lalu uji update, hapus, dan download laporan jika tersedia.";
+    }
+
+    if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+      return "Task scenario: buat judul dummy 'Info Jadwal Pelayanan Minggu Palma', kategori 'Pengumuman Internal', lalu uji update, hapus, dan download laporan jika tersedia.";
+    }
+
+    if (haystack.indexOf("agenda") !== -1) {
+      return "Task scenario: isi judul 'Briefing Petugas Pekan Suci', tanggal '2026-04-30', lokasi 'Ruang Kontrol Streaming', lalu simpan dan cek opsi update/hapus.";
+    }
+
+    if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
+      return "Task scenario: gunakan dummy judul form 'Pendaftaran Kegiatan Umum', target 'Anggota', visibility 'Publik', lalu uji simpan, edit, hapus, dan preview hasil.";
+    }
+
+    if (haystack.indexOf("kerusakan") !== -1) {
+      return "Task scenario: pilih nama barang dummy 'Kamera Sony A6400' atau ketik manual jika tidak ada, isi kode 'CAM-001', tingkat 'Sedang', lalu kirim dan cek riwayat.";
+    }
+
+    if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
+      return "Task scenario: gunakan barang dummy 'Tripod Heavy Duty' dengan keperluan pelayanan, lalu uji alur approve, ambil, kembalikan, dan buka riwayat.";
+    }
+
+    if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
+      return "Task scenario: gunakan akun dummy yang sudah disiapkan untuk login, lalu cek recovery jika diminta.";
+    }
+
+    return "Task scenario: ikuti urutan langkah sesuai node, gunakan input dummy yang ditentukan pada deskripsi langkah, lalu catat hasilnya.";
+  }
+
+  function buildTaskScenarioDetails(item) {
+    var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
+    var brief = buildTaskScenarioBrief(item);
+    var dummyData = "Gunakan input dummy sesuai instruksi task scenario.";
+    var action = "Ikuti langkah yang tertulis pada node, lalu simpan atau lanjut ke langkah berikutnya.";
+    var expected = "Hasil tampil sesuai alur role yang sedang diuji.";
+
+    if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
+      dummyData = "Tidak ada input khusus. Fokus pada halaman dashboard, sidebar, header, dan notifikasi yang muncul.";
+      action = "Buka dashboard, cek semua menu, lalu pastikan setiap ikon/tombol bisa diklik.";
+      expected = "Dashboard memuat lengkap dan setiap elemen navigasi tampil stabil.";
+    } else if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
+      dummyData = "Tidak ada input khusus. Gunakan home sebagai titik awal lalu lanjut login.";
+      action = "Klik tombol Login di home lalu masuk ke halaman login sesuai role.";
+      expected = "Alur masuk menuju halaman login berjalan normal.";
+    } else if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
+      dummyData = "Username/password dummy sesuai role, misalnya akun anggota/admin/super admin yang sudah disiapkan.";
+      action = "Masukkan kredensial dummy, cek recovery bila ada, lalu masuk ke dashboard role terkait.";
+      expected = "Autentikasi berhasil dan redirect sesuai role yang diuji.";
+    } else if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
+      dummyData = "Judul: 'Info Jadwal Pelayanan Minggu Palma' | Kategori: 'Pengumuman Internal' | Status: Draft/Published sesuai skenario.";
+      action = "Tambahkan data dummy, lalu uji update, hapus, dan download laporan jika ada tombolnya.";
+      expected = "Daftar konten berubah sesuai aksi dan detail laporan bisa dibuka.";
+    } else if (haystack.indexOf("agenda") !== -1) {
+      dummyData = "Judul: 'Briefing Petugas Pekan Suci' | Tanggal: '2026-04-30' | Lokasi: 'Ruang Kontrol Streaming' | Status: aktif.";
+      action = "Isi data dummy agenda, lalu uji simpan, update, hapus, dan buka detailnya.";
+      expected = "Agenda tersimpan dan detail tampil konsisten.";
+    } else if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
+      dummyData = "Judul form: 'Pendaftaran Kegiatan Umum' | Target: 'Anggota' | Visibility: 'Publik'.";
+      action = "Buat atau ubah form dengan data dummy, lalu preview hasil dan pastikan data masuk.";
+      expected = "Form bisa dipublish, diedit, dihapus, dan data pendaftar terbaca.";
+    } else if (haystack.indexOf("kerusakan") !== -1) {
+      dummyData = "Nama barang: 'Kamera Sony A6400' atau ketik manual bila tidak ada | Kode: 'CAM-001' | Tingkat: 'Sedang' | Lokasi: 'Ruang Kontrol Streaming'.";
+      action = "Isi form kerusakan dengan data dummy, kirim, lalu cek riwayat atau hasil laporan.";
+      expected = "Laporan kerusakan tersimpan dan muncul di daftar/riwayat terkait.";
+    } else if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
+      dummyData = "Barang dummy: 'Tripod Heavy Duty' atau barang yang muncul pada daftar approved | Keterangan: keperluan pelayanan.";
+      action = "Ajukan, ambil, atau kembalikan barang sesuai node, lalu cek status/riwayatnya.";
+      expected = "Status peminjaman berubah sesuai aksi dan riwayat tetap sinkron.";
+    } else if (haystack.indexOf("log aktivitas") !== -1 || haystack.indexOf("log") !== -1) {
+      dummyData = "Gunakan filter tanggal, role, search kata kunci, serta export/preview bila tersedia.";
+      action = "Uji pencarian, filter, export, dan preview laporan pada log aktivitas.";
+      expected = "Hasil log hanya sesuai cakupan role dan fitur output berfungsi.";
+    } else if (haystack.indexOf("profil") !== -1) {
+      dummyData = "Nama, jabatan, dan foto profil dummy yang sudah tersimpan di halaman.";
+      action = "Buka halaman profil, cek isi, lalu lakukan update bila tombol edit tersedia.";
+      expected = "Data profil tampil rapi dan perubahan tersimpan konsisten.";
+    }
+
+    return {
+      brief: brief,
+      dummy_data: dummyData,
+      action: action,
+      expected: expected
+    };
   }
 
   function collectNodeDefinitions(flowSlug) {
@@ -106,9 +221,16 @@
 
         defs.push({
           step_no: stepNo,
+          scenario_no: stepNo,
+          scenario_title: "Task Scenario " + stepNo,
           step_title: nodeTitle,
           flow_title: laneTitle,
           action_instruction: actionInstruction,
+          scenario_details: buildTaskScenarioDetails({
+            step_title: nodeTitle,
+            flow_title: laneTitle,
+            action_instruction: actionInstruction
+          }),
           question_text: "Apakah " + nodeTitle + " pada " + laneTitle + " sudah sesuai dan mudah digunakan?",
           context_question_text: buildContextQuestion({
             step_title: nodeTitle,
@@ -138,13 +260,28 @@
       card.setAttribute("data-step-no", String(item.step_no));
       card.innerHTML = [
         '<div class="uf-node-question-head">',
-          '<span class="uf-node-question-step">Step ' + item.step_no + '</span>',
+          '<span class="uf-node-question-step">' + escapeHtml(item.scenario_title || ("Task Scenario " + item.step_no)) + '</span>',
           '<span class="uf-node-question-flow">' + escapeHtml(item.flow_title) + '</span>',
+        '</div>',
+        '<p class="uf-node-question-scenario">' + escapeHtml((item.scenario_details && item.scenario_details.brief) || "Task scenario belum ditentukan.") + '</p>',
+        '<div class="uf-scenario-grid">',
+          '<div class="uf-scenario-box">',
+            '<p class="uf-scenario-label">Data Dummy</p>',
+            '<p class="uf-scenario-value">' + escapeHtml((item.scenario_details && item.scenario_details.dummy_data) || "Gunakan data dummy sesuai skenario.") + '</p>',
+          '</div>',
+          '<div class="uf-scenario-box">',
+            '<p class="uf-scenario-label">Aksi yang Diuji</p>',
+            '<p class="uf-scenario-value">' + escapeHtml((item.scenario_details && item.scenario_details.action) || "Ikuti aksi pada node.") + '</p>',
+          '</div>',
+          '<div class="uf-scenario-box">',
+            '<p class="uf-scenario-label">Hasil Diharapkan</p>',
+            '<p class="uf-scenario-value">' + escapeHtml((item.scenario_details && item.scenario_details.expected) || "Hasil mengikuti alur yang dirancang.") + '</p>',
+          '</div>',
         '</div>',
         '<p class="uf-node-question-action">' + escapeHtml(item.action_instruction) + '</p>',
         '<div class="uf-question-block">',
           '<p class="uf-question-label">Pertanyaan 1</p>',
-          '<p class="uf-node-question-text">' + escapeHtml(item.question_text) + '</p>',
+          '<p class="uf-node-question-text">' + escapeHtml("Apakah " + (item.scenario_title || ("Task Scenario " + item.step_no)) + " sudah mengikuti input dummy dan aksi yang ditentukan?") + '</p>',
           '<div class="uf-answer-row">',
             '<label><input type="radio" name="answer-main-' + item.step_no + '" value="YA"> YA</label>',
             '<label><input type="radio" name="answer-main-' + item.step_no + '" value="TIDAK"> TIDAK</label>',
@@ -265,7 +402,7 @@
         var noteText = String((byId("note-" + def.step_no) || {}).value || "").trim();
 
         if (!mainAnswer || !contextAnswer) {
-          missingAnswers.push("Step " + def.step_no + " - " + def.step_title);
+          missingAnswers.push((def.scenario_title || ("Task Scenario " + def.step_no)) + " - " + def.step_title);
         }
 
         answers.push({
@@ -305,7 +442,7 @@
       localStorage.setItem(LOCAL_SUBMISSION_KEY, JSON.stringify(submission));
       localStorage.setItem(LOCAL_SUBMISSION_KEY + "-" + flowSlug, JSON.stringify(submission));
       window.__UF_LAST_SUBMISSION__ = submission;
-      renderMessage("success", "Hasil pengujian tersimpan lokal. Koneksi Supabase sementara dimatikan.");
+      renderMessage("success", "Hasil task scenario tersimpan lokal. Koneksi Supabase sementara dimatikan.");
       byId("ufForm").reset();
       applyIdentityDefaults();
     } catch (error) {
@@ -332,6 +469,11 @@
       ".uf-node-question-head { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center; }",
       ".uf-node-question-step { display:inline-flex; align-items:center; border-radius:999px; padding:4px 8px; background:#dbeafe; color:#1e3a8a; font-size:0.72rem; font-weight:800; }",
       ".uf-node-question-flow { font-size:0.7rem; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; }",
+      ".uf-node-question-scenario { margin:0; font-size:0.74rem; color:#7c2d12; line-height:1.45; padding:7px 8px; border-radius:8px; background:#fff7ed; border:1px solid #fed7aa; font-weight:700; }",
+      ".uf-scenario-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }",
+      ".uf-scenario-box { border:1px solid #e2e8f0; border-radius:10px; background:#fff; padding:8px; display:grid; gap:4px; }",
+      ".uf-scenario-label { margin:0; font-size:0.68rem; font-weight:800; color:#1e3a8a; text-transform:uppercase; letter-spacing:0.04em; }",
+      ".uf-scenario-value { margin:0; font-size:0.75rem; color:#334155; line-height:1.45; }",
       ".uf-node-question-action,.uf-node-question-text,.uf-node-question-context { margin:0; font-size:0.78rem; color:#334155; line-height:1.45; }",
       ".uf-node-question-text { font-weight:700; color:#0f172a; }",
       ".uf-answer-row { display:flex; gap:14px; flex-wrap:wrap; font-size:0.78rem; color:#1f2937; }",
@@ -345,7 +487,7 @@
       ".uf-submit-info.loading { background:#eff6ff; color:#1e3a8a; border:1px solid #bfdbfe; }",
       ".uf-submit-info.success { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }",
       ".uf-submit-info.error { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }",
-      "@media (max-width:900px){ .uf-grid{ grid-template-columns:1fr; } }"
+      "@media (max-width:900px){ .uf-grid{ grid-template-columns:1fr; } .uf-scenario-grid{ grid-template-columns:1fr; } }"
     ].join("");
     document.head.appendChild(style);
   }
