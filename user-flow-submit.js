@@ -670,10 +670,10 @@
       ".uf-node-question-step { display:inline-flex; align-items:center; border-radius:999px; padding:4px 8px; background:#dbeafe; color:#1e3a8a; font-size:0.72rem; font-weight:800; }",
       ".uf-node-question-flow { font-size:0.7rem; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; }",
       ".uf-node-question-scenario { margin:0; font-size:0.74rem; color:#7c2d12; line-height:1.45; padding:7px 8px; border-radius:8px; background:#fff7ed; border:1px solid #fed7aa; font-weight:700; }",
-      ".uf-scenario-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }",
-      ".uf-scenario-box { border:1px solid #e2e8f0; border-radius:10px; background:#fff; padding:8px; display:grid; gap:4px; }",
-      ".uf-scenario-label { margin:0; font-size:0.68rem; font-weight:800; color:#1e3a8a; text-transform:uppercase; letter-spacing:0.04em; }",
-      ".uf-scenario-value { margin:0; font-size:0.75rem; color:#334155; line-height:1.45; }",
+      ".uf-scenario-grid { display:grid; grid-template-columns:1fr; gap:8px; }",
+      ".uf-scenario-box { min-width:0; border:1px solid #e2e8f0; border-radius:10px; background:#fff; padding:8px; display:grid; gap:4px; }",
+      ".uf-scenario-label { margin:0; font-size:0.68rem; font-weight:800; color:#1e3a8a; text-transform:uppercase; letter-spacing:0.04em; white-space:normal; overflow-wrap:anywhere; word-break:break-word; }",
+      ".uf-scenario-value { margin:0; font-size:0.75rem; color:#334155; line-height:1.45; white-space:normal; overflow-wrap:anywhere; word-break:break-word; }",
       ".uf-node-question-action,.uf-node-question-text,.uf-node-question-context { margin:0; font-size:0.78rem; color:#334155; line-height:1.45; }",
       ".uf-node-question-text { font-weight:700; color:#0f172a; }",
       ".uf-answer-row { display:flex; gap:14px; flex-wrap:wrap; font-size:0.78rem; color:#1f2937; }",
@@ -687,7 +687,9 @@
       ".uf-submit-info.loading { background:#eff6ff; color:#1e3a8a; border:1px solid #bfdbfe; }",
       ".uf-submit-info.success { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }",
       ".uf-submit-info.error { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }",
-      "@media (max-width:900px){ .uf-grid{ grid-template-columns:1fr; } .uf-scenario-grid{ grid-template-columns:1fr; } }"
+      "@media (min-width:680px){ .uf-scenario-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }",
+      "@media (min-width:980px){ .uf-scenario-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }",
+      "@media (max-width:900px){ .uf-grid{ grid-template-columns:1fr; } }"
     ].join("");
     document.head.appendChild(style);
   }
