@@ -572,10 +572,10 @@
     };
   }
 
-  async function supabaseRequest(method, path, body) {
+  async function supabaseRequest(method, path, body, extraHeaders) {
     var options = {
       method: method,
-      headers: buildSupabaseHeaders()
+      headers: Object.assign(buildSupabaseHeaders(), extraHeaders || {})
     };
 
     if (body) {
@@ -675,9 +675,123 @@
     return map;
   }
 
+  function findDefByStepNo(defs, stepNo) {
+    var found = null;
+    (defs || []).some(function (def) {
+      if (Number(def.step_no || 0) === Number(stepNo || 0)) {
+        found = def;
+        return true;
+      }
+      return false;
+    });
+    return found;
+  }
+
+  function buildDefaultQuestionTexts(def) {
+    return [
+      "Apakah " + (def.scenario_title || ("Task Scenario " + def.step_no)) + " sudah mengikuti input dummy dan aksi yang ditentukan?",
+      def.context_question_text || "Apakah tampilan langkah ini sudah sesuai dengan high fidelity mock up yang diharapkan?"
+    ];
+  }
+
+  async function bootstrapStepsAndQuestions(flowId, defs) {
+    if (!defs || !defs.length) {
+      return;
+    }
+
+    var stepPayload = defs.map(function (def) {
+      return {
+        flow_id: flowId,
+        step_no: Number(def.step_no || 0),
+        step_title: def.step_title || ("Langkah " + def.step_no),
+        action_instruction: def.action_instruction || ""
+      };
+    }).filter(function (item) {
+      return item.step_no > 0;
+    });
+
+    if (!stepPayload.length) {
+      return;
+    }
+
+    await supabaseRequest(
+      "POST",
+      "/rest/v1/uf_steps",
+      stepPayload,
+      { Prefer: "return=representation" }
+    );
+
+    var remoteSteps = await fetchFlowSteps(flowId);
+    var questionPayload = [];
+
+    remoteSteps.forEach(function (step) {
+      var def = findDefByStepNo(defs, step.step_no);
+      if (!def) {
+        return;
+      }
+
+      var questionTexts = buildDefaultQuestionTexts(def);
+      questionTexts.forEach(function (text) {
+        questionPayload.push({
+          step_id: step.id,
+          question_text: text
+        });
+      });
+    });
+
+    if (questionPayload.length) {
+      await supabaseRequest(
+        "POST",
+        "/rest/v1/uf_questions",
+        questionPayload,
+        { Prefer: "return=minimal" }
+      );
+    }
+  }
+
+  async function ensureQuestionsForExistingSteps(remoteSteps, defs, questionLookup) {
+    var missingPayload = [];
+
+    remoteSteps.forEach(function (step) {
+      var def = findDefByStepNo(defs, step.step_no);
+      if (!def) {
+        return;
+      }
+
+      var existing = questionLookup[String(step.id)] || [];
+      var existingTextMap = {};
+      existing.forEach(function (q) {
+        existingTextMap[normalizeText(q.question_text)] = true;
+      });
+
+      buildDefaultQuestionTexts(def).forEach(function (qText) {
+        if (!existingTextMap[normalizeText(qText)]) {
+          missingPayload.push({
+            step_id: step.id,
+            question_text: qText
+          });
+        }
+      });
+    });
+
+    if (missingPayload.length) {
+      await supabaseRequest(
+        "POST",
+        "/rest/v1/uf_questions",
+        missingPayload,
+        { Prefer: "return=minimal" }
+      );
+    }
+  }
+
   async function submitToSupabase(flowSlug, tester, defs, answerRows) {
     var flowId = await fetchFlowIdBySlug(flowSlug);
     var remoteSteps = await fetchFlowSteps(flowId);
+
+    if (!remoteSteps.length) {
+      await bootstrapStepsAndQuestions(flowId, defs);
+      remoteSteps = await fetchFlowSteps(flowId);
+    }
 
     if (!remoteSteps.length) {
       throw new Error("Step flow belum tersedia di Supabase untuk role ini.");
@@ -690,6 +804,9 @@
 
     var stepIds = remoteSteps.map(function (step) { return step.id; });
     var questionLookup = buildQuestionLookup(await fetchQuestionsForStepIds(stepIds));
+
+    await ensureQuestionsForExistingSteps(remoteSteps, defs, questionLookup);
+    questionLookup = buildQuestionLookup(await fetchQuestionsForStepIds(stepIds));
 
     var rpcAnswers = [];
     var rpcStepNotes = [];
