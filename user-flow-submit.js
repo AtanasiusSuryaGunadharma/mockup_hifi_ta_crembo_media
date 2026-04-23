@@ -1,6 +1,7 @@
 (function () {
   var runtimeDefs = [];
   var LOCAL_SUBMISSION_KEY = "uf-last-submission";
+  var LOCAL_DRAFT_KEY_PREFIX = "uf-draft";
   var SUPABASE_URL = "https://ahietuoflhphnrhausvp.supabase.co";
   var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_O6MsXlM4QrsNjZGsK9uLaw_JGl8aTAT";
 
@@ -510,6 +511,139 @@
     return checked ? checked.value : "";
   }
 
+  function buildDraftStorageKey(flowSlug) {
+    var slug = String(flowSlug || "").trim() || "unknown";
+    return LOCAL_DRAFT_KEY_PREFIX + "-" + slug;
+  }
+
+  function getCurrentFlowSlug() {
+    var root = byId("ufQuestionnaire");
+    return root ? String(root.getAttribute("data-flow-slug") || "").trim() : "";
+  }
+
+  function collectDraftPayload(flowSlug, defs) {
+    var steps = {};
+
+    (defs || []).forEach(function (def) {
+      var key = String(def.step_no || "");
+      if (!key) {
+        return;
+      }
+
+      steps[key] = {
+        main_answer: selectedValue("answer-main", def.step_no),
+        context_answer: selectedValue("answer-context", def.step_no),
+        note_text: String((byId("note-" + def.step_no) || {}).value || "")
+      };
+    });
+
+    return {
+      flow_slug: flowSlug,
+      saved_at: new Date().toISOString(),
+      tester: {
+        full_name: getElementValue("testerFullName"),
+        org: getElementValue("testerOrg"),
+        email: getElementValue("testerEmail"),
+        phone: getElementValue("testerPhone"),
+        device: getElementValue("testerDevice"),
+        browser: getElementValue("testerBrowser")
+      },
+      steps: steps
+    };
+  }
+
+  function saveDraft(flowSlug, defs) {
+    try {
+      var key = buildDraftStorageKey(flowSlug);
+      var payload = collectDraftPayload(flowSlug, defs);
+      localStorage.setItem(key, JSON.stringify(payload));
+    } catch (error) {
+      // Ignore draft save failures (e.g. storage quota/private mode)
+    }
+  }
+
+  function restoreDraft(flowSlug, defs) {
+    try {
+      var key = buildDraftStorageKey(flowSlug);
+      var raw = localStorage.getItem(key);
+      if (!raw) {
+        return;
+      }
+
+      var draft = JSON.parse(raw);
+      if (!draft || !draft.steps) {
+        return;
+      }
+
+      if (draft.tester) {
+        var tester = draft.tester;
+        if (byId("testerFullName")) { byId("testerFullName").value = tester.full_name || ""; }
+        if (byId("testerOrg")) { byId("testerOrg").value = tester.org || ""; }
+        if (byId("testerEmail")) { byId("testerEmail").value = tester.email || ""; }
+        if (byId("testerPhone")) { byId("testerPhone").value = tester.phone || ""; }
+        if (byId("testerDevice") && tester.device) { byId("testerDevice").value = tester.device; }
+        if (byId("testerBrowser") && tester.browser) { byId("testerBrowser").value = tester.browser; }
+      }
+
+      (defs || []).forEach(function (def) {
+        var stepKey = String(def.step_no || "");
+        var row = draft.steps[stepKey] || null;
+        if (!row) {
+          return;
+        }
+
+        if (row.main_answer) {
+          var mainRadio = document.querySelector('input[name="answer-main-' + def.step_no + '"][value="' + row.main_answer + '"]');
+          if (mainRadio) {
+            mainRadio.checked = true;
+          }
+        }
+
+        if (row.context_answer) {
+          var contextRadio = document.querySelector('input[name="answer-context-' + def.step_no + '"][value="' + row.context_answer + '"]');
+          if (contextRadio) {
+            contextRadio.checked = true;
+          }
+        }
+
+        var noteEl = byId("note-" + def.step_no);
+        if (noteEl) {
+          noteEl.value = row.note_text || "";
+        }
+      });
+    } catch (error) {
+      // Ignore invalid draft data.
+    }
+  }
+
+  function clearDraft(flowSlug) {
+    try {
+      localStorage.removeItem(buildDraftStorageKey(flowSlug));
+    } catch (error) {
+      // Ignore draft clear failures.
+    }
+  }
+
+  function bindDraftAutoSave(flowSlug, defs) {
+    var form = byId("ufForm");
+    if (!form) {
+      return;
+    }
+
+    var throttled = null;
+    var scheduleSave = function () {
+      if (throttled) {
+        clearTimeout(throttled);
+      }
+      throttled = setTimeout(function () {
+        saveDraft(flowSlug, defs);
+      }, 120);
+    };
+
+    form.addEventListener("input", scheduleSave);
+    form.addEventListener("change", scheduleSave);
+  }
+
   function renderMessage(type, text) {
     var el = byId("ufSubmitInfo");
     if (!el) {
@@ -955,6 +1089,7 @@
 
       localStorage.setItem(LOCAL_SUBMISSION_KEY, JSON.stringify(submission));
       localStorage.setItem(LOCAL_SUBMISSION_KEY + "-" + flowSlug, JSON.stringify(submission));
+      clearDraft(flowSlug);
       window.__UF_LAST_SUBMISSION__ = submission;
       renderMessage("success", "Hasil task scenario berhasil tersimpan ke Supabase dan lokal backup.");
       byId("ufForm").reset();
@@ -1020,6 +1155,8 @@
     applyIdentityDefaults();
     runtimeDefs = collectNodeDefinitions(flowSlug);
     buildQuestionnaire(runtimeDefs);
+    restoreDraft(flowSlug, runtimeDefs);
+    bindDraftAutoSave(flowSlug, runtimeDefs);
     byId("ufForm").addEventListener("submit", handleSubmit);
   }
 
