@@ -24,8 +24,140 @@
     return String(value || "").trim().toLowerCase();
   }
 
-  function buildContextQuestion(item) {
+  function getFlowRoleLabel(flowSlug) {
+    if (flowSlug === "super-admin") {
+      return "Super Admin";
+    }
+    if (flowSlug === "admin") {
+      return "Admin";
+    }
+    if (flowSlug === "anggota") {
+      return "Anggota";
+    }
+    return "Role";
+  }
+
+  function getRoleScenarioPack(flowSlug) {
+    if (flowSlug === "super-admin") {
+      return {
+        login_name: "Budi Santoso",
+        login_user: "superadmin.budi",
+        login_password: "SAdmin#2026",
+        login_email: "budi.santoso@crembo.id",
+        otp_code: "482915",
+        profile_name: "Budi Santoso",
+        member_name: "Maria Clara",
+        admin_name: "Andi Pratama",
+        streaming_title: "Misa Paskah 2026",
+        streaming_petugas: "Rico Gunawan",
+        publication_title: "Info Jadwal Pelayanan Minggu Palma",
+        publication_category: "Pengumuman Internal",
+        agenda_title: "Briefing Petugas Pekan Suci",
+        agenda_date: "2026-04-30",
+        agenda_place: "Ruang Kontrol Streaming",
+        registration_title: "Pendaftaran Kegiatan Umum",
+        registration_target: "Anggota",
+        registration_visibility: "Publik",
+        damaged_item: "Kamera Sony A6400",
+        damaged_code: "CAM-001",
+        loan_item: "Tripod Heavy Duty",
+        loan_note: "Keperluan pelayanan"
+      };
+    }
+
+    if (flowSlug === "admin") {
+      return {
+        login_name: "Rina Maulida",
+        login_user: "admin.rina",
+        login_password: "Admin#2026",
+        login_email: "rina.maulida@crembo.id",
+        otp_code: "315870",
+        profile_name: "Rina Maulida",
+        member_name: "Dimas Pratama",
+        admin_name: "Rina Maulida",
+        streaming_title: "Misa Minggu Palma",
+        streaming_petugas: "Yusuf Hidayat",
+        publication_title: "Pengumuman Jadwal Latihan Koor",
+        publication_category: "Pengumuman Internal",
+        agenda_title: "Latihan Petugas Streaming",
+        agenda_date: "2026-05-02",
+        agenda_place: "Ruang Multimedia",
+        registration_title: "Form Kegiatan OMK",
+        registration_target: "Anggota",
+        registration_visibility: "Publik",
+        damaged_item: "Mikrofon Wireless",
+        damaged_code: "MIC-014",
+        loan_item: "Kabel HDMI",
+        loan_note: "Pakai untuk layar proyektor"
+      };
+    }
+
+    if (flowSlug === "anggota") {
+      return {
+        login_name: "Sinta Prameswari",
+        login_user: "anggota.sinta",
+        login_password: "Anggota#2026",
+        login_email: "sinta.prameswari@crembo.id",
+        otp_code: "904216",
+        profile_name: "Sinta Prameswari",
+        member_name: "Sinta Prameswari",
+        admin_name: "Andi Pratama",
+        streaming_title: "Misa Jumat Agung",
+        streaming_petugas: "Sinta Prameswari",
+        technical_issue: "Kamera 1 mati",
+        publication_title: "Info Kegiatan Mudika",
+        publication_category: "Pengumuman Internal",
+        agenda_title: "Briefing Tim Penerima Tamu",
+        agenda_date: "2026-04-28",
+        agenda_place: "Aula Paroki",
+        registration_title: "Pendaftaran Retret OMK",
+        registration_target: "Anggota",
+        registration_visibility: "Publik",
+        damaged_item: "Kursi Plastik Putih",
+        damaged_code: "KRS-008",
+        loan_item: "Speaker Portable",
+        loan_note: "Untuk latihan koor"
+      };
+    }
+
+    return {
+      login_name: "Penguji",
+      login_user: "user.dummy",
+      login_password: "Dummy#2026",
+      login_email: "penguji@crembo.id",
+      otp_code: "000000",
+      profile_name: "Penguji",
+      member_name: "Penguji",
+      admin_name: "Penguji",
+      streaming_title: "Jadwal Dummy",
+      streaming_petugas: "Petugas Dummy",
+      publication_title: "Konten Dummy",
+      publication_category: "Pengumuman Internal",
+      agenda_title: "Agenda Dummy",
+      agenda_date: "2026-01-01",
+      agenda_place: "Lokasi Dummy",
+      registration_title: "Form Dummy",
+      registration_target: "Anggota",
+      registration_visibility: "Publik",
+      damaged_item: "Barang Dummy",
+      damaged_code: "DUM-001",
+      loan_item: "Barang Dummy",
+      loan_note: "Kebutuhan dummy"
+    };
+  }
+
+  function buildContextQuestion(flowSlug, item) {
     var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
+    var roleLabel = getFlowRoleLabel(flowSlug);
+    var pack = getRoleScenarioPack(flowSlug);
+
+    if (haystack.indexOf("evaluasi") !== -1) {
+      if (flowSlug === "anggota") {
+        return "Apakah pilihan kendala teknis seperti kamera 1 mati, audio pecah, dan catatan tambahan pada evaluasi anggota sudah mudah dipilih?";
+      }
+
+      return "Apakah daftar kendala teknis dan hasil evaluasi pada role " + roleLabel + " sudah jelas untuk dibaca dan divalidasi?";
+    }
 
     if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
       return "Apakah judul, kategori, update, hapus, dan download laporan pada task scenario ini sudah berjalan sesuai urutan?";
@@ -60,7 +192,7 @@
     }
 
     if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
-      return "Apakah alur autentikasi dan pesan bantuannya sudah jelas?";
+      return "Apakah alur autentikasi untuk akun " + pack.login_name + " dan pesan bantuannya sudah jelas?";
     }
 
     if (haystack.indexOf("profil") !== -1) {
@@ -70,91 +202,101 @@
     return "Apakah tampilan langkah ini sudah sesuai dengan high fidelity mock up yang diharapkan?";
   }
 
-  function buildTaskScenarioBrief(item) {
+  function buildTaskScenarioBrief(flowSlug, item) {
     var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
+    var roleLabel = getFlowRoleLabel(flowSlug);
+    var pack = getRoleScenarioPack(flowSlug);
 
     if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
-      return "Task scenario: cek layout dashboard, sidebar, header, dan notifikasi. Jika ada tombol/ikon, pastikan semua kliknya berjalan normal.";
+      return "Task scenario " + roleLabel + ": cek layout dashboard, sidebar, header, dan notifikasi. Pastikan nama akun " + pack.profile_name + " tampil sesuai role.";
     }
 
     if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
-      return "Task scenario: mulai dari home, klik login, lalu pastikan alur masuk sesuai role yang diuji.";
+      return "Task scenario " + roleLabel + ": mulai dari home, klik login, lalu masuk menggunakan akun dummy yang sudah disiapkan untuk role ini.";
     }
 
     if (haystack.indexOf("log aktivitas") !== -1) {
-      return "Task scenario: gunakan search, filter, export atau preview PDF jika tersedia, lalu pastikan hasil hanya sesuai cakupan role.";
+      return "Task scenario " + roleLabel + ": gunakan search, filter, export atau preview PDF jika tersedia, lalu pastikan hasil hanya sesuai cakupan role ini.";
     }
 
     if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
-      return "Task scenario: isi judul dummy 'Info Jadwal Pelayanan Minggu Palma', kategori 'Pengumuman Internal', lalu uji update, hapus, dan download laporan jika tersedia.";
+      return "Task scenario " + roleLabel + ": isi judul dummy '" + pack.publication_title + "', kategori '" + pack.publication_category + "', lalu uji update, hapus, dan download laporan jika tersedia.";
     }
 
     if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
-      return "Task scenario: buat judul dummy 'Info Jadwal Pelayanan Minggu Palma', kategori 'Pengumuman Internal', lalu uji update, hapus, dan download laporan jika tersedia.";
+      return "Task scenario " + roleLabel + ": buat judul dummy '" + pack.publication_title + "', kategori '" + pack.publication_category + "', lalu uji update, hapus, dan download laporan jika tersedia.";
     }
 
     if (haystack.indexOf("agenda") !== -1) {
-      return "Task scenario: isi judul 'Briefing Petugas Pekan Suci', tanggal '2026-04-30', lokasi 'Ruang Kontrol Streaming', lalu simpan dan cek opsi update/hapus.";
+      return "Task scenario " + roleLabel + ": isi judul '" + pack.agenda_title + "', tanggal '" + pack.agenda_date + "', lokasi '" + pack.agenda_place + "', lalu simpan dan cek opsi update/hapus.";
     }
 
     if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
-      return "Task scenario: gunakan dummy judul form 'Pendaftaran Kegiatan Umum', target 'Anggota', visibility 'Publik', lalu uji simpan, edit, hapus, dan preview hasil.";
+      return "Task scenario " + roleLabel + ": gunakan dummy judul form '" + pack.registration_title + "', target '" + pack.registration_target + "', visibility '" + pack.registration_visibility + "', lalu uji simpan, edit, hapus, dan preview hasil.";
     }
 
     if (haystack.indexOf("kerusakan") !== -1) {
-      return "Task scenario: pilih nama barang dummy 'Kamera Sony A6400' atau ketik manual jika tidak ada, isi kode 'CAM-001', tingkat 'Sedang', lalu kirim dan cek riwayat.";
+      return "Task scenario " + roleLabel + ": pilih nama barang dummy '" + pack.damaged_item + "' atau ketik manual jika tidak ada, isi kode '" + pack.damaged_code + "', lalu kirim dan cek riwayat.";
     }
 
     if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
-      return "Task scenario: gunakan barang dummy 'Tripod Heavy Duty' dengan keperluan pelayanan, lalu uji alur approve, ambil, kembalikan, dan buka riwayat.";
+      return "Task scenario " + roleLabel + ": gunakan barang dummy '" + pack.loan_item + "' dengan keterangan '" + pack.loan_note + "', lalu uji alur approve, ambil, kembalikan, dan buka riwayat.";
     }
 
     if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
-      return "Task scenario: gunakan akun dummy yang sudah disiapkan untuk login, lalu cek recovery jika diminta.";
+      return "Task scenario " + roleLabel + ": gunakan akun dummy nama '" + pack.login_name + "' dengan username '" + pack.login_user + "', password '" + pack.login_password + "', lalu cek recovery jika diminta.";
     }
 
-    return "Task scenario: ikuti urutan langkah sesuai node, gunakan input dummy yang ditentukan pada deskripsi langkah, lalu catat hasilnya.";
+    return "Task scenario " + roleLabel + ": ikuti urutan langkah sesuai node, gunakan input dummy yang ditentukan pada deskripsi langkah, lalu catat hasilnya.";
   }
 
-  function buildTaskScenarioDetails(item) {
+  function buildTaskScenarioDetails(flowSlug, item) {
     var haystack = normalizeText([item.step_title, item.flow_title, item.action_instruction].join(" "));
-    var brief = buildTaskScenarioBrief(item);
-    var dummyData = "Gunakan input dummy sesuai instruksi task scenario.";
+    var roleLabel = getFlowRoleLabel(flowSlug);
+    var pack = getRoleScenarioPack(flowSlug);
+    var brief = buildTaskScenarioBrief(flowSlug, item);
+    var dummyData = "Gunakan input dummy sesuai instruksi task scenario untuk role " + roleLabel + ".";
     var action = "Ikuti langkah yang tertulis pada node, lalu simpan atau lanjut ke langkah berikutnya.";
     var expected = "Hasil tampil sesuai alur role yang sedang diuji.";
 
     if (haystack.indexOf("dashboard anggota") !== -1 || haystack.indexOf("dashboard admin") !== -1 || haystack.indexOf("dashboard super admin") !== -1) {
-      dummyData = "Tidak ada input khusus. Fokus pada halaman dashboard, sidebar, header, dan notifikasi yang muncul.";
+      dummyData = "Akun aktif: " + pack.profile_name + ". Fokus pada halaman dashboard, sidebar, header, dan notifikasi yang muncul.";
       action = "Buka dashboard, cek semua menu, lalu pastikan setiap ikon/tombol bisa diklik.";
-      expected = "Dashboard memuat lengkap dan setiap elemen navigasi tampil stabil.";
+      expected = "Dashboard memuat lengkap, nama akun tampil benar, dan setiap elemen navigasi stabil.";
     } else if (haystack.indexOf("home") !== -1 || haystack.indexOf("entry") !== -1) {
-      dummyData = "Tidak ada input khusus. Gunakan home sebagai titik awal lalu lanjut login.";
+      dummyData = "Gunakan home sebagai titik awal lalu lanjut login dengan akun " + pack.login_name + ".";
       action = "Klik tombol Login di home lalu masuk ke halaman login sesuai role.";
       expected = "Alur masuk menuju halaman login berjalan normal.";
     } else if (haystack.indexOf("login") !== -1 || haystack.indexOf("otp") !== -1 || haystack.indexOf("reset") !== -1) {
-      dummyData = "Username/password dummy sesuai role, misalnya akun anggota/admin/super admin yang sudah disiapkan.";
+      dummyData = "Nama: " + pack.login_name + " | Username: " + pack.login_user + " | Password: " + pack.login_password + " | Email recovery: " + pack.login_email + " | OTP dummy: " + pack.otp_code + ".";
       action = "Masukkan kredensial dummy, cek recovery bila ada, lalu masuk ke dashboard role terkait.";
       expected = "Autentikasi berhasil dan redirect sesuai role yang diuji.";
     } else if (haystack.indexOf("pengumuman") !== -1 || haystack.indexOf("berita") !== -1) {
-      dummyData = "Judul: 'Info Jadwal Pelayanan Minggu Palma' | Kategori: 'Pengumuman Internal' | Status: Draft/Published sesuai skenario.";
+      dummyData = "Judul: '" + pack.publication_title + "' | Kategori: '" + pack.publication_category + "' | Penulis: '" + pack.profile_name + "' | Status: Draft/Published sesuai skenario.";
       action = "Tambahkan data dummy, lalu uji update, hapus, dan download laporan jika ada tombolnya.";
       expected = "Daftar konten berubah sesuai aksi dan detail laporan bisa dibuka.";
     } else if (haystack.indexOf("agenda") !== -1) {
-      dummyData = "Judul: 'Briefing Petugas Pekan Suci' | Tanggal: '2026-04-30' | Lokasi: 'Ruang Kontrol Streaming' | Status: aktif.";
+      dummyData = "Judul: '" + pack.agenda_title + "' | Tanggal: '" + pack.agenda_date + "' | Lokasi: '" + pack.agenda_place + "' | PIC: '" + pack.profile_name + "'.";
       action = "Isi data dummy agenda, lalu uji simpan, update, hapus, dan buka detailnya.";
       expected = "Agenda tersimpan dan detail tampil konsisten.";
     } else if (haystack.indexOf("form pendaftaran") !== -1 || haystack.indexOf("pendaftaran") !== -1) {
-      dummyData = "Judul form: 'Pendaftaran Kegiatan Umum' | Target: 'Anggota' | Visibility: 'Publik'.";
+      dummyData = "Judul form: '" + pack.registration_title + "' | Target: '" + pack.registration_target + "' | Visibility: '" + pack.registration_visibility + "'.";
       action = "Buat atau ubah form dengan data dummy, lalu preview hasil dan pastikan data masuk.";
       expected = "Form bisa dipublish, diedit, dihapus, dan data pendaftar terbaca.";
     } else if (haystack.indexOf("kerusakan") !== -1) {
-      dummyData = "Nama barang: 'Kamera Sony A6400' atau ketik manual bila tidak ada | Kode: 'CAM-001' | Tingkat: 'Sedang' | Lokasi: 'Ruang Kontrol Streaming'.";
+      dummyData = "Nama barang: '" + pack.damaged_item + "' atau ketik manual bila tidak ada | Kode: '" + pack.damaged_code + "' | Tingkat: 'Sedang' | Lokasi: 'Ruang Kontrol Streaming'.";
       action = "Isi form kerusakan dengan data dummy, kirim, lalu cek riwayat atau hasil laporan.";
       expected = "Laporan kerusakan tersimpan dan muncul di daftar/riwayat terkait.";
     } else if (haystack.indexOf("peminjaman") !== -1 || haystack.indexOf("pengembalian") !== -1 || haystack.indexOf("pengambilan") !== -1) {
-      dummyData = "Barang dummy: 'Tripod Heavy Duty' atau barang yang muncul pada daftar approved | Keterangan: keperluan pelayanan.";
+      dummyData = "Barang dummy: '" + pack.loan_item + "' atau barang yang muncul pada daftar approved | Keterangan: '" + pack.loan_note + "'.";
       action = "Ajukan, ambil, atau kembalikan barang sesuai node, lalu cek status/riwayatnya.";
       expected = "Status peminjaman berubah sesuai aksi dan riwayat tetap sinkron.";
+    } else if (haystack.indexOf("evaluasi") !== -1) {
+      dummyData = flowSlug === "anggota"
+        ? "Kendala teknis: '" + pack.technical_issue + "' | Catatan tambahan: audio jelas, lighting kurang terang."
+        : "Isi evaluasi dengan kendala teknis spesifik, misalnya kamera 1 mati, audio pecah, atau internet tersendat.";
+      action = "Pilih kendala yang tersedia, isi catatan teknis, lalu simpan evaluasi.";
+      expected = "Evaluasi tersimpan dengan kendala teknis yang sesuai scenario.";
     } else if (haystack.indexOf("log aktivitas") !== -1 || haystack.indexOf("log") !== -1) {
       dummyData = "Gunakan filter tanggal, role, search kata kunci, serta export/preview bila tersedia.";
       action = "Uji pencarian, filter, export, dan preview laporan pada log aktivitas.";
@@ -226,13 +368,13 @@
           step_title: nodeTitle,
           flow_title: laneTitle,
           action_instruction: actionInstruction,
-          scenario_details: buildTaskScenarioDetails({
+          scenario_details: buildTaskScenarioDetails(flowSlug, {
             step_title: nodeTitle,
             flow_title: laneTitle,
             action_instruction: actionInstruction
           }),
           question_text: "Apakah " + nodeTitle + " pada " + laneTitle + " sudah sesuai dan mudah digunakan?",
-          context_question_text: buildContextQuestion({
+          context_question_text: buildContextQuestion(flowSlug, {
             step_title: nodeTitle,
             flow_title: laneTitle,
             action_instruction: actionInstruction
@@ -295,8 +437,8 @@
             '<label><input type="radio" name="answer-context-' + item.step_no + '" value="TIDAK"> TIDAK</label>',
           '</div>',
         '</div>',
-        '<label class="uf-label">Catatan</label>',
-        '<textarea id="note-' + item.step_no + '" rows="2" placeholder="Catatan untuk kotak ini..."></textarea>'
+        '<label class="uf-label">Saran</label>',
+        '<textarea id="note-' + item.step_no + '" rows="2" placeholder="Saran untuk kotak ini..."></textarea>'
       ].join("");
 
       node.appendChild(card);
