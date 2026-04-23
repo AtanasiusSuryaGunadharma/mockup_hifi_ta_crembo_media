@@ -1,6 +1,8 @@
 (function () {
   var runtimeDefs = [];
   var LOCAL_SUBMISSION_KEY = "uf-last-submission";
+  var SUPABASE_URL = "https://ahietuoflhphnrhausvp.supabase.co";
+  var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_O6MsXlM4QrsNjZGsK9uLaw_JGl8aTAT";
 
   function escapeHtml(text) {
     return String(text || "")
@@ -562,6 +564,194 @@
     }
   }
 
+  function buildSupabaseHeaders() {
+    return {
+      apikey: SUPABASE_PUBLISHABLE_KEY,
+      Authorization: "Bearer " + SUPABASE_PUBLISHABLE_KEY,
+      "Content-Type": "application/json"
+    };
+  }
+
+  async function supabaseRequest(method, path, body) {
+    var options = {
+      method: method,
+      headers: buildSupabaseHeaders()
+    };
+
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
+
+    var response = await fetch(SUPABASE_URL + path, options);
+    var raw = await response.text();
+    var data = raw ? JSON.parse(raw) : null;
+
+    if (!response.ok) {
+      throw new Error((data && (data.message || data.error_description || data.error)) || "Request Supabase gagal");
+    }
+
+    return data;
+  }
+
+  function sortByStepNo(a, b) {
+    return Number(a.step_no || 0) - Number(b.step_no || 0);
+  }
+
+  function pickQuestionOrderIndex(questionText, fallbackIndex) {
+    var text = normalizeText(questionText);
+
+    if (text.indexOf("pertanyaan 1") !== -1 || text.indexOf("sudah mengikuti") !== -1) {
+      return 0;
+    }
+
+    if (text.indexOf("pertanyaan 2") !== -1 || text.indexOf("konteks") !== -1) {
+      return 1;
+    }
+
+    return fallbackIndex;
+  }
+
+  async function fetchFlowIdBySlug(flowSlug) {
+    var rows = await supabaseRequest(
+      "GET",
+      "/rest/v1/uf_flows?select=id,slug&slug=eq." + encodeURIComponent(flowSlug) + "&limit=1"
+    );
+
+    if (!rows || !rows.length || !rows[0].id) {
+      throw new Error("Flow tidak ditemukan di Supabase: " + flowSlug);
+    }
+
+    return rows[0].id;
+  }
+
+  async function fetchFlowSteps(flowId) {
+    var rows = await supabaseRequest(
+      "GET",
+      "/rest/v1/uf_steps?select=id,flow_id,step_no,step_title&flow_id=eq." + encodeURIComponent(flowId) + "&order=step_no.asc"
+    );
+
+    return (rows || []).sort(sortByStepNo);
+  }
+
+  async function fetchQuestionsForStepIds(stepIds) {
+    if (!stepIds.length) {
+      return [];
+    }
+
+    var inValues = stepIds.map(function (id) {
+      return '"' + String(id).replace(/"/g, "") + '"';
+    }).join(",");
+
+    return await supabaseRequest(
+      "GET",
+      "/rest/v1/uf_questions?select=id,step_id,question_text&step_id=in.(" + inValues + ")"
+    );
+  }
+
+  function buildQuestionLookup(rows) {
+    var map = {};
+
+    (rows || []).forEach(function (row) {
+      var key = String(row.step_id || "");
+      if (!key) {
+        return;
+      }
+
+      if (!map[key]) {
+        map[key] = [];
+      }
+
+      map[key].push(row);
+    });
+
+    Object.keys(map).forEach(function (stepId) {
+      map[stepId].sort(function (a, b) {
+        var ta = normalizeText(a.question_text);
+        var tb = normalizeText(b.question_text);
+        return ta.localeCompare(tb);
+      });
+    });
+
+    return map;
+  }
+
+  async function submitToSupabase(flowSlug, tester, defs, answerRows) {
+    var flowId = await fetchFlowIdBySlug(flowSlug);
+    var remoteSteps = await fetchFlowSteps(flowId);
+
+    if (!remoteSteps.length) {
+      throw new Error("Step flow belum tersedia di Supabase untuk role ini.");
+    }
+
+    var stepMapByNo = {};
+    remoteSteps.forEach(function (step) {
+      stepMapByNo[String(step.step_no)] = step;
+    });
+
+    var stepIds = remoteSteps.map(function (step) { return step.id; });
+    var questionLookup = buildQuestionLookup(await fetchQuestionsForStepIds(stepIds));
+
+    var rpcAnswers = [];
+    var rpcStepNotes = [];
+
+    defs.forEach(function (def, index) {
+      var answer = answerRows[index];
+      var remoteStep = stepMapByNo[String(def.step_no)] || remoteSteps[index] || null;
+
+      if (!remoteStep || !answer) {
+        return;
+      }
+
+      var questionRows = questionLookup[String(remoteStep.id)] || [];
+
+      if (questionRows.length) {
+        var firstIdx = pickQuestionOrderIndex("Pertanyaan 1", 0);
+        var secondIdx = pickQuestionOrderIndex("Pertanyaan 2", 1);
+        var q1 = questionRows[firstIdx] || questionRows[0] || null;
+        var q2 = questionRows[secondIdx] || questionRows[1] || questionRows[0] || null;
+
+        if (q1 && answer.main_answer) {
+          rpcAnswers.push({
+            step_id: remoteStep.id,
+            question_id: q1.id,
+            answer_value: answer.main_answer,
+            note_text: ""
+          });
+        }
+
+        if (q2 && answer.context_answer) {
+          rpcAnswers.push({
+            step_id: remoteStep.id,
+            question_id: q2.id,
+            answer_value: answer.context_answer,
+            note_text: ""
+          });
+        }
+      }
+
+      rpcStepNotes.push({
+        step_id: remoteStep.id,
+        opinion_text: answer.note_text || ""
+      });
+    });
+
+    var payload = {
+      flow_slug: flowSlug,
+      tester: {
+        full_name: tester.full_name,
+        org: tester.org,
+        email: tester.email,
+        phone: tester.phone,
+        device: tester.device,
+        browser: tester.browser
+      },
+      answers: rpcAnswers,
+      step_notes: rpcStepNotes
+    };
+
+    return await supabaseRequest("POST", "/rest/v1/rpc/uf_submit_full", payload);
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -590,7 +780,7 @@
 
     var submitButton = byId("ufSubmitBtn");
     submitButton.disabled = true;
-    renderMessage("loading", "Sedang menyimpan hasil pengujian secara lokal...");
+    renderMessage("loading", "Sedang menyimpan hasil pengujian ke Supabase...");
 
     try {
       var answers = [];
@@ -621,28 +811,35 @@
         return;
       }
 
+      var testerPayload = {
+        full_name: fullName,
+        org: getElementValue("testerOrg"),
+        instansi_unit: getElementValue("testerOrg"),
+        email: getElementValue("testerEmail"),
+        phone: getElementValue("testerPhone"),
+        no_hp: getElementValue("testerPhone"),
+        device: testerDevice,
+        browser: testerBrowser,
+        user_agent: String(navigator.userAgent || "")
+      };
+
       var submission = {
         id: "local-" + Date.now(),
         submitted_at: new Date().toISOString(),
         flow_slug: flowSlug,
-        tester: {
-          full_name: fullName,
-          org: getElementValue("testerOrg"),
-          instansi_unit: getElementValue("testerOrg"),
-          email: getElementValue("testerEmail"),
-          phone: getElementValue("testerPhone"),
-          no_hp: getElementValue("testerPhone"),
-          device: testerDevice,
-          browser: testerBrowser,
-          user_agent: String(navigator.userAgent || "")
-        },
+        tester: testerPayload,
         answers: answers
       };
+
+      var remoteSubmissionId = await submitToSupabase(flowSlug, testerPayload, defs, answers);
+      if (remoteSubmissionId) {
+        submission.id = String(remoteSubmissionId);
+      }
 
       localStorage.setItem(LOCAL_SUBMISSION_KEY, JSON.stringify(submission));
       localStorage.setItem(LOCAL_SUBMISSION_KEY + "-" + flowSlug, JSON.stringify(submission));
       window.__UF_LAST_SUBMISSION__ = submission;
-      renderMessage("success", "Hasil task scenario tersimpan lokal. Koneksi Supabase sementara dimatikan.");
+      renderMessage("success", "Hasil task scenario berhasil tersimpan ke Supabase dan lokal backup.");
       byId("ufForm").reset();
       applyIdentityDefaults();
     } catch (error) {

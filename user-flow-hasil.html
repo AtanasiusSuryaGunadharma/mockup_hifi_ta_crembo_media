@@ -592,8 +592,8 @@
   </div>
 
   <script>
-    var SUPABASE_URL = "https://iyqfsgtawhkbvbkvrbsa.supabase.co";
-    var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_MJ58ehoCWPwvX1m836BOPA_AhZepXMQ";
+    var SUPABASE_URL = "https://ahietuoflhphnrhausvp.supabase.co";
+    var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_O6MsXlM4QrsNjZGsK9uLaw_JGl8aTAT";
 
     var qSearch = document.getElementById("qSearch");
     var qRole = document.getElementById("qRole");
@@ -634,6 +634,15 @@
     function setStatus(text, isError) {
       statusInfo.textContent = text;
       statusInfo.className = "status " + (isError ? "err" : "ok");
+    }
+
+    function isMissingSchemaError(error) {
+      var message = String((error && error.message) || "");
+      return message.indexOf("PGRST205") !== -1 ||
+        message.indexOf("PGRST202") !== -1 ||
+        message.indexOf("schema cache") !== -1 ||
+        message.indexOf("Could not find the table") !== -1 ||
+        message.indexOf("Could not find the function") !== -1;
     }
 
     function normalizeRole(value) {
@@ -904,6 +913,13 @@
         applyFilters();
         setStatus("Data berhasil dimuat", false);
       } catch (error) {
+        if (isMissingSchemaError(error)) {
+          allRows = [];
+          groupedRows = [];
+          renderRows([]);
+          setStatus("Schema User Flow belum tersedia di Supabase project ini. Jalankan SQL setup UF terlebih dahulu.", true);
+          return;
+        }
         setStatus("Gagal memuat: " + error.message, true);
       }
     }
@@ -939,23 +955,134 @@
           "/rest/v1/v_uf_report?select=" + extendedSelect + "&order=submitted_at.desc"
         );
       } catch (error) {
-        var basicRows = await request(
-          "GET",
-          "/rest/v1/v_uf_report?select=" + baseSelect + "&order=submitted_at.desc"
-        );
-
-        return (basicRows || []).map(function (row) {
-          return Object.assign({
-            step_order: null,
-            flow_slug: "",
-            tester_org: "",
-            tester_phone: "",
-            tester_device: "",
-            tester_browser: "",
-            action_instruction: ""
-          }, row);
-        });
+        return await fetchReportRowsFromBaseTables();
       }
+    }
+
+    async function fetchReportRowsFromBaseTables() {
+      var submissions = await request(
+        "GET",
+        "/rest/v1/uf_submissions?select=id,flow_id,tester_full_name,tester_org,tester_email,tester_phone,tester_device,tester_browser,submitted_at&order=submitted_at.desc"
+      );
+
+      var flows = await request(
+        "GET",
+        "/rest/v1/uf_flows?select=id,slug,role_name"
+      );
+
+      var steps = await request(
+        "GET",
+        "/rest/v1/uf_steps?select=id,step_no,step_title,action_instruction"
+      );
+
+      var questions = await request(
+        "GET",
+        "/rest/v1/uf_questions?select=id,question_text"
+      );
+
+      var answers = await request(
+        "GET",
+        "/rest/v1/uf_answers?select=submission_id,step_id,question_id,answer_value,note_text"
+      );
+
+      var stepNotes = await request(
+        "GET",
+        "/rest/v1/uf_step_notes?select=submission_id,step_id,opinion_text"
+      );
+
+      var flowById = {};
+      var stepById = {};
+      var questionById = {};
+      var answerBySubmission = {};
+      var noteBySubmissionStep = {};
+
+      (flows || []).forEach(function (flow) {
+        flowById[String(flow.id)] = flow;
+      });
+
+      (steps || []).forEach(function (step) {
+        stepById[String(step.id)] = step;
+      });
+
+      (questions || []).forEach(function (question) {
+        questionById[String(question.id)] = question;
+      });
+
+      (answers || []).forEach(function (answer) {
+        var key = String(answer.submission_id || "");
+        if (!answerBySubmission[key]) {
+          answerBySubmission[key] = [];
+        }
+        answerBySubmission[key].push(answer);
+      });
+
+      (stepNotes || []).forEach(function (note) {
+        var key = String(note.submission_id || "") + "::" + String(note.step_id || "");
+        noteBySubmissionStep[key] = note.opinion_text || "";
+      });
+
+      var rows = [];
+
+      (submissions || []).forEach(function (submission) {
+        var submissionId = String(submission.id || "");
+        var flow = flowById[String(submission.flow_id || "")] || {};
+        var submissionAnswers = answerBySubmission[submissionId] || [];
+
+        if (!submissionAnswers.length) {
+          rows.push({
+            submission_id: submissionId,
+            role_name: flow.role_name || "",
+            flow_slug: flow.slug || "",
+            tester_full_name: submission.tester_full_name || "",
+            tester_org: submission.tester_org || "",
+            tester_email: submission.tester_email || "",
+            tester_phone: submission.tester_phone || "",
+            tester_device: submission.tester_device || "",
+            tester_browser: submission.tester_browser || "",
+            step_order: null,
+            step_title: "-",
+            action_instruction: "",
+            question_text: "-",
+            answer_value: "-",
+            question_note: "",
+            step_opinion: "",
+            submitted_at: submission.submitted_at
+          });
+          return;
+        }
+
+        submissionAnswers.forEach(function (answer) {
+          var step = stepById[String(answer.step_id || "")] || {};
+          var question = questionById[String(answer.question_id || "")] || {};
+          var noteKey = submissionId + "::" + String(answer.step_id || "");
+
+          rows.push({
+            submission_id: submissionId,
+            role_name: flow.role_name || "",
+            flow_slug: flow.slug || "",
+            tester_full_name: submission.tester_full_name || "",
+            tester_org: submission.tester_org || "",
+            tester_email: submission.tester_email || "",
+            tester_phone: submission.tester_phone || "",
+            tester_device: submission.tester_device || "",
+            tester_browser: submission.tester_browser || "",
+            step_order: step.step_no || null,
+            step_title: step.step_title || "-",
+            action_instruction: step.action_instruction || "",
+            question_text: question.question_text || "-",
+            answer_value: answer.answer_value || "",
+            question_note: answer.note_text || "",
+            step_opinion: noteBySubmissionStep[noteKey] || "",
+            submitted_at: submission.submitted_at
+          });
+        });
+      });
+
+      rows.sort(function (a, b) {
+        return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
+      });
+
+      return rows;
     }
 
     function toCsvValue(value) {
