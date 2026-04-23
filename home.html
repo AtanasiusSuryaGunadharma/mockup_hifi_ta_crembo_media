@@ -937,6 +937,27 @@
 			border: 1px solid var(--line);
 		}
 
+		.schedule-scroll {
+			width: 100%;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			overscroll-behavior-x: contain;
+		}
+
+		.schedule-scroll::-webkit-scrollbar {
+			height: 10px;
+		}
+
+		.schedule-scroll::-webkit-scrollbar-thumb {
+			background: rgba(128, 0, 0, 0.28);
+			border-radius: 999px;
+		}
+
+		.schedule-scroll::-webkit-scrollbar-track {
+			background: rgba(128, 0, 0, 0.06);
+			border-radius: 999px;
+		}
+
 		.schedule-preview-top {
 			display: flex;
 			justify-content: space-between;
@@ -1414,6 +1435,16 @@
 				padding: 40px;
 				min-height: 280px;
 			}
+
+			.schedule-scroll {
+				margin: 0 -12px;
+				padding: 0 12px 6px;
+			}
+
+			.schedule-table {
+				min-width: 760px;
+				width: max-content;
+			}
 		}
 
 		@media (max-width: 760px) {
@@ -1564,6 +1595,16 @@
 			.embed-grid,
 			.ig-grid {
 				grid-template-columns: 1fr;
+			}
+
+			.schedule-scroll {
+				margin: 0 -18px;
+				padding: 0 18px 6px;
+			}
+
+			.schedule-table {
+				min-width: 760px;
+				width: max-content;
 			}
 		}
 
@@ -1773,54 +1814,56 @@
 			</div>
 			<!-- MODE: BULANAN BIASA -->
 			<div id="tableBulanan">
-				<table class="schedule-table">
-					<thead>
-						<tr>
-							<th class="no-col">No</th>
-							<th class="date-col">Tanggal</th>
-							<th class="time-col">Jam</th>
-							<th>Operator</th>
-							<th>Kameramen</th>
-							<th>Supervisor</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>27 Maret 2026</td>
-							<td>18:00</td>
-							<td>Rikha</td>
-							<td>Jeni</td>
-							<td>Tyas</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>28 Maret 2026</td>
-							<td>18:00</td>
-							<td>Lisa</td>
-							<td>Evan</td>
-							<td>Jose</td>
-						</tr>
-						<tr class="blocked-row">
-							<td>3</td>
-							<td>29 Maret 2026</td>
-							<td colspan="4">
-								<div class="blocked-inline">
-									DIBLOK: Misa Minggu Palma (Hari Raya)
-									<span>— buka mode Hari Raya untuk detail petugas khusus.</span>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>30 Maret 2026</td>
-							<td>18:00</td>
-							<td>Rossa</td>
-							<td>Aurel</td>
-							<td>Asha</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="schedule-scroll">
+					<table class="schedule-table">
+						<thead>
+							<tr>
+								<th class="no-col">No</th>
+								<th class="date-col">Tanggal</th>
+								<th class="time-col">Jam</th>
+								<th>Operator</th>
+								<th>Kameramen</th>
+								<th>Supervisor</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>27 Maret 2026</td>
+								<td>18:00</td>
+								<td>Rikha</td>
+								<td>Jeni</td>
+								<td>Tyas</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>28 Maret 2026</td>
+								<td>18:00</td>
+								<td>Lisa</td>
+								<td>Evan</td>
+								<td>Jose</td>
+							</tr>
+							<tr class="blocked-row">
+								<td>3</td>
+								<td>29 Maret 2026</td>
+								<td colspan="4">
+									<div class="blocked-inline">
+										DIBLOK: Misa Minggu Palma (Hari Raya)
+										<span>— buka mode Hari Raya untuk detail petugas khusus.</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>30 Maret 2026</td>
+								<td>18:00</td>
+								<td>Rossa</td>
+								<td>Aurel</td>
+								<td>Asha</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			<!-- MODE: HARI RAYA -->
@@ -1829,42 +1872,44 @@
 					<span class="hari-raya-badge">Mode Hari Raya</span>
 					<p>Jadwal khusus misa hari raya dengan formasi petugas lengkap.</p>
 				</div>
-				<table class="schedule-table">
-					<thead>
-						<tr>
-							<th class="no-col">No</th>
-							<th class="date-col">Tanggal & Acara</th>
-							<th class="time-col">Jam</th>
-							<th>Operator</th>
-							<th>Kameramen</th>
-							<th>Supervisor</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="hariraya-row">
-							<td>1</td>
-							<td>
-								<strong>29 Maret 2026</strong><br>
-								<span class="hariraya-label">Misa Minggu Palma</span>
-							</td>
-							<td>08:00</td>
-							<td>Andi</td>
-							<td>Budi</td>
-							<td>Citra</td>
-						</tr>
-						<tr class="hariraya-row">
-							<td>2</td>
-							<td>
-								<strong>20 April 2026</strong><br>
-								<span class="hariraya-label">Misa Paskah</span>
-							</td>
-							<td>20:00</td>
-							<td>Dewi</td>
-							<td>Eka</td>
-							<td>Fajar</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="schedule-scroll">
+					<table class="schedule-table">
+						<thead>
+							<tr>
+								<th class="no-col">No</th>
+								<th class="date-col">Tanggal & Acara</th>
+								<th class="time-col">Jam</th>
+								<th>Operator</th>
+								<th>Kameramen</th>
+								<th>Supervisor</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="hariraya-row">
+								<td>1</td>
+								<td>
+									<strong>29 Maret 2026</strong><br>
+									<span class="hariraya-label">Misa Minggu Palma</span>
+								</td>
+								<td>08:00</td>
+								<td>Andi</td>
+								<td>Budi</td>
+								<td>Citra</td>
+							</tr>
+							<tr class="hariraya-row">
+								<td>2</td>
+								<td>
+									<strong>20 April 2026</strong><br>
+									<span class="hariraya-label">Misa Paskah</span>
+								</td>
+								<td>20:00</td>
+								<td>Dewi</td>
+								<td>Eka</td>
+								<td>Fajar</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</section>
 

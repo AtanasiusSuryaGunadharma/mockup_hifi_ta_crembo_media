@@ -114,6 +114,15 @@
 		.schedule-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent-gold), var(--primary-light)); }
 
 		.schedule-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+		.schedule-scroll {
+			width: 100%;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			overscroll-behavior-x: contain;
+		}
+		.schedule-scroll::-webkit-scrollbar { height: 10px; }
+		.schedule-scroll::-webkit-scrollbar-thumb { background: rgba(128,0,0,0.28); border-radius: 999px; }
+		.schedule-scroll::-webkit-scrollbar-track { background: rgba(128,0,0,0.06); border-radius: 999px; }
 		.schedule-table thead tr { background: linear-gradient(135deg, var(--primary-deeper) 0%, var(--primary) 100%); color: #fff; }
 		.schedule-table th { padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
 		.schedule-table td { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); color: var(--ink-secondary); vertical-align: middle; }
@@ -204,6 +213,14 @@
 			.btn-login { flex: 1 1 auto; justify-content: center; }
 			.schedule-table { font-size: 0.78rem; }
 			.schedule-table th, .schedule-table td { padding: 8px 10px; }
+			.schedule-scroll {
+				margin: 0 -12px;
+				padding: 0 12px 6px;
+			}
+			.schedule-table {
+				min-width: 760px;
+				width: max-content;
+			}
 			.filter-bar { flex-direction: column; align-items: flex-start; }
 		}
 		@media (max-width: 520px) {
@@ -323,23 +340,25 @@
 
 		<!-- BULANAN TABLE -->
 		<div id="tableBulanan" class="schedule-card">
-			<table class="schedule-table" id="tblBulanan">
-				<thead>
-					<tr>
-						<th style="width:44px;">No</th>
-						<th>Tanggal</th>
-						<th>Jam</th>
-						<th>PD</th>
-						<th>OP / vMix</th>
-						<th>Kamera</th>
-						<th>Supervisor</th>
-						<th>Fotografer</th>
-					</tr>
-				</thead>
-				<tbody id="schedBulananBody">
-					<!-- Rendered by JS -->
-				</tbody>
-			</table>
+			<div class="schedule-scroll">
+				<table class="schedule-table" id="tblBulanan">
+					<thead>
+						<tr>
+							<th style="width:44px;">No</th>
+							<th>Tanggal</th>
+							<th>Jam</th>
+							<th>PD</th>
+							<th>OP / vMix</th>
+							<th>Kamera</th>
+							<th>Supervisor</th>
+							<th>Fotografer</th>
+						</tr>
+					</thead>
+					<tbody id="schedBulananBody">
+						<!-- Rendered by JS -->
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 		<!-- HARI RAYA TABLE -->
@@ -349,24 +368,26 @@
 				<p>Daftar misa-misa besar dengan formasi petugas lengkap sesuai registrasi tugas. Difilter berdasarkan bulan yang dipilih.</p>
 			</div>
 			<div class="schedule-card">
-				<table class="schedule-table" id="tblHariRaya">
-					<thead>
-						<tr>
-							<th style="width:44px;">No</th>
-							<th>Tanggal &amp; Nama Misa</th>
-							<th>Jam</th>
-							<th>PD</th>
-							<th>OP</th>
-							<th>vMix</th>
-							<th>Kamera</th>
-							<th>Supervisor</th>
-							<th>Fotografer</th>
-						</tr>
-					</thead>
-					<tbody id="schedHariRayaBody">
-						<!-- Rendered by JS -->
-					</tbody>
-				</table>
+				<div class="schedule-scroll">
+					<table class="schedule-table" id="tblHariRaya">
+						<thead>
+							<tr>
+								<th style="width:44px;">No</th>
+								<th>Tanggal &amp; Nama Misa</th>
+								<th>Jam</th>
+								<th>PD</th>
+								<th>OP</th>
+								<th>vMix</th>
+								<th>Kamera</th>
+								<th>Supervisor</th>
+								<th>Fotografer</th>
+							</tr>
+						</thead>
+						<tbody id="schedHariRayaBody">
+							<!-- Rendered by JS -->
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</main>
